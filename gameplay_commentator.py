@@ -51,7 +51,7 @@ class GameplayCommentator:
         
         # Configuration
         self.screenshot_interval = 8  # Capture every 8 seconds for variety
-        self.temp_audio_path = Path("/tmp/commentary_audio.mp3")
+        self.temp_audio_path = Path("tmp/commentary_audio.mp3")
         
         # Commentary tracking
         self.comment_count = 0
