@@ -78,7 +78,6 @@ class GameplayCommentator:
                 print(f"✅ Using local tmp directory: {self.tmp_dir}")
         except Exception as e:
             # Fallback to system temp if local fails
-            import tempfile
             self.tmp_dir = Path(tempfile.gettempdir())
             self.temp_audio_path = self.tmp_dir / "commentary_audio.mp3"
             if self.config['verbose']:
