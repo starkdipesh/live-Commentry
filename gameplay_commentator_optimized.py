@@ -10,6 +10,7 @@ import base64
 import io
 import time
 import random
+import tempfile
 from datetime import datetime
 from collections import deque
 from pathlib import Path
@@ -64,10 +65,24 @@ class GameplayCommentator:
             pygame.mixer.init()
         
         # Configuration - Use local tmp directory
-        self.temp_audio_path = APP_DIR / "tmp" / "commentary_audio.mp3"
-        
-        # Ensure tmp directory exists
-        self.temp_audio_path.parent.mkdir(exist_ok=True)
+        # Create tmp directory with proper error handling
+        self.tmp_dir = APP_DIR / "tmp"
+        try:
+            self.tmp_dir.mkdir(parents=True, exist_ok=True)
+            # Test write permission
+            test_file = self.tmp_dir / "test_permission.txt"
+            test_file.write_text("test")
+            test_file.unlink()
+            self.temp_audio_path = self.tmp_dir / "commentary_audio.mp3"
+            if self.config['verbose']:
+                print(f"✅ Using local tmp directory: {self.tmp_dir}")
+        except Exception as e:
+            # Fallback to system temp if local fails
+            self.tmp_dir = Path(tempfile.gettempdir())
+            self.temp_audio_path = self.tmp_dir / "commentary_audio.mp3"
+            if self.config['verbose']:
+                print(f"⚠️ Using system temp directory: {self.tmp_dir}")
+                print(f"   (Local tmp failed: {e})")
         
         self.comment_count = 0
         
@@ -158,22 +173,39 @@ Comment #{self.comment_count + 1} - Sound human!{recent_context}"""
     def speak_commentary(self, text: str) -> None:
         """Convert text to speech and play (or save for virtual cable)"""
         try:
+            # Ensure directory exists (important for Windows)
+            self.temp_audio_path.parent.mkdir(parents=True, exist_ok=True)
+            
             # Generate TTS with more natural settings
             tts = gTTS(text=text, lang='en', slow=False, tld='com')
-            tts.save(str(self.temp_audio_path))
+            
+            # Save with explicit path handling
+            audio_path_str = str(self.temp_audio_path.resolve())
+            tts.save(audio_path_str)
+            
+            # Verify file was created
+            if not self.temp_audio_path.exists():
+                raise FileNotFoundError(f"Audio file not created at: {audio_path_str}")
             
             # Play audio if enabled
             if self.config['audio_enabled']:
-                pygame.mixer.music.load(str(self.temp_audio_path))
+                pygame.mixer.music.load(audio_path_str)
                 pygame.mixer.music.play()
                 
                 while pygame.mixer.music.get_busy():
                     pygame.time.Clock().tick(10)
             
+        except PermissionError as e:
+            if self.config['verbose']:
+                print(f"❌ Permission Error: {e}")
+                print(f"   Cannot write to: {self.temp_audio_path}")
+                print(f"   💡 Try running as administrator or check folder permissions")
         except Exception as e:
             if self.config['verbose']:
                 print(f"❌ TTS Error: {e}")
                 print(f"   Audio path: {self.temp_audio_path}")
+                print(f"   Directory exists: {self.temp_audio_path.parent.exists()}")
+                print(f"   💡 Check if directory has write permissions")
     
     async def run(self):
         """Main loop"""
