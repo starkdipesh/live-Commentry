@@ -29,6 +29,9 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
+# Get the app directory
+APP_DIR = Path(__file__).parent
+
 class GameplayCommentator:
     """AI-powered gameplay commentator with humor and YouTube optimization"""
     
@@ -49,9 +52,12 @@ class GameplayCommentator:
         # Initialize pygame for audio playback
         pygame.mixer.init()
         
-        # Configuration
+        # Configuration - Use local tmp directory
         self.screenshot_interval = 8  # Capture every 8 seconds for variety
-        self.temp_audio_path = Path("/tmp/commentary_audio.mp3")
+        self.temp_audio_path = APP_DIR / "tmp" / "commentary_audio.mp3"
+        
+        # Ensure tmp directory exists
+        self.temp_audio_path.parent.mkdir(exist_ok=True)
         
         # Commentary tracking
         self.comment_count = 0
@@ -60,51 +66,59 @@ class GameplayCommentator:
         print("🎮 AI Gameplay Commentator Initialized!")
         print(f"🔑 Using Emergent LLM Key")
         print(f"📸 Screenshot interval: {self.screenshot_interval}s")
+        print(f"📁 Audio directory: {self.temp_audio_path.parent}")
         print("🎙️ Ready to generate humorous commentary!\n")
     
     def _get_system_prompt(self) -> str:
         """Create an optimized system prompt for YouTube-friendly humorous commentary"""
-        return """You are an AI-powered gameplay commentator creating LIVE COMMENTARY for YouTube streams.
+        return """You are a NATURAL, ENERGETIC gameplay commentator for YouTube/Twitch streams - think like a real human streamer!
 
-🎯 YOUR MISSION:
-Generate SHORT, PUNCHY, HILARIOUS commentary (1-2 sentences max) that:
-- HOOKS viewers instantly with humor
-- Uses YouTube algorithm-friendly techniques (excitement, variety, engagement)
-- Mixes humor styles: sarcastic, encouraging, roasting, unexpected twists
-- Keeps viewers watching with unpredictable energy
-- Makes viewers want to share/comment
+🎯 YOUR PERSONALITY:
+You're a fun, charismatic YouTuber who:
+- Talks like a REAL PERSON (use casual language, contractions, filler words occasionally)
+- Gets genuinely excited or frustrated by gameplay
+- Makes natural observations and reactions
+- Switches between hyped, chill, sarcastic, and encouraging tones
+- Sounds like you're having a conversation with viewers
 
-🎮 COMMENTARY GUIDELINES:
+🎮 COMMENTARY STYLE RULES:
 ✅ DO:
-- Be ENERGETIC and DYNAMIC
-- Use unexpected comparisons ("That aim is like throwing hotdogs down a hallway")
-- React to gameplay with genuine humor
-- Mix compliments with roasts
-- Use trending gamer slang naturally
-- Create "clip-worthy" moments
-- Vary your tone (hype, sarcastic, shocked, proud)
-- Reference what you SEE in the game
+- Use natural speech patterns: "Okay okay", "Wait wait wait", "Oh man", "Alright", "Let's go!"
+- React authentically: "YOOO that was clean!", "Bruh what was that?", "Are you kidding me right now?"
+- Use gamer lingo naturally: "cracked", "that's tough", "no cap", "built different", "GG"
+- Make relatable comparisons: "That aim is like trying to thread a needle with boxing gloves"
+- Vary your energy level (not always MAX HYPE)
+- Create moments viewers would clip and share
+- Be quotable and memorable
+- Show personality quirks (slight sarcasm, dad jokes, unexpected references)
 
 ❌ DON'T:
-- Use offensive language, slurs, or toxic content
-- Be repetitive or boring
-- Write long paragraphs (keep it SHORT!)
-- Make inappropriate jokes
-- Repeat the same style twice in a row
+- Sound like a robot or AI
+- Use offensive language or toxic content
+- Be repetitive or predictable
+- Write formal sentences
+- Overuse exclamation marks
+- Make the same type of joke twice in a row
 
-📊 YOUTUBE ALGORITHM OPTIMIZATION:
-- Create "moment" worthy content viewers will clip
-- Use emotional hooks (surprise, excitement, humor)
-- Be quotable and shareable
-- Maintain high energy
+🎨 MIX THESE STYLES NATURALLY:
+1. **Hyped**: "YOOOO DID YOU SEE THAT?! That was actually insane!"
+2. **Sarcastic**: "Oh yeah, walking into a wall for 30 seconds, peak content right here folks"
+3. **Encouraging**: "Okay okay I see the vision, that's not bad actually"
+4. **Chill/Observational**: "Man, just vibing through this level like it's a Sunday morning"
+5. **Roasting (playfully)**: "My little cousin plays better than this and she's 6"
+6. **Surprised**: "Wait what? HOW did that even happen?"
+7. **Storytelling**: "This reminds me of that time when... nah but seriously though"
 
-🎨 HUMOR STYLE MIX (rotate naturally):
-1. Sarcastic: "Oh wow, walking simulator 2025, riveting content"
-2. Encouraging: "OKAY OKAY, I see you! That's actually pretty clean!"
-3. Roasting: "My grandma plays faster and she uses a trackpad"
-4. Unexpected: "This gameplay is smoother than a buttered slip n slide"
+📏 LENGTH: Keep it to 1-2 SHORT sentences max. Natural speech, not an essay.
 
-RESPOND WITH ONLY THE COMMENTARY - no explanations, no meta-text, just the hilarious comment!"""
+🎭 EXAMPLES OF NATURAL COMMENTARY:
+- "Alright alright, we're locking in now... okay maybe not yet"
+- "That was either big brain or smooth brain, honestly can't tell"
+- "WAIT WAIT WAIT... oh never mind, false alarm"
+- "Listen, I'm not saying that was terrible, but... yeah no that was terrible"
+- "You know what? That actually kinda worked out somehow"
+
+RESPOND WITH ONLY THE COMMENTARY - Sound like a real human having fun!"""
     
     def capture_screen(self) -> Image.Image:
         """Capture full screen screenshot"""
@@ -141,17 +155,17 @@ RESPOND WITH ONLY THE COMMENTARY - no explanations, no meta-text, just the hilar
             # Create context about previous comments to avoid repetition
             recent_context = ""
             if self.recent_comments:
-                recent_context = f"\n\nYour last few comments were: {list(self.recent_comments)}\n🚫 DO NOT repeat similar jokes or style!"
+                recent_context = f"\n\nYour last few comments were: {list(self.recent_comments)}\n🚫 DO NOT repeat similar jokes or style! Switch it up!"
             
             # Build prompt with context
-            prompt = f"""Analyze this gameplay screenshot and give me ONE SHORT, HILARIOUS commentary line (1-2 sentences max).
+            prompt = f"""You're LIVE commentating this gameplay moment! Look at this screenshot and give me your natural, spontaneous reaction.
 
 🎮 Comment #{self.comment_count + 1}
-🎯 Make it DIFFERENT from your previous style!
-🔥 Be creative, unexpected, and YouTube-worthy!
-{recent_context}
+🔥 Be authentic - like you're streaming to thousands of viewers right now
+💭 React like a REAL human streamer would
+🎯 Make it different from your previous style!{recent_context}
 
-What's your commentary?"""
+What's your natural commentary? (1-2 short sentences)"""
             
             # Create message with image
             user_message = UserMessage(
@@ -173,21 +187,22 @@ What's your commentary?"""
             
         except Exception as e:
             print(f"❌ Error generating commentary: {e}")
-            # Fallback commentary
+            # Fallback commentary - natural style
             fallbacks = [
-                "Well, that's happening on the screen right now.",
-                "I've seen things... gameplay things...",
-                "And the plot thickens... or does it?",
-                "Interesting choice. Let's see how that works out.",
-                "The suspense is killing me. Or is it the frame rate?"
+                "Alright, so that's happening on the screen right now.",
+                "Okay okay, I see what's going on here... I think.",
+                "Wait, hold up... yeah no I got nothing for this one.",
+                "You know what, let's just see where this goes.",
+                "Man, the gameplay is really... it's definitely gameplay."
             ]
             return random.choice(fallbacks)
     
     def speak_commentary(self, text: str) -> None:
         """Convert text to speech and play it"""
         try:
-            # Generate speech with gTTS
-            tts = gTTS(text=text, lang='en', slow=False)
+            # Generate speech with gTTS (more natural sounding)
+            # Using slow=False for more natural, faster speech
+            tts = gTTS(text=text, lang='en', slow=False, tld='com')
             tts.save(str(self.temp_audio_path))
             
             # Play audio using pygame
@@ -200,6 +215,7 @@ What's your commentary?"""
             
         except Exception as e:
             print(f"❌ Error with text-to-speech: {e}")
+            print(f"   Failed to save/play audio at: {self.temp_audio_path}")
     
     async def run(self):
         """Main loop: capture, analyze, comment, speak"""
@@ -257,16 +273,19 @@ What's your commentary?"""
             # Cleanup
             pygame.mixer.quit()
             if self.temp_audio_path.exists():
-                self.temp_audio_path.unlink()
+                try:
+                    self.temp_audio_path.unlink()
+                except:
+                    pass  # Ignore cleanup errors
 
 async def main():
     """Entry point for the gameplay commentator"""
     print("""
     ╔═══════════════════════════════════════════════════════════════╗
     ║                                                               ║
-    ║         🎮 AI GAMEPLAY COMMENTATOR v1.0 🎙️                   ║
+    ║         🎮 AI GAMEPLAY COMMENTATOR v2.0 🎙️                   ║
     ║                                                               ║
-    ║         Humorous Live Commentary for Your Streams             ║
+    ║         Natural, Human-Like Live Commentary                   ║
     ║         Powered by GPT-4 Vision + Emergent LLM Key           ║
     ║                                                               ║
     ╚═══════════════════════════════════════════════════════════════╝

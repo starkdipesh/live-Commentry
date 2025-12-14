@@ -29,6 +29,9 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
+# Get the app directory
+APP_DIR = Path(__file__).parent
+
 class GameplayCommentator:
     """AI-powered gameplay commentator - OPTIMIZED VERSION"""
     
@@ -60,8 +63,12 @@ class GameplayCommentator:
         if self.config['audio_enabled']:
             pygame.mixer.init()
         
-        # Configuration
-        self.temp_audio_path = Path("/tmp/commentary_audio.mp3")
+        # Configuration - Use local tmp directory
+        self.temp_audio_path = APP_DIR / "tmp" / "commentary_audio.mp3"
+        
+        # Ensure tmp directory exists
+        self.temp_audio_path.parent.mkdir(exist_ok=True)
+        
         self.comment_count = 0
         
         if self.config['verbose']:
@@ -69,20 +76,22 @@ class GameplayCommentator:
             print(f"🔑 Using Emergent LLM Key")
             print(f"📸 Screenshot interval: {self.config['screenshot_interval']}s")
             print(f"🖼️ Image quality: {self.config['image_quality']}% @ {self.config['image_max_width']}px")
+            print(f"📁 Audio directory: {self.temp_audio_path.parent}")
             print(f"🎙️ Audio: {'Enabled' if self.config['audio_enabled'] else 'Disabled (virtual cable only)'}")
             print("✅ Ready for virtual cable streaming!\n")
     
     def _get_system_prompt(self) -> str:
-        """Optimized system prompt"""
-        return """You are an AI gameplay commentator for YouTube streams.
+        """Optimized system prompt for natural commentary"""
+        return """You are a NATURAL gameplay commentator for YouTube/Twitch - talk like a real human streamer!
 
-Generate SHORT (1-2 sentences), HILARIOUS commentary that:
-- Hooks viewers instantly
-- Mixes humor: sarcastic, encouraging, roasting, unexpected
+Generate SHORT (1-2 sentences), NATURAL commentary that:
+- Sounds like genuine human speech (use "okay", "wait", "oh man", contractions)
+- Mixes emotions: excited, sarcastic, encouraging, surprised
+- Uses casual gamer language naturally
 - Is YouTube-friendly (no toxic content)
 - Creates clip-worthy moments
 
-Respond with ONLY the commentary - no explanations!"""
+Respond with ONLY the commentary - sound human!"""
     
     def capture_screen(self) -> Image.Image:
         """Capture and optimize screen screenshot"""
@@ -117,9 +126,9 @@ Respond with ONLY the commentary - no explanations!"""
             if self.recent_comments:
                 recent_context = f"\n\nLast comments: {list(self.recent_comments)}\nBe DIFFERENT!"
             
-            prompt = f"""Analyze this gameplay and give ONE SHORT, HILARIOUS line (1-2 sentences).
+            prompt = f"""You're LIVE! React naturally to this gameplay (1-2 short sentences).
 
-Comment #{self.comment_count + 1} - Make it UNIQUE!{recent_context}"""
+Comment #{self.comment_count + 1} - Sound human!{recent_context}"""
             
             # Get AI response
             user_message = UserMessage(
@@ -139,9 +148,9 @@ Comment #{self.comment_count + 1} - Make it UNIQUE!{recent_context}"""
             if self.config['verbose']:
                 print(f"❌ Error: {e}")
             fallbacks = [
-                "Well, that's happening on screen.",
-                "The suspense is killing me!",
-                "Interesting choice there.",
+                "Alright, so that's happening right now.",
+                "Okay okay, I see what's going on.",
+                "Man, that's definitely some gameplay.",
                 "And the plot thickens..."
             ]
             return random.choice(fallbacks)
@@ -149,8 +158,8 @@ Comment #{self.comment_count + 1} - Make it UNIQUE!{recent_context}"""
     def speak_commentary(self, text: str) -> None:
         """Convert text to speech and play (or save for virtual cable)"""
         try:
-            # Generate TTS
-            tts = gTTS(text=text, lang='en', slow=False)
+            # Generate TTS with more natural settings
+            tts = gTTS(text=text, lang='en', slow=False, tld='com')
             tts.save(str(self.temp_audio_path))
             
             # Play audio if enabled
@@ -164,6 +173,7 @@ Comment #{self.comment_count + 1} - Make it UNIQUE!{recent_context}"""
         except Exception as e:
             if self.config['verbose']:
                 print(f"❌ TTS Error: {e}")
+                print(f"   Audio path: {self.temp_audio_path}")
     
     async def run(self):
         """Main loop"""
@@ -228,18 +238,21 @@ Comment #{self.comment_count + 1} - Make it UNIQUE!{recent_context}"""
             if self.config['audio_enabled']:
                 pygame.mixer.quit()
             if self.temp_audio_path.exists():
-                self.temp_audio_path.unlink()
+                try:
+                    self.temp_audio_path.unlink()
+                except:
+                    pass
 
 async def main():
     """Entry point"""
     print("""
     ╔═══════════════════════════════════════════════════════════════╗
     ║                                                               ║
-    ║      🎮 AI GAMEPLAY COMMENTATOR v1.0 (OPTIMIZED) 🎙️          ║
+    ║      🎮 AI GAMEPLAY COMMENTATOR v2.0 (OPTIMIZED) 🎙️          ║
     ║                                                               ║
+    ║      • Natural Human-Like Commentary                          ║
     ║      • Reduced CPU usage (10% vs 15%)                         ║
     ║      • Virtual cable ready                                    ║
-    ║      • Optimized for streaming                                ║
     ║                                                               ║
     ╚═══════════════════════════════════════════════════════════════╝
     """)
