@@ -276,17 +276,34 @@ class GameplayCommentatorFree:
         return False
     
     def _get_fallback_commentary(self) -> str:
-        """Get fallback Hindi commentary when AI is unavailable"""
+        """Get fallback Hindi commentary when AI is unavailable - Enhanced with more variety"""
         fallbacks = [
-            "अच्छा, तो ये स्क्रीन पर हो रहा है अभी।",
-            "ठीक ठीक, समझ आ रहा है क्या हो रहा है।",
-            "रुको, ये interesting लग रहा है।",
-            "देखते हैं क्या होता है आगे।",
-            "वाह भाई, gameplay चल रहा है।",
-            "चलो अच्छा है, progress हो रहा है।",
-            "मज़ेदार moment है ये।",
-            "कमाल का gameplay है!"
+            "अरे वाह! ये तो देखना बनता है!",
+            "यार, scene तो धांसू है!",
+            "ओहो! क्या चल रहा है ये?",
+            "भाई भाई, ये तो मस्त है!",
+            "देखो देखो, कुछ होने वाला है!",
+            "यो! Game तो fire हो रहा है!",
+            "अजी, इससे अच्छा और क्या?",
+            "पगला गया है क्या! कमाल है!",
+            "होली मोली! क्या scene है!",
+            "वाह क्या बात है भाई!",
+            "अबे ये तो unexpected था!",
+            "GG! धमाका हो गया!",
+            "प्रो मूव्स चल रहे हैं!",
+            "यार क्या gameplay है!",
+            "छक्का मारा इसने!",
+            "भाई साहब, लाजवाब है!",
+            "अरे बाप रे! OP moment!",
+            "क्या सीन है यार!",
+            "धांसू content मिल रहा है!",
+            "मज़ा आ गया बोस!"
         ]
+        # Use recent comments to avoid picking same fallback
+        used_recently = list(self.recent_comments)[-3:]
+        available = [f for f in fallbacks if f not in used_recently]
+        if available:
+            return random.choice(available)
         return random.choice(fallbacks)
     
     async def speak_commentary(self, text: str) -> None:
