@@ -209,7 +209,7 @@ class GameplayCommentatorFree:
 
 📢 आपका LIVE reaction (natural, can be incomplete, max 10 words):"""
             
-            # Call Ollama API with optimized parameters
+            # Call Ollama API with parameters optimized for LIVE feel
             payload = {
                 "model": self.model_name,
                 "prompt": prompt,
@@ -217,11 +217,12 @@ class GameplayCommentatorFree:
                 "stream": False,
                 "system": self._get_system_prompt(),
                 "options": {
-                    "temperature": 0.9,      # Higher for more creativity/variety
-                    "top_p": 0.95,           # Higher for diverse vocabulary
-                    "top_k": 50,             # More word choices
-                    "num_predict": 50,       # Limit tokens for shorter responses
-                    "repeat_penalty": 1.5    # Strongly penalize repetition
+                    "temperature": 1.0,      # Maximum creativity for spontaneous feel
+                    "top_p": 0.95,           # Diverse vocabulary
+                    "top_k": 60,             # Even more word choices for variety
+                    "num_predict": 40,       # Shorter for quick, punchy reactions
+                    "repeat_penalty": 1.8,   # Very strong anti-repetition for live feel
+                    "presence_penalty": 0.6  # Encourage new topics/angles
                 }
             }
             
