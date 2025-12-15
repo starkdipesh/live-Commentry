@@ -1,0 +1,21 @@
+# FREE AI Gameplay Commentator - Python Dependencies
+# 100% Free, No API costs, Runs offline!
+# Install with: pip install -r requirements_free.txt
+
+# Screen Capture
+mss>=10.0.0
+
+# Image Processing
+Pillow>=12.0.0
+
+# Text-to-Speech (FREE offline)
+pyttsx3>=2.90
+
+# HTTP client for Ollama API
+requests>=2.31.0
+
+# NO PAID APIS NEEDED!
+# - No emergentintegrations
+# - No OpenAI API key
+# - No internet after setup
+# - Completely FREE forever!
