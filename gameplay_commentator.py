@@ -52,9 +52,6 @@ class GameplayCommentator:
         # Memory to avoid repetitive comments
         self.recent_comments = deque(maxlen=5)
         
-        # Initialize pygame for audio playback
-        pygame.mixer.init()
-        
         # Configuration - Use local tmp directory
         self.screenshot_interval = 8  # Capture every 8 seconds for variety
         
@@ -66,24 +63,27 @@ class GameplayCommentator:
             test_file = self.tmp_dir / "test_permission.txt"
             test_file.write_text("test")
             test_file.unlink()
-            self.temp_audio_path = self.tmp_dir / "commentary_audio.mp3"
             print(f"✅ Using local tmp directory: {self.tmp_dir}")
         except Exception as e:
             # Fallback to system temp if local fails
             self.tmp_dir = Path(tempfile.gettempdir())
-            self.temp_audio_path = self.tmp_dir / "commentary_audio.mp3"
             print(f"⚠️ Using system temp directory: {self.tmp_dir}")
             print(f"   (Local tmp failed: {e})")
         
         # Commentary tracking
         self.comment_count = 0
         self.game_context = "Unknown Game"
+        self.budget_exceeded = False
+        
+        # Detect OS for audio playback
+        self.os_type = platform.system()
         
         print("🎮 AI Gameplay Commentator Initialized!")
         print(f"🔑 Using Emergent LLM Key")
         print(f"📸 Screenshot interval: {self.screenshot_interval}s")
-        print(f"📁 Audio directory: {self.temp_audio_path.parent}")
-        print("🎙️ Ready to generate humorous commentary!\n")
+        print(f"📁 Audio directory: {self.tmp_dir}")
+        print(f"🔊 Audio playback: Threading + OS ({self.os_type})")
+        print("🎙️ Ready to generate humorous Hindi commentary!\n")
     
     def _get_system_prompt(self) -> str:
         """Create an optimized system prompt for YouTube-friendly humorous commentary"""
