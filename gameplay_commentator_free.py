@@ -169,46 +169,82 @@ class GameplayCommentatorFree:
         return base64.b64encode(img_bytes).decode('utf-8')
     
     async def generate_commentary_ollama(self, screenshot: Image.Image) -> str:
-        """Generate commentary using Ollama + LLaVA (FREE)"""
+        """Generate commentary using Ollama + LLaVA (FREE) - Optimized for speed and variety"""
         try:
             # Convert image to base64
             img_base64 = self.image_to_base64(screenshot)
             
-            # Create context about previous comments
+            # Create context about previous comments with emphasis
             recent_context = ""
             if self.recent_comments:
-                recent_context = f"\n\nआपकी पिछली टिप्पणियां: {list(self.recent_comments)}\n🚫 इन्हें दोहराएं नहीं!"
+                recent_list = list(self.recent_comments)[-5:]  # Last 5 only
+                recent_context = f"\n\n⚠️ आपकी पिछली 5 टिप्पणियां:\n{chr(10).join([f'- {c}' for c in recent_list])}\n\n🚫 FORBIDDEN: इन शब्दों/phrases को दोबारा use न करें!\n✅ REQUIRED: पूरी तरह DIFFERENT style और words use करें!"
             
-            # Build prompt
-            prompt = f"""आप इस गेमप्ले को LIVE देख रहे हैं! इस screenshot पर अपनी प्राकृतिक, मज़ेदार Hindi commentary दें।
-
-🎬 Comment #{self.comment_count + 1}
-💭 असली streamer की तरह react करें
-🎯 अपनी पिछली style से अलग बनाएं!{recent_context}
-
-आपकी प्राकृतिक commentary (1-2 छोटे वाक्य):"""
+            # Add variety hints based on comment count
+            variety_hints = [
+                "Screen पर SPECIFIC details देखें और उन पर बोलें!",
+                "इस बार TOTALLY अलग angle से comment करें!",
+                "UNEXPECTED reaction दें - surprise करें!",
+                "Screen के colors/text/characters पर FOCUS करें!",
+                "HUMOROUS observation करें जो किसी ने न सोचा हो!"
+            ]
+            current_hint = variety_hints[self.comment_count % len(variety_hints)]
             
-            # Call Ollama API
+            # Build enhanced prompt with better instructions
+            prompt = f"""🎮 LIVE गेमप्ले का screenshot देखें और इस पर एक मज़ेदार, unique commentary दें!
+
+📸 Comment #{self.comment_count + 1}
+🎯 {current_hint}
+💡 Screen में क्या SPECIFIC चीज़ें दिख रही हैं? उन पर बोलें!
+🎭 Fresh reaction - हर बार नया अंदाज़!{recent_context}
+
+📝 आपकी मज़ेदार commentary (केवल 1 छोटा वाक्य, max 12 words):"""
+            
+            # Call Ollama API with optimized parameters
             payload = {
                 "model": self.model_name,
                 "prompt": prompt,
                 "images": [img_base64],
                 "stream": False,
-                "system": self._get_system_prompt()
+                "system": self._get_system_prompt(),
+                "options": {
+                    "temperature": 0.9,      # Higher for more creativity/variety
+                    "top_p": 0.95,           # Higher for diverse vocabulary
+                    "top_k": 50,             # More word choices
+                    "num_predict": 50,       # Limit tokens for shorter responses
+                    "repeat_penalty": 1.5    # Strongly penalize repetition
+                }
             }
             
             response = requests.post(
                 self.ollama_url,
                 json=payload,
-                timeout=30
+                timeout=20  # Reduced from 30s to 20s for faster timeout
             )
             
             if response.status_code == 200:
                 result = response.json()
                 commentary = result.get('response', '').strip()
                 
-                # Clean up the response
-                commentary = commentary.strip().strip('"').strip("'")
+                # Clean up the response aggressively
+                commentary = commentary.strip().strip('"').strip("'").strip('`')
+                # Remove any markdown or extra formatting
+                commentary = commentary.replace('**', '').replace('*', '')
+                # Take only first sentence if multiple
+                if '।' in commentary:
+                    commentary = commentary.split('।')[0] + '।'
+                elif '!' in commentary:
+                    commentary = commentary.split('!')[0] + '!'
+                
+                # Ensure it's not too long
+                words = commentary.split()
+                if len(words) > 15:
+                    commentary = ' '.join(words[:15])
+                
+                # Check if it's too similar to recent ones
+                if self._is_too_similar(commentary):
+                    print("⚠️ Commentary too similar to recent ones, using fallback")
+                    return self._get_fallback_commentary()
                 
                 # Store in recent comments
                 self.recent_comments.append(commentary)
@@ -220,11 +256,24 @@ class GameplayCommentatorFree:
                 return self._get_fallback_commentary()
                 
         except requests.exceptions.Timeout:
-            print("⚠️ Ollama timeout - model might be slow")
+            print("⚠️ Ollama timeout (>20s) - using fallback")
             return self._get_fallback_commentary()
         except Exception as e:
             print(f"❌ Error generating commentary: {e}")
             return self._get_fallback_commentary()
+    
+    def _is_too_similar(self, new_comment: str) -> bool:
+        """Check if new comment is too similar to recent ones"""
+        if not self.recent_comments:
+            return False
+        
+        new_words = set(new_comment.lower().split())
+        for old_comment in list(self.recent_comments)[-3:]:  # Check last 3
+            old_words = set(old_comment.lower().split())
+            # Calculate word overlap
+            if len(new_words & old_words) > len(new_words) * 0.6:  # >60% overlap
+                return True
+        return False
     
     def _get_fallback_commentary(self) -> str:
         """Get fallback Hindi commentary when AI is unavailable"""
