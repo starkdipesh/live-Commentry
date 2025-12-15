@@ -61,12 +61,15 @@ class GameplayCommentatorFree:
             except Exception as e:
                 print(f"⚠️ Pygame initialization warning: {e}")
         
-        # Memory to avoid repetitive comments
-        self.recent_comments = deque(maxlen=5)
+        # Memory to avoid repetitive comments (increased for better diversity)
+        self.recent_comments = deque(maxlen=10)
         
         # Configuration
-        self.screenshot_interval = 8
+        self.screenshot_interval = 6  # Reduced for more dynamic commentary
         self.comment_count = 0
+        
+        # Last screenshot for comparison (to detect scene changes)
+        self.last_screenshot_hash = None
         
         # Get app directory and create tmp folder
         self.app_dir = Path(__file__).parent
