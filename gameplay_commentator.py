@@ -234,38 +234,130 @@ class GameplayCommentator:
         ]
         return random.choice(fallbacks)
     
+    def _get_audio_duration(self, audio_path: Path) -> float:
+        """Get audio file duration in seconds"""
+        try:
+            # Use MP3 file size to estimate duration (rough estimate)
+            # Average MP3 bitrate is ~128kbps = 16KB/s
+            file_size = audio_path.stat().st_size
+            estimated_duration = file_size / 16000  # in seconds
+            return max(2.0, estimated_duration + 1.0)  # Add 1 second buffer
+        except:
+            return 5.0  # Default fallback
+    
     def _play_audio_file(self, audio_path: Path) -> None:
-        """Play audio file using OS-specific commands in a separate thread"""
+        """Play audio file using OS-specific commands and cleanup AFTER playback"""
+        playback_completed = False
+        estimated_duration = self._get_audio_duration(audio_path)
+        
         try:
             if self.os_type == "Windows":
-                # Windows: use start command with wmplayer or default audio player
-                os.system(f'start /min "" "{audio_path}"')
+                # Windows: use PowerShell for synchronous playback
+                cmd = f'powershell -c "(New-Object Media.SoundPlayer \\"{audio_path}\\").PlaySync()"'
+                try:
+                    subprocess.run(cmd, shell=True, timeout=estimated_duration + 2, 
+                                 stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                    playback_completed = True
+                except subprocess.TimeoutExpired:
+                    # If timeout, fallback to estimated duration
+                    os.system(f'start /min "" "{audio_path}"')
+                    time.sleep(estimated_duration)
+                    playback_completed = True
+                except Exception:
+                    # Last fallback
+                    os.system(f'start /min "" "{audio_path}"')
+                    time.sleep(estimated_duration)
+                    playback_completed = True
+                    
             elif self.os_type == "Darwin":  # macOS
-                subprocess.run(['afplay', str(audio_path)], check=True)
+                # macOS: afplay blocks until completion
+                try:
+                    subprocess.run(['afplay', str(audio_path)], 
+                                 check=True,
+                                 stdout=subprocess.DEVNULL, 
+                                 stderr=subprocess.DEVNULL,
+                                 timeout=estimated_duration + 2)
+                    playback_completed = True
+                except:
+                    # Fallback: wait for estimated duration
+                    time.sleep(estimated_duration)
+                    playback_completed = True
+                
             else:  # Linux
                 # Try common Linux audio players
+                played = False
                 for player in ['mpg123', 'ffplay', 'cvlc', 'aplay']:
                     try:
-                        subprocess.run([player, str(audio_path)], 
-                                     check=True, 
-                                     stdout=subprocess.DEVNULL, 
-                                     stderr=subprocess.DEVNULL)
+                        if player == 'mpg123':
+                            # mpg123 with -q (quiet) flag
+                            subprocess.run([player, '-q', str(audio_path)], 
+                                         check=True,
+                                         stdout=subprocess.DEVNULL, 
+                                         stderr=subprocess.DEVNULL,
+                                         timeout=estimated_duration + 2)
+                        elif player == 'ffplay':
+                            # ffplay with auto-exit and no window
+                            subprocess.run([player, '-nodisp', '-autoexit', str(audio_path)], 
+                                         check=True,
+                                         stdout=subprocess.DEVNULL, 
+                                         stderr=subprocess.DEVNULL,
+                                         timeout=estimated_duration + 2)
+                        elif player == 'cvlc':
+                            # VLC command-line with auto-exit
+                            subprocess.run([player, '--play-and-exit', str(audio_path)], 
+                                         check=True,
+                                         stdout=subprocess.DEVNULL, 
+                                         stderr=subprocess.DEVNULL,
+                                         timeout=estimated_duration + 2)
+                        else:
+                            subprocess.run([player, str(audio_path)], 
+                                         check=True,
+                                         stdout=subprocess.DEVNULL, 
+                                         stderr=subprocess.DEVNULL,
+                                         timeout=estimated_duration + 2)
+                        played = True
+                        playback_completed = True
                         break
                     except (subprocess.CalledProcessError, FileNotFoundError):
                         continue
-            
-            # Wait a bit then cleanup
-            time.sleep(3)  # Give time for audio to start playing
-            
-            # Try to delete the file after playback
-            try:
-                if audio_path.exists():
-                    audio_path.unlink()
-            except Exception:
-                pass  # Ignore cleanup errors
+                    except subprocess.TimeoutExpired:
+                        # Player timed out (no audio device), but that's okay
+                        played = True
+                        playback_completed = True
+                        break
                 
+                # If no player worked, just wait the estimated duration
+                if not played:
+                    time.sleep(estimated_duration)
+                    playback_completed = True
+            
+            # Give OS time to release file handle
+            time.sleep(0.5)
+            
         except Exception as e:
-            print(f"⚠️ Audio playback error: {e}")
+            print(f"⚠️ Playback error: {e}")
+            # Even if playback failed, try to cleanup
+            time.sleep(estimated_duration)
+            playback_completed = True
+        
+        # CLEANUP: Delete file after playback completes
+        finally:
+            if playback_completed:
+                max_retries = 5
+                for attempt in range(max_retries):
+                    try:
+                        if audio_path.exists():
+                            audio_path.unlink()
+                            print(f"   🗑️ Cleaned up: {audio_path.name}")
+                            return
+                    except PermissionError:
+                        # File still locked, wait and retry
+                        time.sleep(0.5)
+                    except Exception as e:
+                        if attempt == max_retries - 1:
+                            print(f"   ⚠️ Could not cleanup: {audio_path.name} - {e}")
+                        else:
+                            time.sleep(0.5)
     
     def speak_commentary(self, text: str) -> None:
         """Convert text to speech and play it using threading"""
@@ -289,18 +381,19 @@ class GameplayCommentator:
             if not audio_path.exists():
                 raise FileNotFoundError(f"Audio file not created at: {audio_path_str}")
             
-            print(f"✅ Audio saved: {audio_path.name}")
+            print(f"✅ Audio saved: {audio_path.name} ({audio_path.stat().st_size} bytes)")
             
-            # Play audio in a separate thread to avoid blocking and file locking
+            # Play audio in a separate thread
+            # The thread will handle playback AND cleanup after completion
             playback_thread = threading.Thread(
                 target=self._play_audio_file, 
                 args=(audio_path,),
-                daemon=True
+                daemon=False  # Non-daemon so it completes before exit
             )
             playback_thread.start()
             
-            # Wait for audio to start playing
-            time.sleep(1)
+            # Don't wait here - let the thread handle everything
+            # This prevents blocking and allows proper cleanup after playback
             
         except PermissionError as e:
             print(f"❌ Permission Error: {e}")
