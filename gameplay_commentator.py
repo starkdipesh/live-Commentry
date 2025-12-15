@@ -363,13 +363,15 @@ class GameplayCommentator:
             traceback.print_exc()
         
         finally:
-            # Cleanup
-            pygame.mixer.quit()
-            if self.temp_audio_path.exists():
-                try:
-                    self.temp_audio_path.unlink()
-                except:
-                    pass  # Ignore cleanup errors
+            # Cleanup any remaining audio files
+            try:
+                for audio_file in self.tmp_dir.glob("commentary_*.mp3"):
+                    try:
+                        audio_file.unlink()
+                    except:
+                        pass  # Ignore cleanup errors
+            except:
+                pass
 
 async def main():
     """Entry point for the gameplay commentator"""
