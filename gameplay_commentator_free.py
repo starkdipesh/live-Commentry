@@ -236,20 +236,20 @@ class GameplayCommentatorFree:
                 result = response.json()
                 commentary = result.get('response', '').strip()
                 
-                # Clean up the response aggressively
+                # Clean up gently - preserve natural, live feel
                 commentary = commentary.strip().strip('"').strip("'").strip('`')
-                # Remove any markdown or extra formatting
+                # Remove markdown but keep natural punctuation
                 commentary = commentary.replace('**', '').replace('*', '')
-                # Take only first sentence if multiple
-                if '।' in commentary:
-                    commentary = commentary.split('।')[0] + '।'
-                elif '!' in commentary:
-                    commentary = commentary.split('!')[0] + '!'
                 
-                # Ensure it's not too long
+                # Keep it short and punchy (live streaming style)
+                # Don't force complete sentences - incomplete is OK for live feel
                 words = commentary.split()
-                if len(words) > 15:
-                    commentary = ' '.join(words[:15])
+                if len(words) > 12:
+                    # Take first 10-12 words for quick, live reactions
+                    commentary = ' '.join(words[:12])
+                    # Add natural ending if needed
+                    if not commentary.endswith(('!', '?', '।', '...')):
+                        commentary += '!'
                 
                 # Check if it's too similar to recent ones
                 if self._is_too_similar(commentary):
