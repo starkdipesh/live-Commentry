@@ -21,7 +21,7 @@ import json
 
 # Screen capture and image processing
 import mss
-from PIL import Image
+from PIL import Image, ImageEnhance
 
 # Text-to-Speech (FREE with natural voice)
 import edge_tts
