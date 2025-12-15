@@ -21,9 +21,9 @@ try:
     import pygame
     pygame.mixer.init()
     PYGAME_AVAILABLE = True
-except ImportError:
+except (ImportError, pygame.error):
     PYGAME_AVAILABLE = False
-    print("⚠️ pygame not available, will use system audio")
+    print("⚠️ pygame/audio not available in this environment")
 
 class VoiceTester:
     """Test and compare different voices"""
