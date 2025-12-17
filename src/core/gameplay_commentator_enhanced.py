@@ -11,7 +11,7 @@ New Features:
 - Better model parameters
 - Context-aware prompts
 """
-
+import sys
 import os
 import asyncio
 import base64
@@ -27,8 +27,13 @@ import mss
 from PIL import Image, ImageEnhance
 import numpy as np
 
+# Adds the shared parent folder to the search path
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if parent_dir not in sys.path:
+    sys.path.insert(0, parent_dir)
+
 # Advanced image processing
-from src.processors.advanced_image_processor import AdvancedImageProcessor, GameplaySceneAnalyzer
+from processors.advanced_image_processor import AdvancedImageProcessor, GameplaySceneAnalyzer
 
 # Text-to-Speech (FREE with natural voice)
 import edge_tts
