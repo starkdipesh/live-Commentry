@@ -1,0 +1,47 @@
+# Enhanced AI Gameplay Commentator - Dependencies
+
+# Core Image Processing (REQUIRED)
+mss>=10.0.0                    # Fast screen capture
+Pillow>=12.0.0                 # Image processing
+numpy>=1.24.0                  # Numerical operations
+
+# OpenCV for Advanced Processing (REQUIRED for enhanced version)
+opencv-python>=4.8.0           # Computer vision operations
+
+# Text-to-Speech (FREE, Natural Voice)
+edge-tts>=6.1.0                # Natural TTS voices
+
+# Audio Playback (OPTIONAL but recommended)
+pygame>=2.5.0                  # Audio playback
+
+# HTTP Client for Ollama
+requests>=2.31.0               # API calls
+
+# Additional Tools for Model Improvement (OPTIONAL)
+
+# Object Detection (for future enhancements)
+# ultralytics>=8.0.0           # YOLOv8 for object detection
+
+# OCR for UI Text Extraction (for future enhancements)  
+# easyocr>=1.7.0               # Text recognition in game UI
+
+# Fine-tuning Tools (for advanced users)
+# transformers>=4.35.0         # Hugging Face transformers
+# peft>=0.6.0                  # LoRA fine-tuning
+# accelerate>=0.24.0           # Training acceleration
+# bitsandbytes>=0.41.0         # Quantization
+# datasets>=2.15.0             # Dataset handling
+
+# Installation Instructions:
+# 
+# Basic (Required):
+# pip install -r requirements_enhanced.txt
+#
+# With object detection:
+# pip install ultralytics
+#
+# With OCR:
+# pip install easyocr
+#
+# For model fine-tuning:
+# pip install transformers peft accelerate bitsandbytes datasets
