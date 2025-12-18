@@ -127,8 +127,14 @@ class EnhancedGameplayCommentator:
                     print(f"✅ Ollama running with {self.model_name}")
                 else:
                     print(f"⚠️  Model {self.model_name} not found!")
-                    print(f"📥 Download with: ollama pull {self.model_name}")
-                    print("Available models:", model_names)
+                    # Check for alternatives
+                    llava_models = [m for m in model_names if 'llava' in m]
+                    if llava_models:
+                        print(f"🔄 Switching to available model: {llava_models[0]}")
+                        self.model_name = llava_models[0]
+                    else:
+                        print(f"📥 Download with: ollama pull {self.model_name}")
+                        print("Available models:", model_names)
             else:
                 print("❌ Ollama not responding")
         except Exception as e:
@@ -259,7 +265,16 @@ Response format: Just the commentary, nothing else!
                 timeout=30
             )
             
-            commentary = response.json()['response'].strip()
+            if response.status_code != 200:
+                print(f"   ❌ Ollama API Error: {response.text}")
+                return self._get_fallback_commentary()
+                
+            response_json = response.json()
+            if 'response' not in response_json:
+                print(f"   ❌ Unexpected response format: {response_json}")
+                return self._get_fallback_commentary()
+                
+            commentary = response_json['response'].strip()
             
             # Step 8: Validate and potentially regenerate if too similar
             if self._is_too_similar(commentary):
@@ -321,10 +336,19 @@ YOU MUST create something COMPLETELY DIFFERENT!
             "Comment on CHARACTER actions happening",
             "React to UI elements (health, score, etc.)",
             "Notice environmental details",
+            "MOOD: Be very Sarcastic and funny",
+            "MOOD: Be extremely Hyped and Energetic",
+            "MOOD: Be Analytical like a pro-player",
+            "MOOD: Use a lot of Gaming Slang (GG, OP, etc.)",
+            "MOOD: Act confused/surprised about what happened",
         ]
         
         hint = random.choice(variety_hints)
         context += f"\nTHIS TIME: {hint}\n"
+        
+        # Add a unique "Wildcard" instruction occasionally
+        if random.random() > 0.8:
+            context += "CRITICAL: Start your comment with a surprising natural filler like 'Wait!', 'OMG!', or 'Yo!'\n"
         
         return base_prompt + context
     

@@ -13,9 +13,9 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 def main():
     parser = argparse.ArgumentParser(description="AI Gameplay Commentary System")
-    parser.add_argument('mode', choices=['enhanced', 'lightweight', 'free', 'collect', 'train'], 
+    parser.add_argument('mode', choices=['enhanced', 'lightweight', 'free', 'interactive', 'collect', 'train'], 
                         default='lightweight', nargs='?',
-                        help='Mode to run: enhanced (GPU), lightweight (CPU), free (Legacy), collect (Dataset)')
+                        help='Mode to run: enhanced (GPU), lightweight (CPU), interactive (Partner), free (Legacy), collect (Dataset)')
     
     args = parser.parse_args()
     
@@ -25,6 +25,11 @@ def main():
         if args.mode == 'enhanced':
             from src.core.gameplay_commentator_enhanced import main as run_enhanced
             asyncio.run(run_enhanced())
+            
+        elif args.mode == 'interactive':
+            from src.core.interactive_gaming_partner import InteractiveGamingPartner
+            partner = InteractiveGamingPartner()
+            asyncio.run(partner.run())
             
         elif args.mode == 'lightweight':
             from src.core.gameplay_commentator_lightweight import main as run_lightweight

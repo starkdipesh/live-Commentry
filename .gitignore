@@ -1,0 +1,27 @@
+# Python virtual environments
+venv/
+.venv/
+env/
+.env/
+bin/
+lib/
+lib64/
+share/
+pyvenv.cfg
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Temporary and local files
+tmp/
+*.mp3
+*.jpg
+*.jpeg
+*.png
+.DS_Store
+
+# IDEs
+.vscode/
+.idea/
