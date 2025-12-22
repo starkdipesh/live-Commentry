@@ -197,12 +197,40 @@ Response format: Just the commentary, nothing else!
 """
     
     def capture_screen(self) -> Image.Image:
-        """Capture full screen screenshot"""
-        with mss.mss() as sct:
-            monitor = sct.monitors[1]
-            screenshot = sct.grab(monitor)
-            img = Image.frombytes('RGB', screenshot.size, screenshot.bgra, 'raw', 'BGRX')
-            return img
+        """Capture full screen screenshot with error handling and Wayland fallbacks"""
+        # Try Method 1: mss (Fastest, works on X11)
+        try:
+            with mss.mss() as sct:
+                monitor = sct.monitors[1]
+                screenshot = sct.grab(monitor)
+                return Image.frombytes('RGB', screenshot.size, screenshot.bgra, 'raw', 'BGRX')
+        except Exception as primary_error:
+            # If Method 1 fails (common on Wayland), try Method 2: pyscreenshot
+            try:
+                import pyscreenshot
+                img = pyscreenshot.grab()
+                if img:
+                    return img.convert('RGB')
+            except Exception as secondary_error:
+                print(f"   ❌ Primary capture failed: {primary_error}")
+                print(f"   ❌ Secondary capture failed: {secondary_error}")
+            
+            # If all methods fail, provide specific Linux/Wayland guidance
+            import platform
+            if platform.system() == "Linux":
+                session_type = os.environ.get('XDG_SESSION_TYPE', '').lower()
+                if session_type == 'wayland':
+                    print("\n⚠️  WAYLAND SECURITY BLOCK: Ubuntu's Wayland session specifically blocks screen capture for privacy.")
+                    print("🛠️  HOW TO FIX:")
+                    print("1. Log out of Ubuntu.")
+                    print("2. At the login screen, click your name.")
+                    print("3. Click the Gear ICON (⚙️) at the bottom-right.")
+                    print("4. Select 'Ubuntu on Xorg' and log in.")
+                    print("5. Run the code again. It will work perfectly then!\n")
+                else:
+                    print("💡 Try installing system dependencies: sudo apt update && sudo apt install libx11-dev libxtst-dev")
+            
+            raise RuntimeError("Fatal: Could not capture screen using any available method on this session.")
     
     def generate_commentary_enhanced(self, screenshot: Image.Image) -> str:
         """

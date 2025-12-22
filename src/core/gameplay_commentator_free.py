@@ -145,26 +145,38 @@ class GameplayCommentatorFree:
 केवल 1 छोटा reaction दें - natural, spontaneous, real!"""
     
     def capture_screen(self) -> Image.Image:
-        """Capture full screen screenshot with optimized quality"""
-        with mss.mss() as sct:
-            monitor = sct.monitors[1]
-            screenshot = sct.grab(monitor)
-            img = Image.frombytes('RGB', screenshot.size, screenshot.bgra, 'raw', 'BGRX')
-            
-            # Resize to optimize (increased to 1024px for better accuracy)
-            # Smaller than before for speed, but with better quality preservation
+        """Capture full screen screenshot with Linux/Wayland awareness and fallbacks"""
+        img = None
+        
+        # Method 1: mss (Fastest)
+        try:
+            with mss.mss() as sct:
+                monitor = sct.monitors[1]
+                screenshot = sct.grab(monitor)
+                img = Image.frombytes('RGB', screenshot.size, screenshot.bgra, 'raw', 'BGRX')
+        except Exception:
+            # Method 2: pyscreenshot (Wayland/Linux fallback)
+            try:
+                import pyscreenshot
+                img = pyscreenshot.grab()
+                if img: img = img.convert('RGB')
+            except Exception:
+                pass
+        
+        if img:
+            # Resize and optimize
             max_width = 1024
             if img.width > max_width:
                 ratio = max_width / img.width
-                new_size = (max_width, int(img.height * ratio))
-                # Use LANCZOS for high-quality downscaling
-                img = img.resize(new_size, Image.Resampling.LANCZOS)
+                img = img.resize((max_width, int(img.height * ratio)), Image.Resampling.LANCZOS)
             
-            # Enhance image slightly for better AI analysis
-            enhancer = ImageEnhance.Sharpness(img)
-            img = enhancer.enhance(1.2)  # Slight sharpening for better detail
-            
-            return img
+            # Enhance
+            return ImageEnhance.Sharpness(img).enhance(1.2)
+        else:
+            if platform.system() == "Linux" and os.environ.get('XDG_SESSION_TYPE', '').lower() == 'wayland':
+                print("\n⚠️ Ubuntu Wayland Blocked Screen Capture.")
+                print("💡 Fix: Switch to 'Ubuntu on Xorg' at login screen.\n")
+            raise RuntimeError("Could not capture screen.")
     
     def image_to_base64(self, img: Image.Image) -> str:
         """Convert PIL Image to base64 string with high quality"""
