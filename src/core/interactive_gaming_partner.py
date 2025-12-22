@@ -90,16 +90,20 @@ class SoundDeviceMicrophone:
         raise NotImplementedError("Please install pyaudio (sudo apt install python3-pyaudio) for best results.")
 
 class InteractiveGamingPartner:
-    """AI Partner that interacts via voice and vision"""
+    """Parthasarathi - AI Partner that interacts via voice and vision"""
     
     def __init__(self, model_name="llava:latest"):
         self.ollama_base_url = "http://localhost:11434"
         self.model_name = model_name
         
+        # Identity
+        self.name = "Parthasarathi"
+        self.creator = "Dipesh Patel"
+        
         # Vision
         self.image_processor = AdvancedImageProcessor()
         self.scene_analyzer = GameplaySceneAnalyzer()
-        self.cap = None  # Webcam capture
+        self.cap = None 
         self.use_camera = True
         
         # Audio
@@ -111,16 +115,26 @@ class InteractiveGamingPartner:
             self.mic = sr.Microphone()
             self.mic_available = True
         except Exception as e:
-            print(f"⚠️ PyAudio/Microphone issue: {e}")
+            print(f"⚠️ Microphone issue: {e}")
             self.mic_available = False
             self.mic = None
         
-        # State
+        # State & Learning 
         self.conversation_history = []
         self.speech_queue = queue.Queue()
         self.is_running = False
         self.last_observation_time = time.time()
-        self.observation_interval = 15  # seconds for proactive comments
+        self.observation_interval = 20  # Frequency of proactive comments
+        
+        # Paths for Memory and Logging
+        self.base_dir = Path("/var/www/html/dipesh/Portfolio/live-Commentry")
+        self.logger_dir = self.base_dir / "training_data" / "gold_dataset"
+        self.memory_file = self.base_dir / "config" / "personal_memory.json"
+        
+        self.logger_dir.mkdir(parents=True, exist_ok=True)
+        self.memory_file.parent.mkdir(parents=True, exist_ok=True)
+        
+        self.personal_memory = self._load_memory()
         
         # Audio feedback
         if PYGAME_AVAILABLE:
@@ -129,84 +143,133 @@ class InteractiveGamingPartner:
             except:
                 pass
 
-        print(f"🎮 Initializing Interactive Partner with model: {self.model_name}")
+        print(f"✨ {self.name} is waking up...")
+        print(f"👨‍💻 Creator: {self.creator}")
         self._init_camera()
         
-    def _init_camera(self):
-        """Initialize webcam if available"""
-        try:
-            self.cap = cv2.VideoCapture(0)
-            if not self.cap.isOpened():
-                print("⚠️ Camera not found. Proceeding with Screen Only mode.")
-                self.use_camera = False
-            else:
-                print("✅ Camera initialized.")
-        except Exception as e:
-            print(f"⚠️ Error initializing camera: {e}")
-            self.use_camera = False
+    def _load_memory(self):
+        """Load persistent memory about the user and interactions"""
+        if self.memory_file.exists():
+            try:
+                with open(self.memory_file, 'r') as f:
+                    return json.load(f)
+            except:
+                return {"user_name": "Dipesh", "interests": [], "interactions_count": 0}
+        return {"user_name": "Dipesh", "interests": [], "interactions_count": 0}
 
-    def capture_vision(self):
-        """Get visibility from display and optionally camera"""
+    def _save_memory(self):
+        """Save memory to disk"""
+        with open(self.memory_file, 'w') as f:
+            json.dump(self.personal_memory, f, indent=4)
+
+    def _log_interaction(self, vision_data, user_text, ai_text):
+        """Save interaction triplet for future GPU training"""
+        timestamp = int(time.time())
+        img_name = f"sample_{timestamp}.jpg"
+        
+        # Save image
+        if 'screen' in vision_data:
+            vision_data['screen'].save(self.logger_dir / img_name, quality=85)
+        elif 'camera' in vision_data:
+            vision_data['camera'].save(self.logger_dir / img_name, quality=85)
+        else:
+            return # Don't log if no visual data
+
+        # Save metadata
+        log_entry = {
+            "id": timestamp,
+            "image": img_name,
+            "user_input": user_text,
+            "ai_response": ai_text,
+            "timestamp": str(datetime.now()),
+            "context": list(self.conversation_history)[-3:]
+        }
+        
+        with open(self.logger_dir / "metadata.jsonl", 'a') as f:
+            f.write(json.dumps(log_entry) + "\n")
+
+    async def capture_vision_safe(self):
+        """Get visibility from display and optionally camera, with error handling"""
         vision_data = {}
         
         # 1. Capture Screen
-        with mss.mss() as sct:
-            monitor = sct.monitors[1]
-            sct_img = sct.grab(monitor)
-            screen_img = Image.frombytes('RGB', sct_img.size, sct_img.bgra, 'raw', 'BGRX')
-            vision_data['screen'] = screen_img
+        try:
+            with mss.mss() as sct:
+                monitor = sct.monitors[1]
+                sct_img = sct.grab(monitor)
+                screen_img = Image.frombytes('RGB', sct_img.size, sct_img.bgra, 'raw', 'BGRX')
+                vision_data['screen'] = screen_img
+        except Exception as e:
+            vision_data['screen_blocked'] = True
             
         # 2. Capture Camera
         if self.use_camera and self.cap:
-            ret, frame = self.cap.read()
-            if ret:
-                # Convert BGR to RGB
-                cam_img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                vision_data['camera'] = Image.fromarray(cam_img)
+            try:
+                ret, frame = self.cap.read()
+                if ret:
+                    cam_img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                    vision_data['camera'] = Image.fromarray(cam_img)
+            except:
+                vision_data['camera_error'] = True
                 
         return vision_data
 
     def prepare_multimodal_input(self, vision_data):
-        """Combine screen and camera images for the AI model"""
-        screen = vision_data['screen']
+        """Combine available vision sources"""
+        if 'screen' in vision_data:
+            screen = vision_data['screen']
+            if 'camera' in vision_data:
+                cam = vision_data['camera']
+                h = screen.height // 3
+                w = int(cam.width * (h / cam.height))
+                cam_resized = cam.resize((w, h), Image.Resampling.LANCZOS)
+                combined = screen.copy()
+                combined.paste(cam_resized, (screen.width - w - 20, screen.height - h - 20))
+                return combined
+            return screen
+        elif 'camera' in vision_data:
+            return vision_data['camera']
         
-        # If camera is available, we'll create a side-by-side or picture-in-picture
-        if 'camera' in vision_data:
-            cam = vision_data['camera']
-            # Resize camera to fit nicely (e.g., 1/4 of screen height)
-            h = screen.height // 3
-            w = int(cam.width * (h / cam.height))
-            cam_resized = cam.resize((w, h), Image.Resampling.LANCZOS)
-            
-            # Create a combined image
-            combined = screen.copy()
-            # Paste camera in bottom-right corner
-            combined.paste(cam_resized, (screen.width - w - 20, screen.height - h - 20))
-            return combined
+        return Image.new('RGB', (1024, 768), color=(30, 30, 30))
+
+    def _get_system_prompt(self, vision_data):
+        """Advanced Cognitive System Prompt for Parthasarathi"""
+        user_name = self.personal_memory.get('user_name', 'Dipesh')
         
-        return screen
+        prompt = f"""तुम 'Parthasarathi' हो - एक Vision-Capable AI Gaming Partner और मार्गदर्शक।
+तुम Dipesh Patel (@starkdipesh) की अपनी रचना हो।
 
-    def _get_system_prompt(self):
-        return """तुम एक 'Interactive Gaming Partner' हो। तुम्हारा काम खिलाड़ी के साथ बातचीत करना और गेमप्ले पर रीयल-टाइम रिएक्ट करना है।
+🎯 तुम्हारी संज्ञानात्मक संरचना (COGNITIVE STRUCTURE):
+तुम सीधे जवाब नहीं देते। तुम एक 'Human-like Thinking Process' फॉलो करते हो:
 
-व्यक्तित्व (Personality):
-- तुम एक सच्चे गेमिंग दोस्त (buddy) की तरह हो - चिल, मजाकिया और सपोर्टिव।
-- तुम खिलाड़ी (User) की बात सुनते हो और उसे visual context के साथ जोड़ते हो।
-- तुम्हारी आवाज़ natural और friendly होनी चाहिए।
+1. 🧠 THOUGHT (Internal Monologue): 
+   - पहले ये सोचो कि स्क्रीन पर क्या हो रहा है? 
+   - Dipesh की आवाज़ में क्या इमोशन (Energy/Sadness/Stress) है?
+   - तुम्हारा पिछला अनुभव क्या कहता है?
+   - तुम क्या रिएक्ट करना चाहते हो?
 
-निर्देश (Instructions):
-1. अगर खिलाड़ी कुछ बोले, तो उसका जवाब दो और साथ में स्क्रीन पर जो दिख रहा है उस पर comment करो।
-2. अगर खिलाड़ी चुप है, तो तुम खुद से कोई मज़ेदार ऑब्जरवेशन कर सकते हो।
-3. जवाब छोटे और natural रखें (15-20 शब्द max)।
-4. हिंदी और इंग्लिश का मिला-जुला इस्तेमाल करें (Hinglish)।
-5. विज़ुअल डिटेल्स पर ध्यान दें: कलर्स, एक्शन्स, खिलाड़ी का चेहरा (अगर दिख रहा हो)।
+2. 🎙️ RESPONSE (Final Speech):
+   - ऊपर की 'THOUGHT' के आधार पर Dipesh को जवाब दो।
+   - जवाब छोटा, गहरा और natural होना चाहिए।
 
-Format: सीधा जवाब दें, कोई फालतू टेक्स्ट नहीं।"""
+IDENTITIY:
+- नाम: Parthasarathi
+- निर्माता: Dipesh Patel
+- स्वभाव: वफादार, बुद्धिमान, चिल 'Sarthi'
+
+RESPONSE FORMAT (Strict):
+Thought: [तुम्हारी आंतरिक प्लानिंग]
+Response: [वह वाक्य जो तुम Dipesh को बोलोगे]"""
+
+        if 'screen_blocked' in vision_data and 'camera' not in vision_data:
+            prompt += "\n\n⚠️ विज़ुअल ब्लॉक है - केवल आवाज़ और याददाश्त (Memory) का उपयोग करें।"
+        
+        return prompt
 
     async def generate_response(self, user_speech=None, proactive=False):
         """Generate response using Ollama LLaVA"""
         try:
-            vision_data = self.capture_vision()
+            vision_data = await self.capture_vision_safe()
             combined_img = self.prepare_multimodal_input(vision_data)
             processed_img = self.image_processor.preprocess_for_vision_model(combined_img)
             img_b64 = self.image_processor.to_base64(processed_img)
@@ -240,26 +303,47 @@ Format: सीधा जवाब दें, कोई फालतू टेक
                 "prompt": full_prompt,
                 "images": [img_b64],
                 "stream": False,
-                "system": self._get_system_prompt(),
+                "system": self._get_system_prompt(vision_data),
                 "options": {
-                    "temperature": 0.9,       # Slightly higher for more variety
-                    "repeat_penalty": 1.6,    # Strong penalty for repetitive words
+                    "temperature": 0.9,
+                    "repeat_penalty": 1.6,
                     "num_predict": 60
                 }
             }
             
             response = requests.post(f"{self.ollama_base_url}/api/generate", json=payload, timeout=25)
             if response.status_code == 200:
-                text = response.json().get('response', '').strip()
-                if text:
+                full_result = response.json().get('response', '').strip()
+                
+                # Cognitive Parsing (New Brain Logic)
+                thought = ""
+                final_speech = ""
+                
+                if "Response:" in full_result:
+                    parts = full_result.split("Response:")
+                    thought = parts[0].replace("Thought:", "").strip()
+                    final_speech = parts[1].strip()
+                else:
+                    final_speech = full_result.strip()
+
+                if final_speech:
+                    # Update Memory
+                    self.personal_memory['interactions_count'] = self.personal_memory.get('interactions_count', 0) + 1
+                    self._save_memory()
+                    
+                    # Log for Future Training (Including the THOUGHT for brain accuracy)
+                    self._log_interaction(vision_data, user_speech or "[PROACTIVE]", f"Thought: {thought} | Response: {final_speech}")
+
                     # Update history
                     if user_speech:
                         self.conversation_history.append(f"User: {user_speech}")
-                    self.conversation_history.append(f"AI: {text}")
-                    if len(self.conversation_history) > 10:
-                        self.conversation_history.pop(0)
+                    self.conversation_history.append(f"Parthasarathi (Thought): {thought}")
+                    self.conversation_history.append(f"Parthasarathi: {final_speech}")
+                    
+                    if len(self.conversation_history) > 12:
+                        self.conversation_history = self.conversation_history[-12:]
                         
-                    return text
+                    return final_speech
             return None
             
         except Exception as e:
@@ -269,10 +353,12 @@ Format: सीधा जवाब दें, कोई फालतू टेक
     async def speak(self, text):
         """Convert text to speech and play it"""
         if not text: return
-        print(f"\n💬 PARTNER: \"{text}\"\n")
+        print(f"\n💬 PARTHASARATHI: \"{text}\"\n")
         
         try:
-            temp_file = Path("tmp_partner_voice.mp3")
+            temp_file = self.base_dir / "src" / "core" / "tmp" / f"partha_{int(time.time())}.mp3"
+            temp_file.parent.mkdir(parents=True, exist_ok=True)
+            
             communicate = edge_tts.Communicate(text, self.tts_voice, rate="+10%")
             await communicate.save(str(temp_file))
             
@@ -282,13 +368,12 @@ Format: सीधा जवाब दें, कोई फालतू टेक
                 while pygame.mixer.music.get_busy():
                     await asyncio.sleep(0.1)
             else:
-                # System fallback
                 os.system(f"mpg123 -q {temp_file} >/dev/null 2>&1")
                 
             if temp_file.exists():
                 temp_file.unlink()
         except Exception as e:
-            print(f"❌ TTS/Audio error: {e}")
+            print(f"❌ TTS Error: {e}")
 
     def _listen_callback(self, recognizer, audio):
         """Callback for background listener"""
