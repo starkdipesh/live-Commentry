@@ -92,7 +92,7 @@ class SoundDeviceMicrophone:
 class InteractiveGamingPartner:
     """Parthasarathi - AI Partner that interacts via voice and vision"""
     
-    def __init__(self, model_name="llava:latest"):
+    def __init__(self, model_name="ParthSarthi"):
         self.ollama_base_url = "http://localhost:11434"
         self.model_name = model_name
         
@@ -147,6 +147,19 @@ class InteractiveGamingPartner:
         print(f"👨‍💻 Creator: {self.creator}")
         self._init_camera()
         
+    def _init_camera(self):
+        """Initialize webcam if available"""
+        try:
+            self.cap = cv2.VideoCapture(0)
+            if not self.cap.isOpened():
+                print("⚠️ Camera not found. Proceeding with Screen Only mode.")
+                self.use_camera = False
+            else:
+                print("✅ Camera initialized.")
+        except Exception as e:
+            print(f"⚠️ Error initializing camera: {e}")
+            self.use_camera = False
+
     def _load_memory(self):
         """Load persistent memory about the user and interactions"""
         if self.memory_file.exists():
