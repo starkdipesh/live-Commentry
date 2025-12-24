@@ -17,10 +17,11 @@ __pycache__/
 # Temporary and local files
 tmp/
 *.mp3
-*.jpg
-*.jpeg
-*.png
-.DS_Store
+# But keep training data for portability!
+training_data/raw_captures/*
+!training_data/raw_captures/.gitkeep
+# Keep Gold Dataset (The brain)
+!training_data/gold_dataset/
 
 # IDEs
 .vscode/
