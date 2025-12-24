@@ -1,0 +1,13 @@
+requests
+mss
+Pillow
+numpy
+opencv-python
+edge-tts
+pygame
+SpeechRecognition
+sounddevice
+scipy
+pyserial
+paho-mqtt
+colorama

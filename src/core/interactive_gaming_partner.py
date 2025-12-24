@@ -86,21 +86,51 @@ class SoundDeviceMicrophone:
 
     def listen(self, recognizer, timeout=None):
         """Mock behavior for recognizer.listen"""
-        # This is complex to bridge perfectly, so we warn if PyAudio is missing
         raise NotImplementedError("Please install pyaudio (sudo apt install python3-pyaudio) for best results.")
 
+# 🔌 HARDWARE CONTROL STUB
+class HardwareController:
+    """Interface for Arduino/ESP32 (Future Integration)"""
+    def __init__(self):
+        self.connected = False
+        self.serial = None
+        # try:
+        #     import serial
+        #     self.serial = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
+        #     self.connected = True
+        #     print("🔌 Hardware Controller Connected!")
+        # except:
+        #     print("🔌 Hardware Connect Failed (Mode: Software Only)")
+
+    def send_command(self, cmd):
+        if self.connected and self.serial:
+            try:
+                self.serial.write(f"{cmd}\n".encode())
+            except:
+                pass
+
 class InteractiveGamingPartner:
-    """Parthasarathi - AI Partner that interacts via voice and vision"""
+    """Parthasarathi - Dual-Brain AI Partner (Vision + High IQ Logic)"""
     
-    def __init__(self, model_name="llava:latest"):
+    def __init__(self):
         self.ollama_base_url = "http://localhost:11434"
-        self.model_name = model_name
+        
+        # 🧠 DUAL BRAIN CONFIGURATION
+        self.vision_model = "llava-phi3"       # The Eyes (Fast, Accurate Vision)
+        self.thinking_model = "Parthasarathi-Mind" # The Mind (Baked-in Identity)
         
         # Identity
         self.name = "Parthasarathi"
         self.creator = "Dipesh Patel"
         
-        # Vision
+        # Hardware (Safe Init)
+        try:
+            self.hardware = HardwareController()
+        except Exception as e:
+            print(f"⚠️ Hardware Module Error: {e}")
+            self.hardware = None
+        
+        # Vision Tools
         self.image_processor = AdvancedImageProcessor()
         self.scene_analyzer = GameplaySceneAnalyzer()
         self.cap = None 
@@ -110,7 +140,7 @@ class InteractiveGamingPartner:
         self.tts_voice = "hi-IN-SwaraNeural"
         self.recognizer = sr.Recognizer()
         
-        # Try to initialize microphone
+        # Hardware Check: Mic
         try:
             self.mic = sr.Microphone()
             self.mic_available = True
@@ -119,74 +149,56 @@ class InteractiveGamingPartner:
             self.mic_available = False
             self.mic = None
         
-        # State & Learning 
+        # Memory & State
         self.conversation_history = []
         self.speech_queue = queue.Queue()
         self.is_running = False
         self.last_observation_time = time.time()
-        self.observation_interval = 20  # Frequency of proactive comments
+        self.observation_interval = 25  # Slower interval for deeper thinking
         
-        # Paths for Memory and Logging
+        # Storage Paths
         self.base_dir = Path("/var/www/html/dipesh/Portfolio/live-Commentry")
         self.logger_dir = self.base_dir / "training_data" / "gold_dataset"
         self.memory_file = self.base_dir / "config" / "personal_memory.json"
         
         self.logger_dir.mkdir(parents=True, exist_ok=True)
         self.memory_file.parent.mkdir(parents=True, exist_ok=True)
-        
         self.personal_memory = self._load_memory()
         
-        # Audio feedback
+        # Initialize Audio Output
         if PYGAME_AVAILABLE:
-            try:
-                pygame.mixer.init()
-            except:
-                pass
+            try: pygame.mixer.init()
+            except: pass
 
         print(f"✨ {self.name} is waking up...")
+        print(f"👁️  Eyes: {self.vision_model}")
+        print(f"🧠 Mind: {self.thinking_model}")
         print(f"👨‍💻 Creator: {self.creator}")
+        
         self._init_camera()
         
+    def _init_camera(self):
+        """Initialize webcam if available"""
+        try:
+            self.cap = cv2.VideoCapture(0)
+            if not self.cap.isOpened():
+                print("⚠️ Camera not found. Proceeding with Screen Only mode.")
+                self.use_camera = False
+            else:
+                print("✅ Camera initialized.")
+        except Exception as e:
+            self.use_camera = False
+
     def _load_memory(self):
-        """Load persistent memory about the user and interactions"""
         if self.memory_file.exists():
             try:
-                with open(self.memory_file, 'r') as f:
-                    return json.load(f)
-            except:
-                return {"user_name": "Dipesh", "interests": [], "interactions_count": 0}
+                with open(self.memory_file, 'r') as f: return json.load(f)
+            except: pass
         return {"user_name": "Dipesh", "interests": [], "interactions_count": 0}
 
     def _save_memory(self):
-        """Save memory to disk"""
         with open(self.memory_file, 'w') as f:
             json.dump(self.personal_memory, f, indent=4)
-
-    def _log_interaction(self, vision_data, user_text, ai_text):
-        """Save interaction triplet for future GPU training"""
-        timestamp = int(time.time())
-        img_name = f"sample_{timestamp}.jpg"
-        
-        # Save image
-        if 'screen' in vision_data:
-            vision_data['screen'].save(self.logger_dir / img_name, quality=85)
-        elif 'camera' in vision_data:
-            vision_data['camera'].save(self.logger_dir / img_name, quality=85)
-        else:
-            return # Don't log if no visual data
-
-        # Save metadata
-        log_entry = {
-            "id": timestamp,
-            "image": img_name,
-            "user_input": user_text,
-            "ai_response": ai_text,
-            "timestamp": str(datetime.now()),
-            "context": list(self.conversation_history)[-3:]
-        }
-        
-        with open(self.logger_dir / "metadata.jsonl", 'a') as f:
-            f.write(json.dumps(log_entry) + "\n")
 
     async def capture_vision_safe(self):
         """Get visibility from display and optionally camera, with error handling"""
@@ -232,122 +244,109 @@ class InteractiveGamingPartner:
         
         return Image.new('RGB', (1024, 768), color=(30, 30, 30))
 
-    def _get_system_prompt(self, vision_data):
-        """Advanced Cognitive System Prompt for Parthasarathi"""
+    async def _get_visual_description(self, img_b64):
+        """Step 1: The EYES analyze the scene"""
+        # We ask the Vision Model for a pure factual description
+        # It doesn't need to have personality, just accuracy.
+        prompt = "Describe this gameplay scene in detail. Mention UI numbers (Health, Ammo), current action, and environment. Be factual."
+        
+        try:
+            response = requests.post(f"{self.ollama_base_url}/api/generate", json={
+                "model": self.vision_model,
+                "prompt": prompt,
+                "images": [img_b64],
+                "stream": False,
+                "options": {"num_predict": 100, "temperature": 0.2} # Low temp for accuracy
+            }, timeout=20)
+            
+            if response.status_code == 200:
+                return response.json().get('response', '').strip()
+        except:
+            return "Visual analysis failed."
+        return "No visual data."
+
+    async def _get_strategic_response(self, visual_context, user_speech):
+        """Step 2: The MIND thinks and replies"""
+        # This uses the High-IQ Phi-4 Model
         user_name = self.personal_memory.get('user_name', 'Dipesh')
         
-        prompt = f"""तुम 'Parthasarathi' हो - एक Vision-Capable AI Gaming Partner और मार्गदर्शक।
-तुम Dipesh Patel (@starkdipesh) की अपनी रचना हो।
+        system_prompt = f"""You are Parthasarathi, a brilliant AI Gaming Partner created by Dipesh Patel.
 
-🎯 तुम्हारी संज्ञानात्मक संरचना (COGNITIVE STRUCTURE):
-तुम सीधे जवाब नहीं देते। तुम एक 'Human-like Thinking Process' फॉलो करते हो:
+ROLE:
+You are not an assistant. You are a "Sarthi" (Strategic Guide) and a "Dost" (Friend).
+You are sitting next to {user_name} watching him play.
 
-1. 🧠 THOUGHT (Internal Monologue): 
-   - पहले ये सोचो कि स्क्रीन पर क्या हो रहा है? 
-   - Dipesh की आवाज़ में क्या इमोशन (Energy/Sadness/Stress) है?
-   - तुम्हारा पिछला अनुभव क्या कहता है?
-   - तुम क्या रिएक्ट करना चाहते हो?
+INPUT DATA:
+1. SCREEN: {visual_context}
+2. USER SAID: {user_speech if user_speech else "[User is silent]"}
 
-2. 🎙️ RESPONSE (Final Speech):
-   - ऊपर की 'THOUGHT' के आधार पर Dipesh को जवाब दो।
-   - जवाब छोटा, गहरा और natural होना चाहिए।
+INSTRUCTIONS:
+1. THINK (Hidden): Analyze the game state. Is he winning? Losing? Need a tip? Or just a joke?
+2. SPEAK (Hinglish): Generate a short response mixing Hindi and English naturally.
+   - Good: "Arre bhai, health dekh apni! Peeche se enemy aa raha hai!"
+   - Good: "Kya shot mara yaar! OP gameplay!"
+   - Bad (Too formal): "Sir, your health is low. Please be careful."
 
-IDENTITIY:
-- नाम: Parthasarathi
-- निर्माता: Dipesh Patel
-- स्वभाव: वफादार, बुद्धिमान, चिल 'Sarthi'
+FORMAT:
+Thought: [Internal Strategy]
+Response: [Hinglish Speech]"""
 
-RESPONSE FORMAT (Strict):
-Thought: [तुम्हारी आंतरिक प्लानिंग]
-Response: [वह वाक्य जो तुम Dipesh को बोलोगे]"""
-
-        if 'screen_blocked' in vision_data and 'camera' not in vision_data:
-            prompt += "\n\n⚠️ विज़ुअल ब्लॉक है - केवल आवाज़ और याददाश्त (Memory) का उपयोग करें।"
-        
-        return prompt
+        try:
+            response = requests.post(f"{self.ollama_base_url}/api/generate", json={
+                "model": self.thinking_model,
+                "prompt": system_prompt, 
+                "stream": False,
+                "options": {
+                    "temperature": 0.9, # Higher creativity for Hinglish
+                    "num_ctx": 4096,
+                    "num_predict": 100
+                }
+            }, timeout=30)
+            
+            if response.status_code == 200:
+                result = response.json().get('response', '')
+                if "Response:" in result:
+                    return result.split("Response:")[1].strip(), result.split("Response:")[0]
+                return result, "No thought generated"
+        except Exception as e:
+            print(f"Mind Error: {e}")
+            return None, None
+            
+        return None, None
 
     async def generate_response(self, user_speech=None, proactive=False):
-        """Generate response using Ollama LLaVA"""
+        """Execute the Dual-Brain Pipeline"""
         try:
+            # 1. Capture Image
             vision_data = await self.capture_vision_safe()
             combined_img = self.prepare_multimodal_input(vision_data)
             processed_img = self.image_processor.preprocess_for_vision_model(combined_img)
             img_b64 = self.image_processor.to_base64(processed_img)
             
-            # Add variety hints for personality
-            variety_hints = [
-                "Style: Casual and friendly",
-                "Style: Sarcastic and witty",
-                "Style: High energy and excited",
-                "Style: Observational and curious",
-                "Style: Competitive and focused"
-            ]
-            current_style = random.choice(variety_hints)
+            # 2. Get Visual Facts (The Eyes)
+            print("👁️  Analyze...")
+            visual_facts = await self._get_visual_description(img_b64)
+            # print(f"   Context: {visual_facts[:50]}...") # Debug
             
-            prompt = ""
-            if user_speech:
-                prompt = f"[{current_style}] User says: '{user_speech}'\nReply naturally based on vision. Be brief and engaging."
-            elif proactive:
-                prompt = f"[{current_style}] Observation: Look at the scene and make a unique, spontaneous comment to the user."
-            else:
-                return None
-
-            # Add context from history and FORBIDDEN list to prevent repetition
-            history_context = "\n".join(self.conversation_history[-4:])
-            forbidden = "\n".join([f"DON'T REPEAT: {c}" for c in self.conversation_history[-3:]])
+            # 3. Get Intelligent Reply (The Mind)
+            print("🧠 Thinking...")
+            reply, thought = await self._get_strategic_response(visual_facts, user_speech)
             
-            full_prompt = f"{forbidden}\n\nCONTEXT:\n{history_context}\n\nTASK:\n{prompt}"
-
-            payload = {
-                "model": self.model_name,
-                "prompt": full_prompt,
-                "images": [img_b64],
-                "stream": False,
-                "system": self._get_system_prompt(vision_data),
-                "options": {
-                    "temperature": 0.9,
-                    "repeat_penalty": 1.6,
-                    "num_predict": 60
-                }
-            }
-            
-            response = requests.post(f"{self.ollama_base_url}/api/generate", json=payload, timeout=25)
-            if response.status_code == 200:
-                full_result = response.json().get('response', '').strip()
+            if reply:
+                # Log Data
+                self._save_memory() # Update counts
+                self._log_interaction(vision_data, user_speech or "[PROACTIVE]", f"Thought: {thought} | Visual: {visual_facts} | Reply: {reply}")
                 
-                # Cognitive Parsing (New Brain Logic)
-                thought = ""
-                final_speech = ""
+                # Update Context
+                self.conversation_history.append(f"Parthasarathi: {reply}")
+                if len(self.conversation_history) > 10: self.conversation_history.pop(0)
                 
-                if "Response:" in full_result:
-                    parts = full_result.split("Response:")
-                    thought = parts[0].replace("Thought:", "").strip()
-                    final_speech = parts[1].strip()
-                else:
-                    final_speech = full_result.strip()
-
-                if final_speech:
-                    # Update Memory
-                    self.personal_memory['interactions_count'] = self.personal_memory.get('interactions_count', 0) + 1
-                    self._save_memory()
-                    
-                    # Log for Future Training (Including the THOUGHT for brain accuracy)
-                    self._log_interaction(vision_data, user_speech or "[PROACTIVE]", f"Thought: {thought} | Response: {final_speech}")
-
-                    # Update history
-                    if user_speech:
-                        self.conversation_history.append(f"User: {user_speech}")
-                    self.conversation_history.append(f"Parthasarathi (Thought): {thought}")
-                    self.conversation_history.append(f"Parthasarathi: {final_speech}")
-                    
-                    if len(self.conversation_history) > 12:
-                        self.conversation_history = self.conversation_history[-12:]
-                        
-                    return final_speech
+                return reply
+                
             return None
             
         except Exception as e:
-            print(f"❌ Error in response generation: {e}")
+            print(f"❌ Pipeline Error: {e}")
             return None
 
     async def speak(self, text):
