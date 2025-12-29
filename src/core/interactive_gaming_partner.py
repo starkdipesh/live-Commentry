@@ -1,17 +1,10 @@
 #!/usr/bin/env python3
 """
-🎮 Interactive AI Gaming Partner
-Multimodal AI that can see your screen, watch you through the camera, 
-and talk to you in real-time.
-
-Features:
-- Screen Capture analysis
-- Webcam visibility
-- Speech-to-Text interaction
-- Natural Humanoid Voice (Edge-TTS)
-- Context-aware conversation
+🎮 Interactive AI Gaming Partner - DEBUG VERSION
+This version has extensive logging to find where it's hanging
 """
 
+import json
 import os
 import asyncio
 import base64
@@ -35,16 +28,18 @@ import speech_recognition as sr
 try:
     from src.processors.advanced_image_processor import AdvancedImageProcessor, GameplaySceneAnalyzer
 except ImportError:
-    # Fallback/Mock if imports fail during testing
     class AdvancedImageProcessor:
-        def preprocess_for_vision_model(self, img, **kwargs): return img
+        def preprocess_for_vision_model(self, img, **kwargs): 
+            return img
         def to_base64(self, img):
             buffered = io.BytesIO()
-            img.save(buffered, format="JPEG")
+            img.save(buffered, format="JPEG", quality=85)
             return base64.b64encode(buffered.getvalue()).decode('utf-8')
-        def get_image_statistics(self, img): return {"is_dark_scene": False, "is_bright_scene": False, "dominant_color": "neutral"}
+        def get_image_statistics(self, img): 
+            return {"is_dark_scene": False, "is_bright_scene": False, "dominant_color": "neutral"}
     class GameplaySceneAnalyzer:
-        def analyze_scene_type(self, img): return {"scene_type": "gameplay", "motion_level": 0.1, "has_ui": True}
+        def analyze_scene_type(self, img): 
+            return {"scene_type": "gameplay", "motion_level": 0.1, "has_ui": True}
 
 try:
     import pygame
@@ -52,78 +47,29 @@ try:
 except ImportError:
     PYGAME_AVAILABLE = False
 
-# Robust Microphone handling for Linux without PyAudio
-class SoundDeviceMicrophone:
-    """Alternative to sr.Microphone() using sounddevice"""
-    def __init__(self, device=None, chunk_size=1024):
-        import sounddevice as sd
-        self.device = device
-        self.chunk_size = chunk_size
-        self.format = 'int16'
-        self.channels = 1
-        self.rate = 16000
-        self.audio_queue = queue.Queue()
-
-    def __enter__(self):
-        import sounddevice as sd
-        self.stream = sd.RawInputStream(
-            samplerate=self.rate, 
-            blocksize=self.chunk_size,
-            device=self.device, 
-            channels=self.channels, 
-            dtype=self.format,
-            callback=self._callback
-        )
-        self.stream.start()
-        return self
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        self.stream.stop()
-        self.stream.close()
-
-    def _callback(self, indata, frames, time, status):
-        self.audio_queue.put(bytes(indata))
-
-    def listen(self, recognizer, timeout=None):
-        """Mock behavior for recognizer.listen"""
-        raise NotImplementedError("Please install pyaudio (sudo apt install python3-pyaudio) for best results.")
-
-# 🔌 HARDWARE CONTROL STUB
 class HardwareController:
-    """Interface for Arduino/ESP32 (Future Integration)"""
     def __init__(self):
         self.connected = False
         self.serial = None
-        # try:
-        #     import serial
-        #     self.serial = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
-        #     self.connected = True
-        #     print("🔌 Hardware Controller Connected!")
-        # except:
-        #     print("🔌 Hardware Connect Failed (Mode: Software Only)")
 
     def send_command(self, cmd):
-        if self.connected and self.serial:
-            try:
-                self.serial.write(f"{cmd}\n".encode())
-            except:
-                pass
+        pass
 
 class InteractiveGamingPartner:
-    """Parthasarathi - Dual-Brain AI Partner (Vision + High IQ Logic)"""
+    """Parthasarathi - Debug Version"""
     
     def __init__(self):
         self.ollama_base_url = "http://localhost:11434"
         
         # 🧠 DUAL BRAIN CONFIGURATION
-        self.vision_model = "llava-phi3"       # The Eyes (Fast, Accurate Vision)
-        self.thinking_model = "Parthasarathi-Mind" # The Mind (Baked-in Identity)
+        self.vision_model = "llava-phi3"
+        self.thinking_model = "Parthasarathi-Mind"
         
         # Identity
         self.name = "Parthasarathi"
         self.creator = "Dipesh Patel"
         
-        # Hardware (Safe Init)
+        # Hardware
         try:
             self.hardware = HardwareController()
         except Exception as e:
@@ -136,14 +82,17 @@ class InteractiveGamingPartner:
         self.cap = None 
         self.use_camera = True
         
-        # Audio
+        # Audio Configuration
         self.tts_voice = "hi-IN-SwaraNeural"
         self.recognizer = sr.Recognizer()
+        self.recognizer.energy_threshold = 4000
+        self.recognizer.dynamic_energy_threshold = True
         
         # Hardware Check: Mic
         try:
             self.mic = sr.Microphone()
             self.mic_available = True
+            print("✅ Microphone detected")
         except Exception as e:
             print(f"⚠️ Microphone issue: {e}")
             self.mic_available = False
@@ -154,10 +103,11 @@ class InteractiveGamingPartner:
         self.speech_queue = queue.Queue()
         self.is_running = False
         self.last_observation_time = time.time()
-        self.observation_interval = 25  # Slower interval for deeper thinking
+        self.observation_interval = 30
+        self.last_visual_context = ""
         
         # Storage Paths
-        self.base_dir = Path("/var/www/html/dipesh/Portfolio/live-Commentry")
+        self.base_dir = Path("/home/dipesh-patel/Documents/live-Commentry")
         self.logger_dir = self.base_dir / "training_data" / "gold_dataset"
         self.memory_file = self.base_dir / "config" / "personal_memory.json"
         
@@ -167,281 +117,518 @@ class InteractiveGamingPartner:
         
         # Initialize Audio Output
         if PYGAME_AVAILABLE:
-            try: pygame.mixer.init()
-            except: pass
+            try: 
+                pygame.mixer.init(frequency=22050, size=-16, channels=2, buffer=512)
+                print("✅ Audio output initialized")
+            except Exception as e:
+                print(f"⚠️ Audio init warning: {e}")
 
+        print(f"\n{'='*60}")
         print(f"✨ {self.name} is waking up...")
         print(f"👁️  Eyes: {self.vision_model}")
         print(f"🧠 Mind: {self.thinking_model}")
         print(f"👨‍💻 Creator: {self.creator}")
+        print(f"{'='*60}\n")
         
         self._init_camera()
+        self._verify_models()
+        
+    def _verify_models(self):
+        """Check if required models are available"""
+        try:
+            print("🔍 Verifying models...")
+            response = requests.get(f"{self.ollama_base_url}/api/tags", timeout=5)
+            if response.status_code == 200:
+                models = [m['name'] for m in response.json().get('models', [])]
+                print(f"   Available: {models}")
+                
+                vision_ok = any(self.vision_model in m for m in models)
+                thinking_ok = any(self.thinking_model in m for m in models)
+                
+                if not vision_ok:
+                    print(f"❌ Vision model '{self.vision_model}' not found!")
+                if not thinking_ok:
+                    print(f"❌ Thinking model '{self.thinking_model}' not found!")
+                    
+                if vision_ok and thinking_ok:
+                    print(f"✅ All models verified!")
+            else:
+                print(f"⚠️  Could not verify models (status: {response.status_code})")
+        except Exception as e:
+            print(f"⚠️  Model verification failed: {e}")
         
     def _init_camera(self):
         """Initialize webcam if available"""
         try:
             self.cap = cv2.VideoCapture(0)
             if not self.cap.isOpened():
-                print("⚠️ Camera not found. Proceeding with Screen Only mode.")
+                print("⚠️ Camera not found. Screen Only mode.")
                 self.use_camera = False
             else:
-                print("✅ Camera initialized.")
+                self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+                self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+                self.cap.set(cv2.CAP_PROP_FPS, 30)
+                print("✅ Camera initialized (640x480)")
         except Exception as e:
+            print(f"⚠️ Camera initialization failed: {e}")
             self.use_camera = False
 
     def _load_memory(self):
+        """Load persistent memory from disk"""
         if self.memory_file.exists():
             try:
-                with open(self.memory_file, 'r') as f: return json.load(f)
-            except: pass
-        return {"user_name": "Dipesh", "interests": [], "interactions_count": 0}
+                with open(self.memory_file, 'r', encoding='utf-8') as f: 
+                    return json.load(f)
+            except Exception as e:
+                print(f"⚠️ Memory load error: {e}")
+        return {
+            "user_name": "Dipesh", 
+            "interests": [], 
+            "interactions_count": 0,
+            "favorite_games": [],
+            "last_session": None
+        }
 
     def _save_memory(self):
-        with open(self.memory_file, 'w') as f:
-            json.dump(self.personal_memory, f, indent=4)
+        """Save persistent memory to disk"""
+        try:
+            self.personal_memory['last_session'] = datetime.now().isoformat()
+            with open(self.memory_file, 'w', encoding='utf-8') as f:
+                json.dump(self.personal_memory, f, indent=4, ensure_ascii=False)
+        except Exception as e:
+            print(f"⚠️ Memory save error: {e}")
+
+    def _log_interaction(self, vision_data, user_input, full_context):
+        """Log interaction for training data collection"""
+        try:
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            log_file = self.logger_dir / f"interaction_{timestamp}.json"
+            
+            log_data = {
+                "timestamp": timestamp,
+                "user_input": user_input,
+                "context": full_context,
+                "has_screen": 'screen' in vision_data,
+                "has_camera": 'camera' in vision_data,
+                "session_id": self.personal_memory.get('last_session', 'unknown')
+            }
+            
+            with open(log_file, 'w', encoding='utf-8') as f:
+                json.dump(log_data, f, indent=2, ensure_ascii=False)
+                
+        except Exception as e:
+            pass
 
     async def capture_vision_safe(self):
-        """Get visibility from display and optionally camera, with error handling"""
+        """Get visibility from display and optionally camera"""
+        print("   [1] Capturing vision...")
         vision_data = {}
         
         # 1. Capture Screen
         try:
+            print("      - Grabbing screen...")
             with mss.mss() as sct:
                 monitor = sct.monitors[1]
                 sct_img = sct.grab(monitor)
                 screen_img = Image.frombytes('RGB', sct_img.size, sct_img.bgra, 'raw', 'BGRX')
                 vision_data['screen'] = screen_img
+                print("      ✓ Screen captured")
         except Exception as e:
+            print(f"      ✗ Screen capture failed: {e}")
             vision_data['screen_blocked'] = True
             
-        # 2. Capture Camera
+        # 2. Capture Camera (if enabled)
         if self.use_camera and self.cap:
             try:
+                print("      - Grabbing camera...")
                 ret, frame = self.cap.read()
                 if ret:
                     cam_img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                     vision_data['camera'] = Image.fromarray(cam_img)
-            except:
+                    print("      ✓ Camera captured")
+            except Exception as e:
+                print(f"      ✗ Camera capture failed: {e}")
                 vision_data['camera_error'] = True
                 
         return vision_data
 
     def prepare_multimodal_input(self, vision_data):
         """Combine available vision sources"""
+        print("   [2] Preparing image...")
         if 'screen' in vision_data:
             screen = vision_data['screen']
+            
             if 'camera' in vision_data:
                 cam = vision_data['camera']
                 h = screen.height // 3
                 w = int(cam.width * (h / cam.height))
                 cam_resized = cam.resize((w, h), Image.Resampling.LANCZOS)
+                
                 combined = screen.copy()
                 combined.paste(cam_resized, (screen.width - w - 20, screen.height - h - 20))
+                print("      ✓ Combined screen + camera")
                 return combined
+            print("      ✓ Using screen only")
             return screen
+            
         elif 'camera' in vision_data:
+            print("      ✓ Using camera only")
             return vision_data['camera']
         
+        print("      ✓ Using black fallback")
         return Image.new('RGB', (1024, 768), color=(30, 30, 30))
 
     async def _get_visual_description(self, img_b64):
-        """Step 1: The EYES analyze the scene"""
-        # We ask the Vision Model for a pure factual description
-        # It doesn't need to have personality, just accuracy.
-        prompt = "Describe this gameplay scene in detail. Mention UI numbers (Health, Ammo), current action, and environment. Be factual."
+        """Step 1: Vision Model Analysis"""
+        print("   [3] Calling VISION model...")
+        
+        prompt = "Describe what you see in 1-2 sentences. Mention any UI, actions, or environment."
         
         try:
-            response = requests.post(f"{self.ollama_base_url}/api/generate", json={
-                "model": self.vision_model,
-                "prompt": prompt,
-                "images": [img_b64],
-                "stream": False,
-                "options": {"num_predict": 100, "temperature": 0.2} # Low temp for accuracy
-            }, timeout=20)
+            start_time = time.time()
+            print(f"      - Sending request to {self.vision_model}...")
+            
+            response = requests.post(
+                f"{self.ollama_base_url}/api/generate", 
+                json={
+                    "model": self.vision_model,
+                    "prompt": prompt,
+                    "images": [img_b64],
+                    "stream": False,
+                    "options": {
+                        "num_predict": 80,  # Reduced for speed
+                        "temperature": 0.2
+                    }
+                }, 
+                timeout=120  # Increased timeout
+            )
+            
+            elapsed = time.time() - start_time
+            print(f"      - Response received in {elapsed:.1f}s")
             
             if response.status_code == 200:
-                return response.json().get('response', '').strip()
-        except:
-            return "Visual analysis failed."
-        return "No visual data."
+                result = response.json().get('response', '').strip()
+                if result:
+                    print(f"      ✓ Vision: {result[:60]}...")
+                    return result
+                else:
+                    print("      ✗ Empty response from vision model")
+                    return "Cannot see clearly"
+            else:
+                print(f"      ✗ Vision API Error: {response.status_code}")
+                print(f"         {response.text[:200]}")
+                return "Visual analysis failed"
+                
+        except requests.exceptions.Timeout:
+            print("      ✗ TIMEOUT: Vision model took too long!")
+            return "Visual timeout"
+        except Exception as e:
+            print(f"      ✗ Vision Error: {e}")
+            return "Visual error"
 
     async def _get_strategic_response(self, visual_context, user_speech):
-        """Step 2: The MIND thinks and replies"""
-        # This uses the High-IQ Phi-4 Model
+        """Step 2: Thinking Model Response"""
+        print("   [4] Calling THINKING model...")
+        
         user_name = self.personal_memory.get('user_name', 'Dipesh')
         
-        system_prompt = f"""You are Parthasarathi, a brilliant AI Gaming Partner created by Dipesh Patel.
+        # Simplified prompt for faster response
+        if user_speech:
+            prompt = f"""You see: {visual_context}
+User said: "{user_speech}"
 
-ROLE:
-You are not an assistant. You are a "Sarthi" (Strategic Guide) and a "Dost" (Friend).
-You are sitting next to {user_name} watching him play.
+Reply in 1 short Hinglish sentence like a gaming buddy.
+Example: "Arre bhai health low hai!" or "Nice shot yaar!"
 
-INPUT DATA:
-1. SCREEN: {visual_context}
-2. USER SAID: {user_speech if user_speech else "[User is silent]"}
+Reply:"""
+        else:
+            prompt = f"""You see: {visual_context}
 
-INSTRUCTIONS:
-1. THINK (Hidden): Analyze the game state. Is he winning? Losing? Need a tip? Or just a joke?
-2. SPEAK (Hinglish): Generate a short response mixing Hindi and English naturally.
-   - Good: "Arre bhai, health dekh apni! Peeche se enemy aa raha hai!"
-   - Good: "Kya shot mara yaar! OP gameplay!"
-   - Bad (Too formal): "Sir, your health is low. Please be careful."
+Make 1 short Hinglish observation.
+Example: "Ammo kam hai bro" or "Ye level tough hai"
 
-FORMAT:
-Thought: [Internal Strategy]
-Response: [Hinglish Speech]"""
+Reply:"""
 
         try:
-            response = requests.post(f"{self.ollama_base_url}/api/generate", json={
-                "model": self.thinking_model,
-                "prompt": system_prompt, 
-                "stream": False,
-                "options": {
-                    "temperature": 0.9, # Higher creativity for Hinglish
-                    "num_ctx": 4096,
-                    "num_predict": 100
-                }
-            }, timeout=30)
+            start_time = time.time()
+            print(f"      - Sending request to {self.thinking_model}...")
+            
+            response = requests.post(
+                f"{self.ollama_base_url}/api/generate", 
+                json={
+                    "model": self.thinking_model,
+                    "prompt": prompt,
+                    "stream": False,
+                    "options": {
+                        "temperature": 0.7,
+                        "num_predict": 50,  # Very short responses
+                        "top_p": 0.9
+                    }
+                }, 
+                timeout=120
+            )
+            
+            elapsed = time.time() - start_time
+            print(f"      - Response received in {elapsed:.1f}s")
             
             if response.status_code == 200:
-                result = response.json().get('response', '')
-                if "Response:" in result:
-                    return result.split("Response:")[1].strip(), result.split("Response:")[0]
-                return result, "No thought generated"
-        except Exception as e:
-            print(f"Mind Error: {e}")
+                result = response.json().get('response', '').strip()
+                
+                # Clean up
+                result = result.strip('"').strip("'").strip()
+                if "Reply:" in result:
+                    result = result.split("Reply:")[-1].strip()
+                
+                if result:
+                    print(f"      ✓ Response: {result[:60]}...")
+                    return result, "success"
+                else:
+                    print("      ✗ Empty response from thinking model")
+                    return None, None
+            else:
+                print(f"      ✗ Thinking API Error: {response.status_code}")
+                print(f"         {response.text[:200]}")
+                return None, None
+                
+        except requests.exceptions.Timeout:
+            print("      ✗ TIMEOUT: Thinking model took too long!")
             return None, None
-            
-        return None, None
+        except Exception as e:
+            print(f"      ✗ Thinking Error: {e}")
+            return None, None
 
     async def generate_response(self, user_speech=None, proactive=False):
-        """Execute the Dual-Brain Pipeline"""
+        """Execute the Dual-Brain Pipeline with extensive logging"""
         try:
+            print(f"\n{'='*60}")
+            print(f"🎯 STARTING RESPONSE GENERATION")
+            if user_speech:
+                print(f"   Mode: User spoke '{user_speech}'")
+            else:
+                print(f"   Mode: Proactive observation")
+            print(f"{'='*60}")
+            
             # 1. Capture Image
             vision_data = await self.capture_vision_safe()
             combined_img = self.prepare_multimodal_input(vision_data)
+            
+            print("      - Processing image...")
             processed_img = self.image_processor.preprocess_for_vision_model(combined_img)
             img_b64 = self.image_processor.to_base64(processed_img)
+            print(f"      ✓ Image ready ({len(img_b64)} bytes)")
             
-            # 2. Get Visual Facts (The Eyes)
-            print("👁️  Analyze...")
+            # 2. Get Visual Facts
             visual_facts = await self._get_visual_description(img_b64)
-            # print(f"   Context: {visual_facts[:50]}...") # Debug
             
-            # 3. Get Intelligent Reply (The Mind)
-            print("🧠 Thinking...")
+            # 3. Get Response
             reply, thought = await self._get_strategic_response(visual_facts, user_speech)
             
             if reply:
-                # Log Data
-                self._save_memory() # Update counts
-                self._log_interaction(vision_data, user_speech or "[PROACTIVE]", f"Thought: {thought} | Visual: {visual_facts} | Reply: {reply}")
+                print(f"\n✅ SUCCESS: Response generated!")
+                print(f"{'='*60}\n")
                 
-                # Update Context
-                self.conversation_history.append(f"Parthasarathi: {reply}")
-                if len(self.conversation_history) > 10: self.conversation_history.pop(0)
+                # Update stats
+                self.personal_memory['interactions_count'] = self.personal_memory.get('interactions_count', 0) + 1
+                self._save_memory()
+                
+                # Log
+                full_context = f"Visual: {visual_facts} | Reply: {reply}"
+                self._log_interaction(vision_data, user_speech or "[PROACTIVE]", full_context)
                 
                 return reply
+            else:
+                print(f"\n❌ FAILED: No response generated")
+                print(f"{'='*60}\n")
+                return None
                 
-            return None
-            
         except Exception as e:
-            print(f"❌ Pipeline Error: {e}")
+            print(f"\n❌ PIPELINE ERROR: {e}")
+            import traceback
+            traceback.print_exc()
+            print(f"{'='*60}\n")
             return None
 
     async def speak(self, text):
-        """Convert text to speech and play it"""
-        if not text: return
-        print(f"\n💬 PARTHASARATHI: \"{text}\"\n")
+        """Convert text to speech and play"""
+        if not text: 
+            return
+            
+        print(f"\n💬 SPEAKING: \"{text}\"\n")
         
         try:
-            temp_file = self.base_dir / "src" / "core" / "tmp" / f"partha_{int(time.time())}.mp3"
-            temp_file.parent.mkdir(parents=True, exist_ok=True)
+            temp_dir = self.base_dir / "src" / "core" / "tmp"
+            temp_dir.mkdir(parents=True, exist_ok=True)
+            temp_file = temp_dir / f"partha_{int(time.time() * 1000)}.mp3"
             
-            communicate = edge_tts.Communicate(text, self.tts_voice, rate="+10%")
+            print("   - Generating speech...")
+            communicate = edge_tts.Communicate(text, self.tts_voice, rate="+20%")
             await communicate.save(str(temp_file))
+            print("   ✓ Speech generated")
             
+            # Play audio
+            print("   - Playing audio...")
             if PYGAME_AVAILABLE:
-                pygame.mixer.music.load(str(temp_file))
-                pygame.mixer.music.play()
-                while pygame.mixer.music.get_busy():
-                    await asyncio.sleep(0.1)
+                try:
+                    pygame.mixer.music.load(str(temp_file))
+                    pygame.mixer.music.play()
+                    while pygame.mixer.music.get_busy():
+                        await asyncio.sleep(0.1)
+                    print("   ✓ Audio played")
+                except Exception as e:
+                    print(f"   ✗ Pygame failed: {e}, using system player")
+                    os.system(f"mpg123 -q '{temp_file}' 2>/dev/null &")
+                    await asyncio.sleep(3)
             else:
-                os.system(f"mpg123 -q {temp_file} >/dev/null 2>&1")
+                os.system(f"mpg123 -q '{temp_file}' 2>/dev/null &")
+                await asyncio.sleep(3)
                 
+            # Cleanup
+            await asyncio.sleep(0.5)
             if temp_file.exists():
-                temp_file.unlink()
+                try:
+                    temp_file.unlink()
+                except:
+                    pass
+                    
         except Exception as e:
             print(f"❌ TTS Error: {e}")
 
     def _listen_callback(self, recognizer, audio):
         """Callback for background listener"""
         try:
-            print("👂 Listening...")
-            # We use Google's free API for simplicity. Requires internet.
-            # For offline, you could use Sphinx or Whisper.
+            print("\n👂 Heard audio, recognizing...")
             speech_text = recognizer.recognize_google(audio, language="hi-IN")
             print(f"🗣️  USER: {speech_text}")
             self.speech_queue.put(speech_text)
         except sr.UnknownValueError:
-            pass # No speech detected
+            pass
+        except sr.RequestError as e:
+            print(f"⚠️  Speech service error: {e}")
         except Exception as e:
             print(f"⚠️  STT Error: {e}")
 
     async def run(self):
-        """Main interaction loop"""
-        print("\n" + "="*50)
-        print("🚀 INTERACTIVE GAMING PARTNER IS LIVE!")
-        print("🎙️ Talking is allowed! I can see and hear you.")
-        print("🛑 Press Ctrl+C to stop.")
-        print("="*50 + "\n")
+        """Main loop with debug output"""
+        print("\n" + "="*60)
+        print("🚀 DEBUG MODE - INTERACTIVE GAMING PARTNER")
+        print("="*60)
+        if self.mic_available:
+            print("🎙️  Microphone ready")
+        else:
+            print("⚠️  No microphone")
+        print("🛑 Press Ctrl+C to stop")
+        print("="*60 + "\n")
         
         self.is_running = True
+        stop_listening = None
         
-        # Start background listener
-        try:
-            stop_listening = self.recognizer.listen_in_background(self.mic, self._listen_callback)
-            print("✅ Voice recognition activated.")
-        except Exception as e:
-            print(f"❌ Could not start microphone: {e}")
-            print("Proceeding in PROACTIVE mode only (I will talk, but can't hear you).")
-            stop_listening = lambda x: None
+        # Start voice listener
+        if self.mic_available and self.mic:
+            try:
+                print("🎤 Calibrating microphone...")
+                with self.mic as source:
+                    self.recognizer.adjust_for_ambient_noise(source, duration=1)
+                
+                stop_listening = self.recognizer.listen_in_background(
+                    self.mic, 
+                    self._listen_callback,
+                    phrase_time_limit=10
+                )
+                print("✅ Voice recognition active\n")
+            except Exception as e:
+                print(f"❌ Mic error: {e}\n")
+                stop_listening = lambda wait_for_stop=False: None
+        else:
+            stop_listening = lambda wait_for_stop=False: None
 
         try:
+            # TEST: Generate one response immediately
+            print("🧪 TESTING: Generating initial greeting...\n")
+            greeting = await self.generate_response(proactive=True)
+            if greeting:
+                await self.speak(greeting)
+            else:
+                print("⚠️ Initial greeting failed - check logs above!\n")
+            
+            iteration = 0
             while self.is_running:
+                iteration += 1
+                
+                # Debug: Show we're alive
+                if iteration % 50 == 0:
+                    print(f"💓 Heartbeat {iteration} - waiting for speech or proactive trigger...")
+                
                 # 1. Check for user speech
                 try:
-                    user_speech = self.speech_queue.get_nowait()
+                    user_speech = self.speech_queue.get(timeout=0.5)
+                    print(f"\n🎤 Got speech from queue: '{user_speech}'")
+                    
                     response_text = await self.generate_response(user_speech=user_speech)
-                    await self.speak(response_text)
+                    
+                    if response_text:
+                        await self.speak(response_text)
+                    else:
+                        print("⚠️ No response generated for user speech")
+                    
                     self.last_observation_time = time.time()
+                    
                 except queue.Empty:
                     pass
                 
-                # 2. Check for proactive observation (if quiet for too long)
+                # 2. Proactive observation
                 current_time = time.time()
                 if current_time - self.last_observation_time > self.observation_interval:
-                    print("🤔 Thinking of something to say...")
+                    print(f"\n⏰ Proactive trigger ({self.observation_interval}s elapsed)")
                     proactive_text = await self.generate_response(proactive=True)
+                    
                     if proactive_text:
                         await self.speak(proactive_text)
+                    
                     self.last_observation_time = current_time
                 
-                await asyncio.sleep(0.5)
+                await asyncio.sleep(0.1)
                 
         except KeyboardInterrupt:
+            print("\n\n⏸️  Shutdown requested")
+        finally:
             self.is_running = False
-            stop_listening(wait_for_stop=False)
-            if self.cap: self.cap.release()
-            print("\n👋 Partner going offline. GG!")
+            
+            if stop_listening:
+                stop_listening(wait_for_stop=False)
+            if self.cap and self.cap.isOpened():
+                self.cap.release()
+            
+            print("\n👋 Debug session ended")
+            print(f"📊 Total interactions: {self.personal_memory.get('interactions_count', 0)}")
+
+def main():
+    """Entry point"""
+    print("\n🔍 DIAGNOSTIC MODE - Running checks...\n")
+    
+    # Check Ollama
+    try:
+        response = requests.get("http://localhost:11434/api/tags", timeout=3)
+        if response.status_code == 200:
+            print("✅ Ollama is running")
+        else:
+            print("⚠️  Ollama responded with unusual status")
+    except:
+        print("❌ Ollama is NOT running! Start it with: ollama serve")
+        return
+    
+    print("\nStarting in 3 seconds...\n")
+    time.sleep(3)
+    
+    partner = InteractiveGamingPartner()
+    
+    try:
+        asyncio.run(partner.run())
+    except KeyboardInterrupt:
+        print("\n✅ Clean exit")
+    except Exception as e:
+        print(f"\n❌ Error: {e}")
+        import traceback
+        traceback.print_exc()
 
 if __name__ == "__main__":
-    # Check if Ollama is running first
-    try:
-        requests.get("http://localhost:11434/api/tags", timeout=2)
-    except:
-        print("❌ Error: Ollama is not running! Please run 'ollama serve' first.")
-        exit(1)
-        
-    partner = InteractiveGamingPartner()
-    asyncio.run(partner.run())
+    main()
