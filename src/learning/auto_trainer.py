@@ -20,7 +20,7 @@ class AutoTrainer:
         
         # 🎓 TEACHER CONFIGURATION
         self.vision_model = "llava-phi3"  # The Eyes
-        self.logic_model = "phi4"         # The Professor (High IQ)
+        self.logic_model = "Parthasarathi-Mind" # The Professor (Optimized for CPU)
         
     def load_raw_samples(self):
         """Find raw images that haven't been annotated yet"""

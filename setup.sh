@@ -42,8 +42,8 @@ fi
 echo -e "🧠 Downloading AI Models (This may take time via internet)..."
 echo -e "   - Pulling Vision Brain (llava-phi3)..."
 ollama pull llava-phi3
-echo -e "   - Pulling Logic Brain (phi4)..."
-ollama pull phi4
+echo -e "   - Pulling Logic Brain (phi3:mini)..."
+ollama pull phi3:mini
 
 echo -e "🧠 Creating Custom Mind (Parthasarathi-Mind)..."
 ollama create Parthasarathi-Mind -f Modelfile

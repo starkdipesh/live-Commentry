@@ -128,6 +128,38 @@ Saved to: {self.output_dir}
 3. Once you have 200+ samples, train using Google Colab (FREE)
         """)
     
+    async def auto_annotate_with_professor(self, batch_size=50):
+        """Use local AI to automatically generate Gold Data"""
+        from src.learning.auto_trainer import AutoTrainer
+        trainer = AutoTrainer(data_dir=self.output_dir.parent)
+        
+        unannotated = [s for s in self.samples if s['commentary'] == '[TO BE ADDED]']
+        if not unannotated:
+            print("✅ All samples already have commentary.")
+            return
+
+        print(f"🎓 Professor Parthasarathi is reviewing {len(unannotated[:batch_size])} samples...")
+        
+        for sample in unannotated[:batch_size]:
+            img_path = self.output_dir / sample['image']
+            visual_facts = trainer._get_visual_facts(img_path)
+            if visual_facts:
+                expert_data = trainer._get_expert_reasoning(visual_facts)
+                if expert_data:
+                    # Extract Response from "Thought: ... Response: ..."
+                    if "Response:" in expert_data:
+                        commentary = expert_data.split("Response:")[1].strip()
+                    else:
+                        commentary = expert_data.strip()
+                    
+                    sample['commentary'] = commentary
+                    print(f"✅ AI Annotated: {commentary[:50]}...")
+            
+            # Small cooldown for CPU thermal safety
+            time.sleep(0.5)
+
+        self.save_annotations()
+
     def save_annotations(self):
         """Save all annotations to JSON"""
         data = {
@@ -254,26 +286,27 @@ if __name__ == "__main__":
     if '--stats' in sys.argv:
         collector.show_stats()
     
-    elif '--annotate' in sys.argv:
-        batch_size = 10
+    elif '--auto-annotate' in sys.argv:
+        import asyncio
+        batch_size = 50
         if '--batch' in sys.argv:
             idx = sys.argv.index('--batch')
             batch_size = int(sys.argv[idx + 1])
         
-        collector.annotate_samples(batch_size=batch_size)
+        asyncio.run(collector.auto_annotate_with_professor(batch_size=batch_size))
     
     else:
         # Collection mode (default)
         duration = 10  # minutes
-        interval = 8   # seconds
+        interval = 5   # seconds (faster for better data)
         
         if '--duration' in sys.argv:
             idx = sys.argv.index('--duration')
-            duration = int(sys.argv[idx + 1])
+            duration = int(sys.argv[idx+1])
         
         if '--interval' in sys.argv:
             idx = sys.argv.index('--interval')
-            interval = int(sys.argv[idx + 1])
+            interval = int(sys.argv[idx+1])
         
         collector.collect_session(
             duration_minutes=duration,

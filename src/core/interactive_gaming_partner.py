@@ -62,8 +62,15 @@ class InteractiveGamingPartner:
         self.ollama_base_url = "http://localhost:11434"
         
         # 🧠 DUAL BRAIN CONFIGURATION
+        self.use_cloud_mind = False  # Set to True once you have an API key (Groq/HF)
+        
+        # Local Models (Eyes)
         self.vision_model = "llava-phi3"
-        self.thinking_model = "Parthasarathi-Mind"
+        
+        # Cloud Mind Config (The Genius Brain - Zero CPU Load)
+        self.cloud_api_key = "YOUR_FREE_GROQ_OR_HF_KEY" 
+        self.cloud_base_url = "https://api.groq.com/openai/v1" # Or any OpenAI-compatible provider
+        self.thinking_model = "llama-3.3-70b-versatile" # 70B Model for FREE!
         
         # Identity
         self.name = "Parthasarathi"
@@ -76,8 +83,8 @@ class InteractiveGamingPartner:
             print(f"⚠️ Hardware Module Error: {e}")
             self.hardware = None
         
-        # Vision Tools
-        self.image_processor = AdvancedImageProcessor()
+        # Vision Tools (Turbo Optimized: 336px is native for llava-phi3)
+        self.image_processor = AdvancedImageProcessor(enhance_mode='speed', target_size=336)
         self.scene_analyzer = GameplaySceneAnalyzer()
         self.cap = None 
         self.use_camera = True
@@ -103,11 +110,11 @@ class InteractiveGamingPartner:
         self.speech_queue = queue.Queue()
         self.is_running = False
         self.last_observation_time = time.time()
-        self.observation_interval = 30
+        self.observation_interval = 45  # Increased for CPU efficiency
         self.last_visual_context = ""
         
         # Storage Paths
-        self.base_dir = Path("/home/dipesh-patel/Documents/live-Commentry")
+        self.base_dir = Path(__file__).resolve().parent.parent.parent
         self.logger_dir = self.base_dir / "training_data" / "gold_dataset"
         self.memory_file = self.base_dir / "config" / "personal_memory.json"
         
@@ -128,6 +135,13 @@ class InteractiveGamingPartner:
         print(f"👁️  Eyes: {self.vision_model}")
         print(f"🧠 Mind: {self.thinking_model}")
         print(f"👨‍💻 Creator: {self.creator}")
+        
+        # Check for Wayland (Ubuntu)
+        if os.environ.get('XDG_SESSION_TYPE') == 'wayland':
+            print("\n⚠️  WARNING: You are running Ubuntu on Wayland.")
+            print("   Screen capture might return a black screen.")
+            print("   If it fails, switch to 'Ubuntu on Xorg' at the login screen.\n")
+            
         print(f"{'='*60}\n")
         
         self._init_camera()
@@ -198,26 +212,30 @@ class InteractiveGamingPartner:
         except Exception as e:
             print(f"⚠️ Memory save error: {e}")
 
-    def _log_interaction(self, vision_data, user_input, full_context):
-        """Log interaction for training data collection"""
+    def _log_interaction(self, final_image, user_input, full_context):
+        """Log interaction and save final processed image for the Gold Dataset"""
         try:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            log_file = self.logger_dir / f"interaction_{timestamp}.json"
             
+            # 1. Save JSON Log
+            log_file = self.logger_dir / f"log_{timestamp}.json"
             log_data = {
                 "timestamp": timestamp,
                 "user_input": user_input,
                 "context": full_context,
-                "has_screen": 'screen' in vision_data,
-                "has_camera": 'camera' in vision_data,
                 "session_id": self.personal_memory.get('last_session', 'unknown')
             }
-            
             with open(log_file, 'w', encoding='utf-8') as f:
                 json.dump(log_data, f, indent=2, ensure_ascii=False)
+            
+            # 2. Save the exact image the AI saw (Turbo 336px)
+            img_path = self.logger_dir / f"frame_{timestamp}.jpg"
+            final_image.save(img_path, quality=85)
+                
+            print(f"💾 Interaction learned and saved to Gold Dataset.")
                 
         except Exception as e:
-            pass
+            print(f"⚠️ Logger Error: {e}")
 
     async def capture_vision_safe(self):
         """Get visibility from display and optionally camera"""
@@ -296,11 +314,13 @@ class InteractiveGamingPartner:
                     "images": [img_b64],
                     "stream": False,
                     "options": {
-                        "num_predict": 80,  # Reduced for speed
-                        "temperature": 0.2
-                    }
+                        "num_predict": 30,  # Ultra-fast punchy description
+                        "temperature": 0.1,
+                        "num_thread": 8     # Assuming 8 threads, Ollama will optimize
+                    },
+                    "keep_alive": "10m" 
                 }, 
-                timeout=120  # Increased timeout
+                timeout=60
             )
             
             elapsed = time.time() - start_time
@@ -312,47 +332,30 @@ class InteractiveGamingPartner:
                     print(f"      ✓ Vision: {result[:60]}...")
                     return result
                 else:
-                    print("      ✗ Empty response from vision model")
-                    return "Cannot see clearly"
+                    return "Visual clear but no detail"
             else:
-                print(f"      ✗ Vision API Error: {response.status_code}")
-                print(f"         {response.text[:200]}")
                 return "Visual analysis failed"
                 
-        except requests.exceptions.Timeout:
-            print("      ✗ TIMEOUT: Vision model took too long!")
-            return "Visual timeout"
         except Exception as e:
             print(f"      ✗ Vision Error: {e}")
             return "Visual error"
 
     async def _get_strategic_response(self, visual_context, user_speech):
         """Step 2: Thinking Model Response"""
-        print("   [4] Calling THINKING model...")
+        if self.use_cloud_mind:
+            return await self._get_cloud_strategic_response(visual_context, user_speech)
         
+        print(f"   [4] Calling LOCAL MIND ({self.thinking_model})...")
         user_name = self.personal_memory.get('user_name', 'Dipesh')
         
         # Simplified prompt for faster response
         if user_speech:
-            prompt = f"""You see: {visual_context}
-User said: "{user_speech}"
-
-Reply in 1 short Hinglish sentence like a gaming buddy.
-Example: "Arre bhai health low hai!" or "Nice shot yaar!"
-
-Reply:"""
+            prompt = f"User says: {user_speech}\nGame scene: {visual_context}\nStrategy: Be a Hinglish friend. {user_name} is playing. Short reaction."
         else:
-            prompt = f"""You see: {visual_context}
-
-Make 1 short Hinglish observation.
-Example: "Ammo kam hai bro" or "Ye level tough hai"
-
-Reply:"""
+            prompt = f"Game scene: {visual_context}\nStrategy: 1 short Hinglish comment for {user_name}."
 
         try:
             start_time = time.time()
-            print(f"      - Sending request to {self.thinking_model}...")
-            
             response = requests.post(
                 f"{self.ollama_base_url}/api/generate", 
                 json={
@@ -360,17 +363,15 @@ Reply:"""
                     "prompt": prompt,
                     "stream": False,
                     "options": {
-                        "temperature": 0.7,
-                        "num_predict": 50,  # Very short responses
-                        "top_p": 0.9
-                    }
+                        "temperature": 0.8,
+                        "num_predict": 25,
+                        "num_ctx": 1024,
+                        "num_thread": 8
+                    },
+                    "keep_alive": "10m"
                 }, 
-                timeout=120
+                timeout=60
             )
-            
-            elapsed = time.time() - start_time
-            print(f"      - Response received in {elapsed:.1f}s")
-            
             if response.status_code == 200:
                 result = response.json().get('response', '').strip()
                 
@@ -396,6 +397,33 @@ Reply:"""
         except Exception as e:
             print(f"      ✗ Thinking Error: {e}")
             return None, None
+
+    async def _get_cloud_strategic_response(self, visual_context, user_speech):
+        """Step 2: Cloud Mind Response (Zero CPU Load + 70B Intelligence)"""
+        print(f"   [4] Calling CLOUD MIND ({self.thinking_model})...")
+        
+        prompt = f"Scene: {visual_context}\nUser: {user_speech or '[Silent]'}\nRule: Short Hinglish strategic reaction."
+        
+        try:
+            # Using standard requests for simple OpenAI-compatible API call
+            headers = {"Authorization": f"Bearer {self.cloud_api_key}"}
+            payload = {
+                "model": self.thinking_model,
+                "messages": [{"role": "system", "content": "You are Parthasarathi, a world-class life-long strategic partner. Speak Hinglish."},
+                             {"role": "user", "content": prompt}],
+                "max_tokens": 50
+            }
+            
+            start_time = time.time()
+            response = requests.post(f"{self.cloud_base_url}/chat/completions", json=payload, headers=headers, timeout=10)
+            
+            if response.status_code == 200:
+                reply = response.json()['choices'][0]['message']['content'].strip()
+                print(f"      ✓ Cloud Response in {time.time()-start_time:.1f}s")
+                return reply, "Cloud thought processed."
+            return "Arre bhai, internet issue lag raha hai.", "Error"
+        except Exception as e:
+            return "Mind connection lost.", str(e)
 
     async def generate_response(self, user_speech=None, proactive=False):
         """Execute the Dual-Brain Pipeline with extensive logging"""
@@ -433,7 +461,7 @@ Reply:"""
                 
                 # Log
                 full_context = f"Visual: {visual_facts} | Reply: {reply}"
-                self._log_interaction(vision_data, user_speech or "[PROACTIVE]", full_context)
+                self._log_interaction(processed_img, user_speech or "[PROACTIVE]", full_context)
                 
                 return reply
             else:
