@@ -12,37 +12,23 @@ import asyncio
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 def main():
-    parser = argparse.ArgumentParser(description="AI Gameplay Commentary System")
-    parser.add_argument('mode', choices=['enhanced', 'lightweight', 'free', 'interactive', 'collect', 'train'], 
-                        default='lightweight', nargs='?',
-                        help='Mode to run: enhanced (GPU), lightweight (CPU), interactive (Partner), free (Legacy), collect (Dataset)')
+    parser = argparse.ArgumentParser(description="Parthasarathi - World's Best All-Rounder Partner")
+    parser.add_argument('mode', choices=['interactive', 'collect', 'train'], 
+                        default='interactive', nargs='?',
+                        help='Mode to run: interactive (Connect to Partner), collect (Build Dataset), train (Professor Mode)')
     
     args = parser.parse_args()
     
     print(f"🚀 Launching in {args.mode} mode...")
     
     try:
-        if args.mode == 'enhanced':
-            from src.core.gameplay_commentator_enhanced import main as run_enhanced
-            asyncio.run(run_enhanced())
-            
-        elif args.mode == 'interactive':
+        if args.mode == 'interactive':
             from src.core.interactive_gaming_partner import InteractiveGamingPartner
             partner = InteractiveGamingPartner()
             asyncio.run(partner.run())
             
-        elif args.mode == 'lightweight':
-            from src.core.gameplay_commentator_lightweight import main as run_lightweight
-            asyncio.run(run_lightweight())
-            
-        elif args.mode == 'free':
-            from src.core.gameplay_commentator_free import GameplayCommentatorFree
-            commentator = GameplayCommentatorFree()
-            asyncio.run(commentator.run())
-            
         elif args.mode == 'collect':
             from src.collectors.dataset_collector_simple import SimpleDatasetCollector
-            # Simple interactive launcher for collector
             collector = SimpleDatasetCollector(output_dir="training_data")
             collector.collect_session()
 
@@ -53,12 +39,6 @@ def main():
             
     except KeyboardInterrupt:
         print("\n👋 Exiting...")
-    except ImportError as e:
-        print(f"\n❌ Error: {e}")
-        print("Please check if all dependencies are installed:")
-        print("pip install -r requirements/requirements_lightweight.txt")
-        print("Or for enhanced:")
-        print("pip install -r requirements/requirements_enhanced.txt")
     except Exception as e:
         print(f"\n❌ Unexpected Error: {e}")
 

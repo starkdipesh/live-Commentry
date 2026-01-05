@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-🎮 Interactive AI Gaming Partner - DEBUG VERSION
-This version has extensive logging to find where it's hanging
+🕉️ Parthasarathi - World's Best Life-Long All-Rounder Partner
+A strategic AI companion for Gaming, Coding, and Personal Growth.
 """
 
 import json
@@ -27,19 +27,20 @@ import speech_recognition as sr
 # Import local processors
 try:
     from src.processors.advanced_image_processor import AdvancedImageProcessor, GameplaySceneAnalyzer
+    from src.core.cloud_connector import CloudMindConnector
 except ImportError:
+    # Minimal stubs if imports fail
     class AdvancedImageProcessor:
-        def preprocess_for_vision_model(self, img, **kwargs): 
-            return img
+        def __init__(self, **kwargs): pass
+        def preprocess_for_vision_model(self, img, **kwargs): return img
         def to_base64(self, img):
             buffered = io.BytesIO()
-            img.save(buffered, format="JPEG", quality=85)
+            img.save(buffered, format="JPEG")
             return base64.b64encode(buffered.getvalue()).decode('utf-8')
-        def get_image_statistics(self, img): 
-            return {"is_dark_scene": False, "is_bright_scene": False, "dominant_color": "neutral"}
     class GameplaySceneAnalyzer:
-        def analyze_scene_type(self, img): 
-            return {"scene_type": "gameplay", "motion_level": 0.1, "has_ui": True}
+        def analyze_scene_type(self, img): return {}
+    class CloudMindConnector:
+        def __init__(self, **kwargs): pass
 
 try:
     import pygame
@@ -47,16 +48,8 @@ try:
 except ImportError:
     PYGAME_AVAILABLE = False
 
-class HardwareController:
-    def __init__(self):
-        self.connected = False
-        self.serial = None
-
-    def send_command(self, cmd):
-        pass
-
 class InteractiveGamingPartner:
-    """Parthasarathi - Debug Version"""
+    """The World's Best Life-Long Partner Backbone"""
     
     def __init__(self):
         self.ollama_base_url = "http://localhost:11434"
@@ -68,9 +61,12 @@ class InteractiveGamingPartner:
         self.vision_model = "llava-phi3"
         
         # Cloud Mind Config (The Genius Brain - Zero CPU Load)
-        self.cloud_api_key = "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" 
-        self.cloud_base_url = "https://api.groq.com/openai/v1" # Or any OpenAI-compatible provider
-        self.thinking_model = "llama-3.3-70b-versatile" # 70B Model for FREE!
+        self.cloud_api_key = "YOUR_GROQ_API_KEY" # Replace with your key
+        self.cloud_base_url = "https://api.groq.com/openai/v1" 
+        self.thinking_model = "phi4:latest"
+        
+        # Initialize Connector
+        self.cloud_mind = CloudMindConnector(api_key=self.cloud_api_key)
         
         # Identity
         self.name = "Parthasarathi"
@@ -402,28 +398,18 @@ class InteractiveGamingPartner:
         """Step 2: Cloud Mind Response (Zero CPU Load + 70B Intelligence)"""
         print(f"   [4] Calling CLOUD MIND ({self.thinking_model})...")
         
-        prompt = f"Scene: {visual_context}\nUser: {user_speech or '[Silent]'}\nRule: Short Hinglish strategic reaction."
+        # Use our new dedicated connector
+        reply, status = self.cloud_mind.think(
+            visual_facts=visual_context, 
+            user_speech=user_speech,
+            history=self.conversation_history
+        )
         
-        try:
-            # Using standard requests for simple OpenAI-compatible API call
-            headers = {"Authorization": f"Bearer {self.cloud_api_key}"}
-            payload = {
-                "model": self.thinking_model,
-                "messages": [{"role": "system", "content": "You are Parthasarathi, a world-class life-long strategic partner. Speak Hinglish."},
-                             {"role": "user", "content": prompt}],
-                "max_tokens": 50
-            }
-            
-            start_time = time.time()
-            response = requests.post(f"{self.cloud_base_url}/chat/completions", json=payload, headers=headers, timeout=10)
-            
-            if response.status_code == 200:
-                reply = response.json()['choices'][0]['message']['content'].strip()
-                print(f"      ✓ Cloud Response in {time.time()-start_time:.1f}s")
-                return reply, "Cloud thought processed."
-            return "Arre bhai, internet issue lag raha hai.", "Error"
-        except Exception as e:
-            return "Mind connection lost.", str(e)
+        if status == "success":
+            return reply, "Cloud thought processed."
+        else:
+            print(f"      ✗ Cloud Mind Error: {reply}")
+            return "Arre bhai, connection check karo.", "Error"
 
     async def generate_response(self, user_speech=None, proactive=False):
         """Execute the Dual-Brain Pipeline with extensive logging"""
