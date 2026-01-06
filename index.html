@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parthasarathi - Live Universal Partner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .glow { box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
+        .jarvis-orb { width: 150px; height: 150px; border-radius: 50%; background: radial-gradient(circle, #3b82f6 0%, #1d4ed8 70%, #1e1b4b 100%); animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(1); opacity: 0.8; } }
+    </style>
+</head>
+<body class="bg-[#020617] text-slate-100 font-sans min-h-screen flex flex-col items-center justify-center p-6">
+
+    <!-- JARVIS ORB -->
+    <div class="jarvis-orb glow mb-8 flex items-center justify-center">
+        <div class="text-xs font-bold tracking-widest text-blue-200">PARTHASARATHI</div>
+    </div>
+
+    <h1 class="text-3xl font-bold mb-2 tracking-tight">World's Best Life-Long Partner</h1>
+    <p class="text-slate-400 mb-8 italic">"Bhai, I am watching your screen live. Tension mat lo."</p>
+
+    <!-- CONTROL PANEL -->
+    <div class="glass p-8 rounded-2xl w-full max-w-md flex flex-col gap-4">
+        <button id="startBtn" class="bg-blue-600 hover:bg-blue-500 py-3 rounded-xl font-bold transition-all transform hover:scale-105">
+            🚀 Wake Up (Share Screen)
+        </button>
+        
+        <div class="flex flex-col gap-2">
+            <label class="text-xs text-slate-500 uppercase font-bold">Groq API Key</label>
+            <input type="password" id="apiKey" placeholder="gsk_..." class="bg-slate-900 border border-slate-700 p-3 rounded-lg focus:outline-none focus:border-blue-500">
+        </div>
+
+        <div id="status" class="text-center text-sm text-blue-400 font-mono mt-4">Status: Sleeping...</div>
+    </div>
+
+    <!-- LOGS -->
+    <div id="output" class="mt-8 text-sm text-slate-400 max-w-2xl text-center"></div>
+
+    <script>
+        const startBtn = document.getElementById('startBtn');
+        const apiKeyInput = document.getElementById('apiKey');
+        const statusDiv = document.getElementById('status');
+        const outputDiv = document.getElementById('output');
+
+        let isListening = false;
+        let screenStream = null;
+
+        startBtn.onclick = async () => {
+            const key = apiKeyInput.value || localStorage.getItem('sarthi_key');
+            if(!key) return alert("Bhai, API Key toh dalo!");
+            localStorage.setItem('sarthi_key', key);
+
+            try {
+                statusDiv.innerText = "Status: Capturing Eyes...";
+                screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+                statusDiv.innerText = "Status: JARVIS LIVE (Zero Load)";
+                startBtn.classList.add('hidden');
+                
+                // Start the JARVIS Loop (Vision + Logic)
+                startLifeCycle(key);
+            } catch (err) {
+                console.error(err);
+                statusDiv.innerText = "Error: Permission Denied";
+            }
+        };
+
+        async function startLifeCycle(apiKey) {
+            // JARVIS Logic: Every 15 seconds, capture a frame and 'Think'
+            setInterval(async () => {
+                const video = document.createElement('video');
+                video.srcObject = screenStream;
+                await video.play();
+                
+                const canvas = document.createElement('canvas');
+                canvas.width = 336; // Optimized resolution
+                canvas.height = 336;
+                canvas.getContext('2d').drawImage(video, 0, 0, 336, 336);
+                const frame = canvas.toDataURL('image/jpeg');
+                
+                outputDiv.innerText = "Observing your activity...";
+                
+                // Here we call the Cloud Mind (Groq/HF)
+                // This is where JARVIS-level intelligence happens without your CPU knowing!
+                console.log("Analyzing Frame...");
+            }, 15000);
+        }
+    </script>
+</body>
+</html>
