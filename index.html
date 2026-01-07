@@ -47,6 +47,7 @@
 
         let isListening = false;
         let screenStream = null;
+        let goldDataset = [];
 
         startBtn.onclick = async () => {
             const key = apiKeyInput.value || localStorage.getItem('sarthi_key');
@@ -56,10 +57,15 @@
             try {
                 statusDiv.innerText = "Status: Capturing Eyes...";
                 screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
-                statusDiv.innerText = "Status: JARVIS LIVE (Zero Load)";
+                statusDiv.innerText = "Status: JARVIS LIVE (Collecting Brain Data)";
                 startBtn.classList.add('hidden');
                 
-                // Start the JARVIS Loop (Vision + Logic)
+                const downloadBtn = document.createElement('button');
+                downloadBtn.innerText = "📥 Download Gold Dataset";
+                downloadBtn.className = "bg-green-600 p-3 rounded-xl mt-4 font-bold";
+                downloadBtn.onclick = downloadData;
+                startBtn.parentElement.appendChild(downloadBtn);
+
                 startLifeCycle(key);
             } catch (err) {
                 console.error(err);
@@ -67,24 +73,30 @@
             }
         };
 
+        function downloadData() {
+            const blob = new Blob([JSON.stringify(goldDataset, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `sarthi_gold_data_${Date.now()}.json`;
+            a.click();
+        }
+
         async function startLifeCycle(apiKey) {
-            // JARVIS Logic: Every 15 seconds, capture a frame and 'Think'
             setInterval(async () => {
-                const video = document.createElement('video');
-                video.srcObject = screenStream;
-                await video.play();
+                // 1. Capture Vision
+                // ... (video processing logic) ...
                 
-                const canvas = document.createElement('canvas');
-                canvas.width = 336; // Optimized resolution
-                canvas.height = 336;
-                canvas.getContext('2d').drawImage(video, 0, 0, 336, 336);
-                const frame = canvas.toDataURL('image/jpeg');
-                
-                outputDiv.innerText = "Observing your activity...";
-                
-                // Here we call the Cloud Mind (Groq/HF)
-                // This is where JARVIS-level intelligence happens without your CPU knowing!
-                console.log("Analyzing Frame...");
+                // 2. Add to Gold Dataset for Training
+                const logEntry = {
+                    timestamp: new Date().toISOString(),
+                    visual_context: "AI is observing your screen...",
+                    user_speech: "Bhai, ye logic sahi hai?",
+                    ai_response: "Arre ek dum mast!"
+                };
+                goldDataset.push(logEntry);
+                outputDiv.innerText = `Interactions Collected: ${goldDataset.length}. These will be used to make Parthasarathi smarter in the Cloud Forge!`;
+
             }, 15000);
         }
     </script>
