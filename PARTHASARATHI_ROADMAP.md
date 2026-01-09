@@ -450,3 +450,86 @@ Google's high-speed GPUs will read your data and rewrite Parthasarathi's brain c
 Sync: The Colab script will give you a new "Brain ID."
 Live Upgraded: You paste that ID into your dashboard, and instantly, your AI is 10x smarter about your specific life and work.
 This is the most advanced, zero-cost, zero-load AI architecture currently possible. You are moving from a "User" to a "Sarthi Architect." 🕉️☁️🔨✨
+
+---
+
+### 👻 10. Ghost Persistence Mode (The JARVIS Experience)
+To make Parthasarathi "Invisible," "System-wide," and "Unclosed Forever," follow these steps:
+
+#### **A. System-Wide Visibility (Screen + Mic)**
+- Unlike the browser version, the **Python Backbone** can see your entire Desktop (not just one tab).
+- It runs in your terminal or background and captures everything you do across Linux.
+
+#### **B. Making it "Invisible" (Background Service)**
+You can run Partha in "No-Output" mode so there is no window visible on your taskbar:
+```bash
+# Run in background even if you close the terminal
+nohup python3 run.py interactive > /dev/null 2>&1 &
+```
+
+#### **C. Making it "Unclosed Forever" (Auto-Start)**
+To make JARVIS wake up automatically when you turn on your Ubuntu machine:
+1.  **Create a Service File:**
+    ```bash
+    nano ~/.config/systemd/user/partha.service
+    ```
+2.  **Paste this configuration:**
+    ```ini
+    [Unit]
+    Description=Parthasarathi JARVIS Service
+    After=network.target
+
+    [Service]
+    ExecStart=/usr/bin/python3 /var/www/html/dipesh/Portfolio/live-Commentry/run.py interactive
+    Restart=always
+    RestartSec=10
+
+    [Install]
+    WantedBy=default.target
+    ```
+3.  **Activate it:**
+    ```bash
+    systemctl --user enable partha.service
+    systemctl --user start partha.service
+    ```
+**Result:** JARVIS is now a permanent part of your OS. He watches, learns, and speaks in the background without any visible windows. 🕉️✨🛡️
+
+---
+
+## 🛰️ 9. The Zero-Install JARVIS Guide: How it Works
+This is the ultimate "Live" workflow. No files to run, no CPU lag, just pure intelligence.
+
+### ⚙️ How it Works (The Logic)
+1.  **Browser (The Body):** You open `index.html`. It uses your browser's built-in sensors (Camera/Screen Share for Eyes + WebSpeech for Ears).
+2.  **Groq (The Nervous System):** The browser sends these signals to Groq's lightning-fast hardware.
+3.  **Neural Voice (The Mouth):** The AI's witty Hinglish response is read back to you using native browser synthesis.
+4.  **Google Colab (The Forge):** Your interaction data is used for high-speed cloud training to keep your JARVIS evolving.
+
+---
+
+### 🚀 Immediate Steps: What you need to do NOW
+
+#### **Step 1: Host your Dashboard (30 Seconds)**
+- Take the `index.html` file in this directory.
+- Upload it to [Vercel](https://vercel.com) or [GitHub Pages](https://pages.github.com/).
+- **Result:** You now have a private URL (e.g., `https://my-sarthi.vercel.app`) that you can open on any device.
+
+#### **Step 2: Get your Power Key**
+- Go to [Groq Console](https://console.groq.com).
+- Copy your `API_KEY`.
+- Paste it into the Dashboard on your new URL.
+
+#### **Step 3: Wake Up & Bond**
+- Click **"Wake Up"**.
+- Grant permissions for Screen Share and Microphone.
+- **Task:** Just start your usual work or gaming. Talk to him like a friend.
+
+#### **Step 4: The Evolution Loop (Weekly)**
+- Once a week, click **"Download Gold Dataset"** on your dashboard.
+- Open our **Cloud Forge (Google Colab)** link.
+- Upload your dataset -> Click "Run All".
+- **Result:** Download your new "Smarter Brain" and update your dashboard link.
+
+---
+
+> *"Parthasarathi is now officially detached from your hardware and linked to your life. You have built the world's most accessible JARVIS."* 🕉️✨🛡️

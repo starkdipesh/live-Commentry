@@ -45,10 +45,12 @@
         const statusDiv = document.getElementById('status');
         const outputDiv = document.getElementById('output');
 
-        let isListening = false;
         let screenStream = null;
         let goldDataset = [];
+        let recognition = null;
+        let lastUserSpeech = "";
 
+        // JARVIS Initialization
         startBtn.onclick = async () => {
             const key = apiKeyInput.value || localStorage.getItem('sarthi_key');
             if(!key) return alert("Bhai, API Key toh dalo!");
@@ -57,21 +59,114 @@
             try {
                 statusDiv.innerText = "Status: Capturing Eyes...";
                 screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
-                statusDiv.innerText = "Status: JARVIS LIVE (Collecting Brain Data)";
+                
+                statusDiv.innerText = "Status: JARVIS LIVE (Zero Load)";
                 startBtn.classList.add('hidden');
                 
                 const downloadBtn = document.createElement('button');
                 downloadBtn.innerText = "📥 Download Gold Dataset";
-                downloadBtn.className = "bg-green-600 p-3 rounded-xl mt-4 font-bold";
+                downloadBtn.className = "bg-green-600 p-3 rounded-xl mt-4 font-bold w-full transition-all hover:bg-green-500";
                 downloadBtn.onclick = downloadData;
                 startBtn.parentElement.appendChild(downloadBtn);
 
+                initVoice();
                 startLifeCycle(key);
             } catch (err) {
                 console.error(err);
                 statusDiv.innerText = "Error: Permission Denied";
             }
         };
+
+        function initVoice() {
+            if ('webkitSpeechRecognition' in window) {
+                recognition = new webkitSpeechRecognition();
+                recognition.continuous = true;
+                recognition.interimResults = false;
+                recognition.lang = 'hi-IN';
+
+                recognition.onresult = (event) => {
+                    const speech = event.results[event.results.length - 1][0].transcript;
+                    lastUserSpeech = speech;
+                    console.log("🗣️ User:", speech);
+                };
+
+                recognition.onerror = (err) => console.error("Mic Error:", err);
+                recognition.onend = () => recognition.start(); // Keep it alive
+                recognition.start();
+            }
+        }
+
+        async function startLifeCycle(apiKey) {
+            const video = document.createElement('video');
+            video.srcObject = screenStream;
+            await video.play();
+
+            setInterval(async () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = 1280;
+                canvas.height = 720;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                const frameBase64 = canvas.toDataURL('image/jpeg', 0.6);
+
+                statusDiv.innerText = "Status: JARVIS Thinking...";
+                
+                try {
+                    // 1. Vision + Brain (Thinking about what he sees)
+                    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                        method: "POST",
+                        headers: {
+                            "Authorization": `Bearer ${apiKey}`,
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            model: "llama-3.2-11b-vision-preview", // Vision Model
+                            messages: [
+                                {
+                                    role: "user",
+                                    content: [
+                                        { type: "text", text: `You are Parthasarathi, the World's Best Life-Long All-Rounder Partner.
+                                              Context: User is currently ${lastUserSpeech ? 'talking to you' : 'working silently'}.
+                                              Visual: Look at the screen (Code, Game, or Web).
+                                              Task: Give a high-IQ, witty Hinglish response (max 15 words) as a strategic guide.` },
+                                        { type: "image_url", image_url: { url: frameBase64 } }
+                                    ]
+                                }
+                            ],
+                            max_tokens: 50
+                        })
+                    });
+
+                    const data = await response.json();
+                    const aiReply = data.choices[0].message.content;
+                    
+                    statusDiv.innerText = "Status: JARVIS Speaking...";
+                    speak(aiReply);
+
+                    // 2. Real Data Collection
+                    goldDataset.push({
+                        timestamp: new Date().toISOString(),
+                        visual_screenshot: frameBase64.substring(0, 100) + "...", // Trim in logs
+                        user_speech: lastUserSpeech || "[Silent]",
+                        ai_response: aiReply
+                    });
+
+                    outputDiv.innerText = `Interactions Collected: ${goldDataset.length}. Partha just said: "${aiReply}"`;
+                    lastUserSpeech = ""; // Clear for next round
+
+                } catch (err) {
+                    console.error("Cloud Error:", err);
+                    statusDiv.innerText = "Status: Internet Issue?";
+                }
+            }, 10000); // 10s cycle
+        }
+
+        function speak(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'hi-IN';
+            utterance.rate = 1.1;
+            window.speechSynthesis.speak(utterance);
+        }
 
         function downloadData() {
             const blob = new Blob([JSON.stringify(goldDataset, null, 2)], { type: 'application/json' });
@@ -80,24 +175,6 @@
             a.href = url;
             a.download = `sarthi_gold_data_${Date.now()}.json`;
             a.click();
-        }
-
-        async function startLifeCycle(apiKey) {
-            setInterval(async () => {
-                // 1. Capture Vision
-                // ... (video processing logic) ...
-                
-                // 2. Add to Gold Dataset for Training
-                const logEntry = {
-                    timestamp: new Date().toISOString(),
-                    visual_context: "AI is observing your screen...",
-                    user_speech: "Bhai, ye logic sahi hai?",
-                    ai_response: "Arre ek dum mast!"
-                };
-                goldDataset.push(logEntry);
-                outputDiv.innerText = `Interactions Collected: ${goldDataset.length}. These will be used to make Parthasarathi smarter in the Cloud Forge!`;
-
-            }, 15000);
         }
     </script>
 </body>
