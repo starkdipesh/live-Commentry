@@ -141,40 +141,34 @@ We use only open-source and free-tier technologies. You will **NEVER** need a cr
 ```
 
 
-To achieve the "Universal Sarthi" fine-tuned model, you need to follow a cycle of Collection → Analysis → Training.
+## 🔱 11. The Supreme Blueprint: World's Smartest Computer Mind
+To transcend standard AI, Parthasarathi follows the **"Infinity Loop"** of evolution.
 
-Here is your exact step-by-step guide to started right now:
+### A. The Self-Evolution Cycle (The Forge)
+1.  **Autonomous Observation:** Every hour the AI spends with you, it learns your coding style, gaming tactics, and research habits.
+2.  **Gold Data Preparation:** Run `python3 src/learning/prepare_training_data.py` to convert logs for training.
+3.  **Cloud Fine-Tuning:** Upload `unsloth_training_data.json` to our Google Colab template.
+4.  **Brain Injection:** Download the new `.gguf` or link the new LoRA to Groq.
 
-Step 1: Collect Raw Gameplay Data
-You need images of your gameplay/work to teach the AI what to look at. Run this command and just play your game for 10-20 minutes:
+### B. Mobile Evolution (Sarthi in your Pocket)
+To make Parthasarathi work on Android/iOS while staying "unclosed":
+1.  **Sensor Hub App:** A lightweight app that uses "Accessibility Services" (Android) to see the screen and "Foreground Service" to listen to the mic.
+2.  **Cloud-Bridge:** The phone does **Zero Logic**. It just relays the bits to Groq/Hugging Face.
+3.  **Ghost Interaction:** The AI talks to you through your Bluetooth earphones while your phone stays in your pocket.
 
-bash
-# This will capture 1 screenshot every 5 seconds for 20 minutes
-python3 run.py collect --duration 20 --interval 5
-Target: Collect at least 500 - 1,000 screenshots over the next few days.
-Step 2: Use the "AI Professor" to Annotate (Auto-Labeling)
-Instead of writing the Hinglish commentary yourself, use the high-quality local AI to label the data for you. I have just added an Auto-Annotator specifically for this:
+---
 
-bash
-# This runs the "Professor" who looks at your screenshots and writes the 'Gold' commentary
-python3 src/collectors/dataset_collector_simple.py --auto-annotate --batch 100
-What this does: It uses the Parthasarathi-Mind to automatically create the perfect "Strategic Thought" and "Hinglish Response" for every image you captured in Step 1.
-Step 3: Verify Your "Gold Dataset"
-Check the statistics to see how many samples you have ready:
+## 🏗️ 12. Technical Milestone Checklist (2026 Vision)
+- [ ] **Phase 1: Multi-Modal RAG** -> Store visuals and audio in a Vector Database so he says "Remember we did this last month?".
+- [ ] **Phase 2: Agentic Tools** -> Partha can run `git commit`, `npm start`, or `brew install` for you.
+- [ ] **Phase 3: Cross-Device Consciousness** -> Partha knows what you did on your PC when you talk to him on your Phone.
 
-bash
-python3 src/collectors/dataset_collector_simple.py --stats
-The Magic Number: Once you have 1,000+ annotated samples, your dataset is ready for the "Forge".
-Step 4: The Forge (Fine-Tuning on GPU)
-    When you reach 1,000 samples, we will:
+---
 
-        Export the annotations.json and images to a ZIP file.
-        Upload it to Google Colab (using a tool called Unsloth).
-        Fine-tune Llama-3.2-Vision or Phi-4 on your data.
-        Download the new model back to your PC and register it in Ollama.
-
-
-Current Goal: Start with Step 1 today. Just run the collector while you play. I have optimized the collector to be very lightweight so it won't affect your game's FPS. 🎮🚀
+## 🚀 YOUR ACTION PLAN (DO THIS NOW)
+1.  **Verify Data:** Check `training_data/gold_dataset/`. You already have **60+ samples**!
+2.  **Run Prep:** `python3 src/learning/prepare_training_data.py`.
+3.  **Keep it Running:** Start `interactive` mode whenever you work. Every log is a brick in the wall of his genius.
 
 // Gemini model is sure that this will work
 Yes, I am confident this will work because we have built it for stability. Here is exactly why you can trust this pipeline:
@@ -449,7 +443,39 @@ Forge: Open a specific link to Google Colab. You upload your
 Google's high-speed GPUs will read your data and rewrite Parthasarathi's brain connections to match your style.
 Sync: The Colab script will give you a new "Brain ID."
 Live Upgraded: You paste that ID into your dashboard, and instantly, your AI is 10x smarter about your specific life and work.
-This is the most advanced, zero-cost, zero-load AI architecture currently possible. You are moving from a "User" to a "Sarthi Architect." 🕉️☁️🔨✨
+## 🌐 13. The Ethereal Hosting Blueprint (100% Free)
+To achieve "Zero Local Load" and "Access from Any Device," we distribute Parthasarathi across the global cloud.
+
+### 🏢 Station A: The Command Center (Frontend)
+- **Platform:** [Vercel](https://vercel.com) / [GitHub Pages](https://pages.github.com)
+- **Files:** `index.html`
+- **Role:** Your remote dashboard. Open this on Mobile, Laptop, or Tablet to control your AI.
+- **Cost:** ₹0 Forever.
+
+### 🧠 Station B: The Brain Relay (Inference)
+- **Platform:** [Groq Cloud](https://console.groq.com)
+- **Role:** Handles the 70B parameter reasoning at 300+ tokens/sec.
+- **Cost:** ₹0 (Generous Free Tier).
+
+### 📀 Station C: The Custom Brain (Advanced Fine-Tuning)
+- **Platform:** [Hugging Face Spaces](https://huggingface.co/spaces)
+- **Role:** If you train a custom model, we host the "Mind" here as a Docker API.
+- **Cost:** ₹0 (CPU/T4 GPU tier).
+
+### 🔨 Station D: The Cloud Forge (Training)
+- **Platform:** [Google Colab](https://colab.research.google.com)
+- **Role:** Takes your `unsloth_training_data.json` and creates the next evolution of Parthasarathi.
+- **Cost:** ₹0 (Free T4 GPU sessions).
+
+---
+
+## 🛠️ Step-by-Step Server Deployment Guide
+1.  **GITHUB:** Create a private repository and upload your `index.html`.
+2.  **VERCEL:** Import that repo into Vercel. It will give you a live URL (e.g., `https://parthasarathi.vercel.app`).
+3.  **GROQ:** Paste your API key into the dashboard on that URL.
+4.  **PERSISTENCE:** For your main PC, use the `systemd` service (Section 10) to keep the "Eyes" open forever in stealth mode.
+
+> *"Your AI now lives in the wires, not on your disk."* 🕉️☁️�️
 
 ---
 
