@@ -58,15 +58,36 @@
         const debugConsole = document.getElementById('debugConsole');
 
         let screenStream = null;
+        let cameraStream = null;
         let goldDataset = JSON.parse(localStorage.getItem('saved_gold_data') || '[]');
         let recognition = null;
         let lastUserSpeech = "";
         let isActive = false;
 
-        // Brave/Chrome Autoplay Fix: Interaction triggers voice unlock
+        // Python TTS Fix
+        async function speakViaPython(text) {
+            try {
+                const response = await fetch('/speak', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: text })
+                });
+                return await response.json();
+            } catch (err) {
+                console.error("Python TTS failed, falling back to browser:", err);
+                browserSpeak(text);
+            }
+        }
+
+        function browserSpeak(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'hi-IN';
+            window.speechSynthesis.speak(utterance);
+        }
+
         testVoiceBtn.onclick = () => {
-            speak("Bhai, meri awaz aa rahi hai? I am ready!");
-            logDebug("Voice Test Triggered. If you don't hear anything, check browser site settings.", "text-yellow-500");
+            speak("Boss, meri awaz Python backend se aa rahi hai? I am ready!");
+            logDebug("Voice Test Triggered via Python Backend.", "text-yellow-500");
         };
 
         function logDebug(msg, color = "text-slate-500") {
@@ -77,26 +98,15 @@
             console.log(`[Partha] ${msg}`);
         }
 
-        // Check protocol
-        if (window.location.protocol === 'file:') {
-            logDebug("⚠️ WARNING: Running via file:// protocol. Microphone will be BLOCKED by browser. Please use a local server (e.g., Live Server or python -m http.server).", "text-orange-400");
-        }
-
         if (goldDataset.length > 0) {
             logDebug(`Restored ${goldDataset.length} previous interactions.`, "text-green-500");
         }
-        // JARVIS Initialization
+
         startBtn.onclick = async () => {
-            logDebug("Starting Environment Audit...");
+            logDebug("Initiating Multi-Sensor Wakeup...");
             
-            // diagnostic check
             if (!window.isSecureContext) {
-                logDebug("🚨 SECURE CONTEXT MISSING: Browser blocks Cam/Mic/Screen unless using 'localhost' or 'https'.", "text-red-500");
-                return alert("Security Error: Please access via http://localhost:PORT or use HTTPS.");
-            }
-            if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
-                logDebug("🚨 API MISSING: Your browser doesn't support Screen Sharing (getDisplayMedia). Use Chrome/Edge/Firefox.", "text-red-500");
-                return alert("Browser Error: API not supported.");
+                return alert("Security Error: Please access via 'localhost' or HTTPS.");
             }
 
             const key = apiKeyInput.value.trim() || localStorage.getItem('sarthi_key');
@@ -104,13 +114,22 @@
             localStorage.setItem('sarthi_key', key);
 
             try {
-                logDebug("Asking for screen capture permission...");
+                logDebug("Requesting Whole Screen (Monitor) Capture...");
                 screenStream = await navigator.mediaDevices.getDisplayMedia({ 
-                    video: { frameRate: 5 }, // Low frame rate to save bandwidth/CPU
+                    video: { 
+                        displaySurface: 'monitor', // Hint for whole screen
+                        frameRate: 5 
+                    },
                     audio: false
                 });
+
+                logDebug("Requesting Camera & Mic Access...");
+                cameraStream = await navigator.mediaDevices.getUserMedia({
+                    video: { width: 480, height: 270 },
+                    audio: true
+                });
                 
-                logDebug("Screen Capture Ready!", "text-green-500");
+                logDebug("All Sensors Active!", "text-green-500");
                 statusDiv.innerText = "Status: JARVIS ACTIVE";
                 startBtn.classList.add('hidden');
                 testVoiceBtn.classList.add('hidden');
@@ -122,7 +141,7 @@
                 downloadBtn.onclick = downloadData;
                 startBtn.parentElement.appendChild(downloadBtn);
 
-                initVoice();
+                initVoice(); // This still uses Web Speech for STT
                 startLifeCycle(key);
             } catch (err) {
                 logDebug(`Launch Failed: ${err.message}`, "text-red-500");
@@ -145,48 +164,48 @@
                         logDebug(`User said: "${speech}"`, "text-yellow-400");
                     };
 
-                    recognition.onerror = (err) => {
-                        logDebug(`Mic Error: ${err.error}. (Tip: Use Chrome + Localhost)`, "text-red-400");
-                        if (err.error === 'not-allowed') {
-                            logDebug("Microphone permission denied. Restart in browser settings.", "text-red-500");
-                        }
-                    };
-
-                    recognition.onend = () => {
-                        if (isActive) {
-                            setTimeout(() => {
-                                try { recognition.start(); } catch(e) {}
-                            }, 2000);
-                        }
-                    };
-
+                    recognition.onend = () => { if (isActive) recognition.start(); };
                     recognition.start();
-                    logDebug("Mic listening started.", "text-blue-400");
+                    logDebug("Mic listening (STT) started.", "text-blue-400");
                 } catch (e) {
                     logDebug(`STT Init Error: ${e.message}`, "text-red-500");
                 }
-            } else {
-                logDebug("Hinglish Speech Recognition not supported in this browser.", "text-red-500");
             }
         }
 
         async function startLifeCycle(apiKey) {
-            const video = document.createElement('video');
-            video.srcObject = screenStream;
-            await video.play();
-            logDebug("Universal Consciousness Active. Monitoring Science, Logic, and Story.");
+            const screenVideo = document.createElement('video');
+            screenVideo.srcObject = screenStream;
+            await screenVideo.play();
+
+            const camVideo = document.createElement('video');
+            camVideo.srcObject = cameraStream;
+            await camVideo.play();
+
+            logDebug("Multi-Modal Analysis Started: Monitoring Screen & You.");
 
             setInterval(async () => {
                 if (!isActive) return;
 
                 const canvas = document.createElement('canvas');
-                canvas.width = 1120;
-                canvas.height = 630;
+                canvas.width = 1280;
+                canvas.height = 720;
                 const ctx = canvas.getContext('2d');
-                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                const frameBase64 = canvas.toDataURL('image/jpeg', 0.5);
+                
+                // Draw Screen
+                ctx.drawImage(screenVideo, 0, 0, canvas.width, canvas.height);
+                
+                // Draw Camera PIP (Bottom Right)
+                const pipW = 320;
+                const pipH = 180;
+                ctx.strokeStyle = "#3b82f6";
+                ctx.lineWidth = 4;
+                ctx.strokeRect(canvas.width - pipW - 20, canvas.height - pipH - 20, pipW, pipH);
+                ctx.drawImage(camVideo, canvas.width - pipW - 20, canvas.height - pipH - 20, pipW, pipH);
 
-                statusDiv.innerText = "Status: Analyzing Context...";
+                const frameBase64 = canvas.toDataURL('image/jpeg', 0.6);
+
+                statusDiv.innerText = "Status: Processing Senses...";
                 
                 try {
                     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
@@ -196,84 +215,77 @@
                             "Content-Type": "application/json"
                         },
                         body: JSON.stringify({
-                            model: "meta-llama/llama-4-scout-17b-16e-instruct", 
+                            model: "meta-llama/llama-4-scout-17b-16e-instruct", // Correct model for Groq vision
                             messages: [
                                 {
                                     role: "user",
                                     content: [
-                                        { type: "text", text: `Persona: You are Parthasarathi, the user's High-IQ Female Strategic Partner.
-                                              Soul: You are a genius polymath who talks in STRICT HINGLISH (Mix of Hindi and English).
-                                              Language Rule: NEVER talk in pure English. Mix Hindi words like 'Boss', 'Sir', 'Matlab', 'Samajh', 'Dekho', 'Arre'.
-                                              Tone: Respectful yet equal, edgy, and insightful. Use words like 'Boss' or 'Sir' instead of 'Bhai'.
-                                              Logic: Analyze the screen content (Science/Code/Gaming). If it's code, give a technical tip in Hinglish. If it's science, explain the concept briefly in Hinglish.
-                                              Goal: Talk like a human partner-in-crime who respects your authority. Short, punchy sentences.
-                                              Example: Instead of "Old logic", say "Sir, Tabulator's dataTree handling is decent, but optimize it for DOM stability."
-                                              Constraint: Max 15 words. NO translations in brackets. Think deep, talk natural.` },
+                                        { type: "text", text: `Persona: You are Parthasarathi, High-IQ Strategic Partner.
+                                              Soul: Talk in STRICT HINGLISH. Edgier, smarter, and proactive.
+                                              Context: You see the user's FULL SCREEN and their CAMERA feed (bottom right).
+                                              Goal: Analyze what is happening on screen and how the user is reacting.
+                                              Instruction: Speak like a human partner. Max 15 words. Mix Hindi/English naturally.
+                                              Boss Mode: Address user as 'Boss' or 'Sir'.` },
                                         { type: "image_url", image_url: { url: frameBase64 } }
                                     ]
                                 }
                             ],
-                            max_tokens: 80
+                            max_tokens: 100
                         })
                     });
 
                     const data = await response.json();
                     const aiReply = data.choices[0]?.message?.content;
-                    if (!aiReply) throw new Error("Connection failed");
+                    if (!aiReply) throw new Error("Brain disconnect.");
 
                     logDebug(`Partha: "${aiReply}"`, "text-pink-400");
-                    statusDiv.innerText = "Status: Speaking...";
                     speak(aiReply);
 
                     goldDataset.push({
                         timestamp: new Date().toISOString(),
                         speech: lastUserSpeech || "[Silent]",
                         ai_response: aiReply,
-                        mode: "Universal Analysis"
+                        frame: frameBase64,
+                        
+                        // RL & Fine-tuning Ready Format (Unsloth Style)
+                        training_data: {
+                            image: "capture.jpg", // placeholder for export
+                            conversations: [
+                                { from: "human", value: `<image>\n${lastUserSpeech || "Analyze the screen."}` },
+                                { from: "gpt", value: aiReply }
+                            ],
+                            metadata: { reward: 0.0 }
+                        },
+                        mode: "Full Multi-Modal"
                     });
 
                     localStorage.setItem('saved_gold_data', JSON.stringify(goldDataset));
-                    outputDiv.innerText = `Data Points Collected: ${goldDataset.length} | Last Reply: "${aiReply.substring(0, 40)}..."`;
-                    
-                    lastUserSpeech = ""; // Reset for next rotation
+                    outputDiv.innerText = `Data Points: ${goldDataset.length} | Last: "${aiReply.substring(0, 30)}..."`;
+                    lastUserSpeech = ""; 
                 } catch (err) {
-                    logDebug(`Brain Sync Error: ${err.message}`, "text-red-500");
+                    logDebug(`Brain Error: ${err.message}`, "text-red-500");
                 }
             }, 12000);
         }
 
         function speak(text) {
-            const utterance = new SpeechSynthesisUtterance(text);
-            const voices = window.speechSynthesis.getVoices();
+            jarvisOrb.classList.add('animate-ping');
+            statusDiv.innerText = "Status: PARTHA SPEAKING";
             
-            // Priority: Female high-quality voices
-            const femaleVoice = voices.find(v => (v.name.includes('Google') || v.name.includes('Neural')) && v.lang.includes('hi')) 
-                               || voices.find(v => v.name.includes('Female') || v.lang.includes('hi'));
-            
-            if (femaleVoice) utterance.voice = femaleVoice;
-            utterance.lang = 'hi-IN';
-            utterance.pitch = 1.2; // Makes it feel more feminine/friendly
-            utterance.rate = 1.0;
-
-            utterance.onstart = () => {
-                jarvisOrb.classList.add('animate-ping');
-                statusDiv.innerText = "Status: PARTHA SPEAKING";
-            };
-            utterance.onend = () => {
-                jarvisOrb.classList.remove('animate-ping');
-                statusDiv.innerText = "Status: Active";
-            };
-
-            window.speechSynthesis.speak(utterance);
+            speakViaPython(text).finally(() => {
+                setTimeout(() => {
+                    jarvisOrb.classList.remove('animate-ping');
+                    statusDiv.innerText = "Status: Active";
+                }, text.length * 100); // Rough estimation for animation end
+            });
         }
 
         function downloadData() {
-            if (goldDataset.length === 0) return alert("Bhai, data toh hone do!");
             const blob = new Blob([JSON.stringify(goldDataset, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `partha_real_data_${Date.now()}.json`;
+            a.download = `partha_gold_data_${Date.now()}.json`;
             a.click();
         }
     </script>

@@ -1,0 +1,17 @@
+{
+    "id": "20260116_163212",
+    "timestamp": "2026-01-16T16:32:12.719472",
+    "session_id": "2026-01-16T16:32:12.717224",
+    "state": {
+        "image_file": "frame_20260116_163212.jpg",
+        "user_speech": "[PROACTIVE]"
+    },
+    "action": {
+        "ai_response": "How can I assist you today, Sir?",
+        "visual_reasoning": "[Full Multimodal Analysis]"
+    },
+    "rl_metadata": {
+        "reward": 0.0,
+        "env": "Desktop_Daemon"
+    }
+}

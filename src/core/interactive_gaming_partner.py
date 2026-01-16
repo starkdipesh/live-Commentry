@@ -55,15 +55,12 @@ class InteractiveGamingPartner:
         self.ollama_base_url = "http://localhost:11434"
         
         # 🧠 DUAL BRAIN CONFIGURATION
-        self.use_cloud_mind = False  # Set to True once you have an API key (Groq/HF)
-        
-        # Local Models (Eyes)
-        self.vision_model = "llava-phi3"
+        self.use_cloud_mind = True  # Enabled for Groq processing
         
         # Cloud Mind Config (The Genius Brain - Zero CPU Load)
-        self.cloud_api_key = "YOUR_GROQ_API_KEY" # Replace with your key
+        self.cloud_api_key = "" 
         self.cloud_base_url = "https://api.groq.com/openai/v1" 
-        self.thinking_model = "phi4:latest"
+        self.thinking_model = "meta-llama/llama-4-scout-17b-16e-instruct" # Best vision/brain model for Groq
         
         # Initialize Connector
         self.cloud_mind = CloudMindConnector(api_key=self.cloud_api_key)
@@ -112,6 +109,7 @@ class InteractiveGamingPartner:
         # Storage Paths
         self.base_dir = Path(__file__).resolve().parent.parent.parent
         self.logger_dir = self.base_dir / "training_data" / "gold_dataset"
+        self.master_log_file = self.logger_dir / "partha_rl_dataset.json" # One file to rule them all
         self.memory_file = self.base_dir / "config" / "personal_memory.json"
         
         self.logger_dir.mkdir(parents=True, exist_ok=True)
@@ -128,8 +126,7 @@ class InteractiveGamingPartner:
 
         print(f"\n{'='*60}")
         print(f"✨ {self.name} is waking up...")
-        print(f"👁️  Eyes: {self.vision_model}")
-        print(f"🧠 Mind: {self.thinking_model}")
+        print(f"🧠 Universal Brain: {self.thinking_model} (Groq)")
         print(f"👨‍💻 Creator: {self.creator}")
         
         # Check for Wayland (Ubuntu)
@@ -144,28 +141,28 @@ class InteractiveGamingPartner:
         self._verify_models()
         
     def _verify_models(self):
-        """Check if required models are available"""
+        """Check if models are available (Groq/Local)"""
+        if self.use_cloud_mind:
+            print(f"🔍 Cloud Mind Active: Using {self.thinking_model}")
+            return
+        
         try:
-            print("🔍 Verifying models...")
+            print("🔍 Verifying local models...")
             response = requests.get(f"{self.ollama_base_url}/api/tags", timeout=5)
             if response.status_code == 200:
                 models = [m['name'] for m in response.json().get('models', [])]
                 print(f"   Available: {models}")
                 
-                vision_ok = any(self.vision_model in m for m in models)
                 thinking_ok = any(self.thinking_model in m for m in models)
                 
-                if not vision_ok:
-                    print(f"❌ Vision model '{self.vision_model}' not found!")
                 if not thinking_ok:
-                    print(f"❌ Thinking model '{self.thinking_model}' not found!")
-                    
-                if vision_ok and thinking_ok:
-                    print(f"✅ All models verified!")
+                    print(f"❌ Thinking model '{self.thinking_model}' not found in Ollama!")
+                else:
+                    print(f"✅ Local model verified!")
             else:
-                print(f"⚠️  Could not verify models (status: {response.status_code})")
+                print(f"⚠️  Could not verify local models (status: {response.status_code})")
         except Exception as e:
-            print(f"⚠️  Model verification failed: {e}")
+            print(f"⚠️  Local model verification skipped: {e}")
         
     def _init_camera(self):
         """Initialize webcam if available"""
@@ -208,30 +205,57 @@ class InteractiveGamingPartner:
         except Exception as e:
             print(f"⚠️ Memory save error: {e}")
 
-    def _log_interaction(self, final_image, user_input, full_context):
-        """Log interaction and save final processed image for the Gold Dataset"""
+    def _log_interaction(self, final_image, user_input, ai_response, visual_facts):
+        """Log interaction into a unified JSON dataset for Reinforcement Learning"""
         try:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            img_filename = f"frame_{timestamp}.jpg"
             
-            # 1. Save JSON Log
-            log_file = self.logger_dir / f"log_{timestamp}.json"
-            log_data = {
-                "timestamp": timestamp,
-                "user_input": user_input,
-                "context": full_context,
-                "session_id": self.personal_memory.get('last_session', 'unknown')
+            # 1. State-Action Transition Structure
+            entry = {
+                "id": timestamp,
+                "timestamp": datetime.now().isoformat(),
+                "state": {
+                    "visual": img_filename,
+                    "audio_transcript": user_input or "[SILENT_OBSERVATION]"
+                },
+                "action": {
+                    "response": ai_response,
+                    "reasoning": visual_facts
+                },
+                "reward": 0.0,
+                "training_format": {
+                    "image": img_filename,
+                    "conversations": [
+                        { "from": "human", "value": f"<image>\n{user_input or 'Analyze screen.'}" },
+                        { "from": "gpt", "value": ai_response }
+                    ]
+                }
             }
-            with open(log_file, 'w', encoding='utf-8') as f:
-                json.dump(log_data, f, indent=2, ensure_ascii=False)
             
-            # 2. Save the exact image the AI saw (Turbo 336px)
-            img_path = self.logger_dir / f"frame_{timestamp}.jpg"
+            # 2. Append to Master JSON File
+            dataset = []
+            if self.master_log_file.exists():
+                try:
+                    with open(self.master_log_file, 'r', encoding='utf-8') as f:
+                        dataset = json.load(f)
+                        if not isinstance(dataset, list): dataset = []
+                except:
+                    dataset = []
+            
+            dataset.append(entry)
+            
+            with open(self.master_log_file, 'w', encoding='utf-8') as f:
+                json.dump(dataset, f, indent=4, ensure_ascii=False)
+            
+            # 3. Save the actual State Image
+            img_path = self.logger_dir / img_filename
             final_image.save(img_path, quality=85)
                 
-            print(f"💾 Interaction learned and saved to Gold Dataset.")
+            print(f"💾 Step logged to master dataset: {self.master_log_file.name}")
                 
         except Exception as e:
-            print(f"⚠️ Logger Error: {e}")
+            print(f"⚠️ Master Log Error: {e}")
 
     async def capture_vision_safe(self):
         """Get visibility from display and optionally camera"""
@@ -394,15 +418,16 @@ class InteractiveGamingPartner:
             print(f"      ✗ Thinking Error: {e}")
             return None, None
 
-    async def _get_cloud_strategic_response(self, visual_context, user_speech):
-        """Step 2: Cloud Mind Response (Zero CPU Load + 70B Intelligence)"""
+    async def _get_cloud_strategic_response(self, visual_facts, user_speech, image_b64=None):
+        """Step 2: Cloud Mind Response (Zero CPU Load + 17B Scout Intelligence)"""
         print(f"   [4] Calling CLOUD MIND ({self.thinking_model})...")
         
-        # Use our new dedicated connector
+        # Use our new dedicated connector with image support
         reply, status = self.cloud_mind.think(
-            visual_facts=visual_context, 
+            visual_facts=visual_facts, 
             user_speech=user_speech,
-            history=self.conversation_history
+            history=self.conversation_history,
+            image_b64=image_b64
         )
         
         if status == "success":
@@ -431,11 +456,14 @@ class InteractiveGamingPartner:
             img_b64 = self.image_processor.to_base64(processed_img)
             print(f"      ✓ Image ready ({len(img_b64)} bytes)")
             
-            # 2. Get Visual Facts
-            visual_facts = await self._get_visual_description(img_b64)
-            
-            # 3. Get Response
-            reply, thought = await self._get_strategic_response(visual_facts, user_speech)
+            # 2. Get Response (Directly via Groq Vision if enabled)
+            if self.use_cloud_mind:
+                reply, thought = await self._get_cloud_strategic_response(None, user_speech, img_b64)
+                visual_facts = "[Full Multimodal Analysis]"
+            else:
+                # Fallback to local vision + local mind (if configured)
+                visual_facts = await self._get_visual_description(img_b64)
+                reply, thought = await self._get_strategic_response(visual_facts, user_speech)
             
             if reply:
                 print(f"\n✅ SUCCESS: Response generated!")
@@ -445,9 +473,8 @@ class InteractiveGamingPartner:
                 self.personal_memory['interactions_count'] = self.personal_memory.get('interactions_count', 0) + 1
                 self._save_memory()
                 
-                # Log
-                full_context = f"Visual: {visual_facts} | Reply: {reply}"
-                self._log_interaction(processed_img, user_speech or "[PROACTIVE]", full_context)
+                # Log Transition for RL
+                self._log_interaction(processed_img, user_speech or "[PROACTIVE]", reply, visual_facts)
                 
                 return reply
             else:
