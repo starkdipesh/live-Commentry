@@ -11,3 +11,5 @@ scipy
 pyserial
 paho-mqtt
 colorama
+python-dotenv
+PyAudio

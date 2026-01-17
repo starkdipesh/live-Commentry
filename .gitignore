@@ -9,6 +9,9 @@ lib64/
 share/
 pyvenv.cfg
 
+# Environment variables (NEVER COMMIT)
+.env
+
 # Python cache
 __pycache__/
 *.py[cod]

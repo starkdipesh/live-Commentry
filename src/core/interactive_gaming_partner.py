@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🕉️ Parthasarathi - World's Best Life-Long All-Rounder Partner
+🕉️ Saarthika - Your Strategic AI Partner
 A strategic AI companion for Gaming, Coding, and Personal Growth.
 """
 
@@ -25,22 +25,26 @@ import edge_tts
 import speech_recognition as sr
 
 # Import local processors
+# Import local processors
 try:
-    from src.processors.advanced_image_processor import AdvancedImageProcessor, GameplaySceneAnalyzer
     from src.core.cloud_connector import CloudMindConnector
 except ImportError:
-    # Minimal stubs if imports fail
-    class AdvancedImageProcessor:
-        def __init__(self, **kwargs): pass
-        def preprocess_for_vision_model(self, img, **kwargs): return img
-        def to_base64(self, img):
-            buffered = io.BytesIO()
-            img.save(buffered, format="JPEG")
-            return base64.b64encode(buffered.getvalue()).decode('utf-8')
-    class GameplaySceneAnalyzer:
-        def analyze_scene_type(self, img): return {}
     class CloudMindConnector:
         def __init__(self, **kwargs): pass
+
+# Image Processor Stub (Use this since we are lightweight now)
+class AdvancedImageProcessor:
+    def __init__(self, **kwargs): pass
+    def preprocess_for_vision_model(self, img, **kwargs): return img
+    def to_base64(self, img):
+        if hasattr(img, 'mode') and img.mode == 'RGBA':
+            img = img.convert('RGB')
+        buffered = io.BytesIO()
+        img.save(buffered, format="JPEG")
+        return base64.b64encode(buffered.getvalue()).decode('utf-8')
+
+class GameplaySceneAnalyzer:
+    def analyze_scene_type(self, img): return {}
 
 try:
     import pygame
@@ -58,23 +62,20 @@ class InteractiveGamingPartner:
         self.use_cloud_mind = True  # Enabled for Groq processing
         
         # Cloud Mind Config (The Genius Brain - Zero CPU Load)
-        self.cloud_api_key = "" 
+        # API key loaded from .env file automatically
         self.cloud_base_url = "https://api.groq.com/openai/v1" 
-        self.thinking_model = "meta-llama/llama-4-scout-17b-16e-instruct" # Best vision/brain model for Groq
+        self.thinking_model = "meta-llama/llama-4-scout-17b-16e-instruct"
         
-        # Initialize Connector
-        self.cloud_mind = CloudMindConnector(api_key=self.cloud_api_key)
+        # Initialize Connector (reads from .env automatically)
+        self.cloud_mind = CloudMindConnector()
         
         # Identity
-        self.name = "Parthasarathi"
+        self.name = "Saarthika"
         self.creator = "Dipesh Patel"
         
         # Hardware
-        try:
-            self.hardware = HardwareController()
-        except Exception as e:
-            print(f"⚠️ Hardware Module Error: {e}")
-            self.hardware = None
+        # Hardware (Disabled)
+        self.hardware = None
         
         # Vision Tools (Turbo Optimized: 336px is native for llava-phi3)
         self.image_processor = AdvancedImageProcessor(enhance_mode='speed', target_size=336)
@@ -83,7 +84,10 @@ class InteractiveGamingPartner:
         self.use_camera = True
         
         # Audio Configuration
-        self.tts_voice = "hi-IN-SwaraNeural"
+        # Audio Configuration (Sweet Human Voice)
+        self.tts_voice = "hi-IN-SwaraNeural" # Best Female Hindi Voice
+        self.tts_rate = "+10%"               # Slightly faster but natural
+        self.tts_pitch = "+2Hz"              # Slightly higher pitch for sweetness
         self.recognizer = sr.Recognizer()
         self.recognizer.energy_threshold = 4000
         self.recognizer.dynamic_energy_threshold = True
@@ -138,31 +142,45 @@ class InteractiveGamingPartner:
         print(f"{'='*60}\n")
         
         self._init_camera()
-        self._verify_models()
+        self._init_camera()
+        # self._verify_models() # Disabled for pure cloud mode
         
-    def _verify_models(self):
-        """Check if models are available (Groq/Local)"""
-        if self.use_cloud_mind:
-            print(f"🔍 Cloud Mind Active: Using {self.thinking_model}")
-            return
-        
+    def listen_to_user(self, timeout=None):
+        """Blocking listen for user speech (safe for main loop)"""
         try:
-            print("🔍 Verifying local models...")
-            response = requests.get(f"{self.ollama_base_url}/api/tags", timeout=5)
-            if response.status_code == 200:
-                models = [m['name'] for m in response.json().get('models', [])]
-                print(f"   Available: {models}")
+            return self.speech_queue.get(timeout=timeout)
+        except queue.Empty:
+            return None
+
+    def start_listening(self):
+        """Start the background listening thread"""
+        if self.mic_available and self.mic:
+            try:
+                print("🎤 Calibrating microphone...")
+                with self.mic as source:
+                    self.recognizer.adjust_for_ambient_noise(source, duration=1)
                 
-                thinking_ok = any(self.thinking_model in m for m in models)
-                
-                if not thinking_ok:
-                    print(f"❌ Thinking model '{self.thinking_model}' not found in Ollama!")
-                else:
-                    print(f"✅ Local model verified!")
-            else:
-                print(f"⚠️  Could not verify local models (status: {response.status_code})")
+                self.recognizer.listen_in_background(
+                    self.mic, 
+                    self._listen_callback,
+                    phrase_time_limit=10
+                )
+                print("✅ Voice recognition active")
+            except Exception as e:
+                print(f"❌ Mic error: {e}")
+
+    async def capture_vision_safe(self):
+        """Safely capture vision data"""
+        try:
+            vision_data = self.capture_vision()
+            return vision_data
         except Exception as e:
-            print(f"⚠️  Local model verification skipped: {e}")
+            print(f"Error capturing vision: {e}")
+            return {'screen': None, 'camera': None}
+
+    def _verify_models(self):
+        """Deprecated: We are cloud-native now"""
+        pass
         
     def _init_camera(self):
         """Initialize webcam if available"""
@@ -233,7 +251,13 @@ class InteractiveGamingPartner:
                 }
             }
             
-            # 2. Append to Master JSON File
+            # 2. Save Image (with RGBA fix)
+            img_path = self.logger_dir / img_filename
+            if final_image.mode == 'RGBA':
+                final_image = final_image.convert('RGB')
+            final_image.save(img_path, quality=85)
+            
+            # 3. Append to Master JSON File
             dataset = []
             if self.master_log_file.exists():
                 try:
@@ -265,12 +289,28 @@ class InteractiveGamingPartner:
         # 1. Capture Screen
         try:
             print("      - Grabbing screen...")
-            with mss.mss() as sct:
-                monitor = sct.monitors[1]
-                sct_img = sct.grab(monitor)
-                screen_img = Image.frombytes('RGB', sct_img.size, sct_img.bgra, 'raw', 'BGRX')
-                vision_data['screen'] = screen_img
-                print("      ✓ Screen captured")
+            # CHECK FOR WAYLAND
+            if os.environ.get('XDG_SESSION_TYPE') == 'wayland':
+                # Wayland Fallback: gnome-screenshot
+                try:
+                    import subprocess
+                    temp_shot = "/tmp/saarthika_vision.png"
+                    # Quietly take screenshot
+                    subprocess.run(["gnome-screenshot", "-f", temp_shot], check=True, timeout=2, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                    vision_data['screen'] = Image.open(temp_shot)
+                    print("      ✓ Screen captured (Wayland/Gnome)")
+                except Exception as w_err:
+                    print(f"      ✗ Wayland Capture Failed: {w_err}")
+                    print("        (Try: sudo apt install gnome-screenshot)")
+                    vision_data['screen_blocked'] = True
+            else:
+                # Xorg (Standard)
+                with mss.mss() as sct:
+                    monitor = sct.monitors[1]
+                    sct_img = sct.grab(monitor)
+                    screen_img = Image.frombytes('RGB', sct_img.size, sct_img.bgra, 'raw', 'BGRX')
+                    vision_data['screen'] = screen_img
+                    print("      ✓ Screen captured (Xorg)")
         except Exception as e:
             print(f"      ✗ Screen capture failed: {e}")
             vision_data['screen_blocked'] = True
@@ -296,7 +336,7 @@ class InteractiveGamingPartner:
         if 'screen' in vision_data:
             screen = vision_data['screen']
             
-            if 'camera' in vision_data:
+            if vision_data.get('camera'):
                 cam = vision_data['camera']
                 h = screen.height // 3
                 w = int(cam.width * (h / cam.height))
@@ -476,6 +516,15 @@ class InteractiveGamingPartner:
                 # Log Transition for RL
                 self._log_interaction(processed_img, user_speech or "[PROACTIVE]", reply, visual_facts)
                 
+                # 4. Maintain Conversation History (Short Term Memory)
+                if user_speech:
+                    self.conversation_history.append({"role": "user", "content": user_speech})
+                self.conversation_history.append({"role": "assistant", "content": reply})
+                
+                # Keep last 10 turns to avoid token overflow
+                if len(self.conversation_history) > 10:
+                    self.conversation_history = self.conversation_history[-10:]
+                
                 return reply
             else:
                 print(f"\n❌ FAILED: No response generated")
@@ -502,7 +551,14 @@ class InteractiveGamingPartner:
             temp_file = temp_dir / f"partha_{int(time.time() * 1000)}.mp3"
             
             print("   - Generating speech...")
-            communicate = edge_tts.Communicate(text, self.tts_voice, rate="+20%")
+            print("   - Generating speech...")
+            # Sweet Tone Tuning
+            communicate = edge_tts.Communicate(
+                text, 
+                self.tts_voice, 
+                rate=self.tts_rate,
+                pitch=self.tts_pitch
+            )
             await communicate.save(str(temp_file))
             print("   ✓ Speech generated")
             

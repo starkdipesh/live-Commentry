@@ -1,2 +1,0 @@
-FROM llava:latest
-SYSTEM "Your custom prompt..."
