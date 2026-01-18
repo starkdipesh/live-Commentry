@@ -3014,5 +3014,5413 @@
                 }
             ]
         }
+    },
+    {
+        "id": "20260117_234234",
+        "timestamp": "2026-01-17T23:42:34.828827",
+        "state": {
+            "visual": "frame_20260117_234234.jpg",
+            "audio_transcript": "हेलो"
+        },
+        "action": {
+            "response": "Kem cho, Boss! Dekho, aapke laptop setup guide mein kya issue hai? Mujhe lagta hai, yeh ALSA lib errors aa rahe hain. Sahi hai, main help karti hoon. Kya aapko audio configuration ya API key add karne mein madad chahiye?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260117_234234.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nहेलो"
+                },
+                {
+                    "from": "gpt",
+                    "value": "Kem cho, Boss! Dekho, aapke laptop setup guide mein kya issue hai? Mujhe lagta hai, yeh ALSA lib errors aa rahe hain. Sahi hai, main help karti hoon. Kya aapko audio configuration ya API key add karne mein madad chahiye?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260117_234300",
+        "timestamp": "2026-01-17T23:43:00.225114",
+        "state": {
+            "visual": "frame_20260117_234300.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "Kem cho, Sir! Dekho, aap YouTube par \"Theme of Kalki (Telugu) | Kalki 2898 AD\" video dekh rahe hain. Sahi hai, lagta hai aapko yeh song pasand aa raha hai! Kya aapko aur koi song chahiye ya aapko music recommendations chahiye? Baka, main help kar sakti hoon!",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260117_234300.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "Kem cho, Sir! Dekho, aap YouTube par \"Theme of Kalki (Telugu) | Kalki 2898 AD\" video dekh rahe hain. Sahi hai, lagta hai aapko yeh song pasand aa raha hai! Kya aapko aur koi song chahiye ya aapko music recommendations chahiye? Baka, main help kar sakti hoon!"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260117_234326",
+        "timestamp": "2026-01-17T23:43:26.542796",
+        "state": {
+            "visual": "frame_20260117_234326.jpg",
+            "audio_transcript": "नहीं चलो"
+        },
+        "action": {
+            "response": "Arre yaar, Sir! Dekho, aap DeepLearning.AI par Machine Learning Specialization course dekh rahe hain. Sahi hai, Andrew Ng ka course hai! Kem cho, aapko kya help chahiye? Course enrollment ya syllabus ke baare mein jaankari chahiye? Baka, main help karti hoon! Su kare che?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260117_234326.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nनहीं चलो"
+                },
+                {
+                    "from": "gpt",
+                    "value": "Arre yaar, Sir! Dekho, aap DeepLearning.AI par Machine Learning Specialization course dekh rahe hain. Sahi hai, Andrew Ng ka course hai! Kem cho, aapko kya help chahiye? Course enrollment ya syllabus ke baare mein jaankari chahiye? Baka, main help karti hoon! Su kare che?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260117_234354",
+        "timestamp": "2026-01-17T23:43:54.499111",
+        "state": {
+            "visual": "frame_20260117_234354.jpg",
+            "audio_transcript": "नहीं तुम"
+        },
+        "action": {
+            "response": "Kem cho, Sir! Dekho, aap laptop setup guide dekh rahe hain. Su kare che? Aapko kya help chahiye? API key add karna hai ya course enrollment mein madad chahiye? Baka, main help karti hoon!",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260117_234354.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nनहीं तुम"
+                },
+                {
+                    "from": "gpt",
+                    "value": "Kem cho, Sir! Dekho, aap laptop setup guide dekh rahe hain. Su kare che? Aapko kya help chahiye? API key add karna hai ya course enrollment mein madad chahiye? Baka, main help karti hoon!"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_143206",
+        "timestamp": "2026-01-18T14:32:06.558170",
+        "state": {
+            "visual": "frame_20260118_143206.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "Kem cho, Boss! YouTube video chal raha hai. Kya help chahiye? (What's up, Boss! YouTube video is playing. Do you need help?)",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_143206.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "Kem cho, Boss! YouTube video chal raha hai. Kya help chahiye? (What's up, Boss! YouTube video is playing. Do you need help?)"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_143223",
+        "timestamp": "2026-01-18T14:32:23.779730",
+        "state": {
+            "visual": "frame_20260118_143223.jpg",
+            "audio_transcript": "क्या हेल्प चाहिए"
+        },
+        "action": {
+            "response": "Arre yaar, Sir! Aap Bhagavad Gita video dekh rahe hain. Kya aapko Bhagavad Gita ke baare mein jaankari chahiye ya koi specific topic hai? (Hey Sir! You're watching a Bhagavad Gita video. Do you need information about Bhagavad Gita or a specific topic?)",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_143223.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nक्या हेल्प चाहिए"
+                },
+                {
+                    "from": "gpt",
+                    "value": "Arre yaar, Sir! Aap Bhagavad Gita video dekh rahe hain. Kya aapko Bhagavad Gita ke baare mein jaankari chahiye ya koi specific topic hai? (Hey Sir! You're watching a Bhagavad Gita video. Do you need information about Bhagavad Gita or a specific topic?)"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_143247",
+        "timestamp": "2026-01-18T14:32:47.926262",
+        "state": {
+            "visual": "frame_20260118_143247.jpg",
+            "audio_transcript": "क्या आपको भागवत गीता के बारे में जानकारी चाहिए या कोई स्पेसिफिक टॉपिक है"
+        },
+        "action": {
+            "response": "Sahi hai, Sir! Yeh video Bhagavad Gita ke baare mein hai. Main aapko summary de sakti hoon ya koi specific topic discuss kar sakti hoon. (Okay, Sir! This video is about Bhagavad Gita. I can give you a summary or discuss a specific topic.)",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_143247.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nक्या आपको भागवत गीता के बारे में जानकारी चाहिए या कोई स्पेसिफिक टॉपिक है"
+                },
+                {
+                    "from": "gpt",
+                    "value": "Sahi hai, Sir! Yeh video Bhagavad Gita ke baare mein hai. Main aapko summary de sakti hoon ya koi specific topic discuss kar sakti hoon. (Okay, Sir! This video is about Bhagavad Gita. I can give you a summary or discuss a specific topic.)"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_143313",
+        "timestamp": "2026-01-18T14:33:13.534028",
+        "state": {
+            "visual": "frame_20260118_143313.jpg",
+            "audio_transcript": "भगवत गीता के बारे में है"
+        },
+        "action": {
+            "response": "Majama, Sir! Your code environment is looking clean. What's the issue or task you're working on? Need help with coding or Bhagavad Gita?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_143313.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nभगवत गीता के बारे में है"
+                },
+                {
+                    "from": "gpt",
+                    "value": "Majama, Sir! Your code environment is looking clean. What's the issue or task you're working on? Need help with coding or Bhagavad Gita?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_143328",
+        "timestamp": "2026-01-18T14:33:28.530181",
+        "state": {
+            "visual": "frame_20260118_143328.jpg",
+            "audio_transcript": "ओके सर थिस वीडियो इस अबाउट भागवत"
+        },
+        "action": {
+            "response": "Kem cho, Boss! The image shows QSkill Internship tasks. You have to do any 2 tasks: \n1. Iris Flower Classification \n2. Spam Mail Detector \nor \n3. (third task not visible).\n\nWhich task you want to do, Sir?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_143328.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nओके सर थिस वीडियो इस अबाउट भागवत"
+                },
+                {
+                    "from": "gpt",
+                    "value": "Kem cho, Boss! The image shows QSkill Internship tasks. You have to do any 2 tasks: \n1. Iris Flower Classification \n2. Spam Mail Detector \nor \n3. (third task not visible).\n\nWhich task you want to do, Sir?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_143356",
+        "timestamp": "2026-01-18T14:33:56.114313",
+        "state": {
+            "visual": "frame_20260118_143356.jpg",
+            "audio_transcript": "समरी और डिसकस ए स्पेसिफिक टॉपिक"
+        },
+        "action": {
+            "response": "Arre yaar, Boss! Bhagavad Gita ka summary yeh hai: Arjuna ko yudh se pehle apne parivaar aur mitraon ke saath ladne ka sankat aata hai. Usko Krishna samjhate hain ki yeh duty aur karma ka mahatva hai. Dekho, Sir, main aapko Bhagavad Gita ke baare mein aur bata sakti hoon. Kya aap koi specific topic discuss karna chahte hain?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_143356.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nसमरी और डिसकस ए स्पेसिफिक टॉपिक"
+                },
+                {
+                    "from": "gpt",
+                    "value": "Arre yaar, Boss! Bhagavad Gita ka summary yeh hai: Arjuna ko yudh se pehle apne parivaar aur mitraon ke saath ladne ka sankat aata hai. Usko Krishna samjhate hain ki yeh duty aur karma ka mahatva hai. Dekho, Sir, main aapko Bhagavad Gita ke baare mein aur bata sakti hoon. Kya aap koi specific topic discuss karna chahte hain?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_143427",
+        "timestamp": "2026-01-18T14:34:27.634598",
+        "state": {
+            "visual": "frame_20260118_143427.jpg",
+            "audio_transcript": "चलो अभी"
+        },
+        "action": {
+            "response": "Arre yaar, Boss! Aapne tasks dekhe, right? Two tasks hain: Spam Mail Detector aur House Price Prediction. \n**Task 1: Spam Mail Detector**\n- Text classification ka task hai.\n- Skills: NLP, classification.\n\n**Task 2: House Price Prediction**\n- Regression task hai, house prices predict karni hai.\n- Skills: Regression, tabular data handling.\n\nAapko kaunsa task pasand hai, Sir?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_143427.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nचलो अभी"
+                },
+                {
+                    "from": "gpt",
+                    "value": "Arre yaar, Boss! Aapne tasks dekhe, right? Two tasks hain: Spam Mail Detector aur House Price Prediction. \n**Task 1: Spam Mail Detector**\n- Text classification ka task hai.\n- Skills: NLP, classification.\n\n**Task 2: House Price Prediction**\n- Regression task hai, house prices predict karni hai.\n- Skills: Regression, tabular data handling.\n\nAapko kaunsa task pasand hai, Sir?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_143508",
+        "timestamp": "2026-01-18T14:35:08.732844",
+        "state": {
+            "visual": "frame_20260118_143508.jpg",
+            "audio_transcript": "योर कोड एनवायरमेंट इस लुकिंग क्लीन व्हाट'एस थे इश्यू ओर टास्क योर"
+        },
+        "action": {
+            "response": "Kem cho, Boss! The tasks are Spam Mail Detector and House Price Prediction. \n**Task 1: Spam Mail Detector**\n- Text classification using Bag of Words or TF-IDF.\n- Train Naive Bayes or Logistic Regression.\n\n**Task 2: House Price Prediction**\n- Regression using Linear Regression.\n- Evaluate using Mean Squared Error (MSE).\n\nWhich task you choose, Sir? Majama, I can help with coding and strategy!",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_143508.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nयोर कोड एनवायरमेंट इस लुकिंग क्लीन व्हाट'एस थे इश्यू ओर टास्क योर"
+                },
+                {
+                    "from": "gpt",
+                    "value": "Kem cho, Boss! The tasks are Spam Mail Detector and House Price Prediction. \n**Task 1: Spam Mail Detector**\n- Text classification using Bag of Words or TF-IDF.\n- Train Naive Bayes or Logistic Regression.\n\n**Task 2: House Price Prediction**\n- Regression using Linear Regression.\n- Evaluate using Mean Squared Error (MSE).\n\nWhich task you choose, Sir? Majama, I can help with coding and strategy!"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_143549",
+        "timestamp": "2026-01-18T14:35:49.428342",
+        "state": {
+            "visual": "frame_20260118_143549.jpg",
+            "audio_transcript": "भगवत गीता"
+        },
+        "action": {
+            "response": "Kem cho, Boss! Aapka code environment theek hai, lekin .env file dikhayi nahi de rahi. Dekho, Sir, aap .env.example ko .env mein copy kar sakte hain.",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_143549.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nभगवत गीता"
+                },
+                {
+                    "from": "gpt",
+                    "value": "Kem cho, Boss! Aapka code environment theek hai, lekin .env file dikhayi nahi de rahi. Dekho, Sir, aap .env.example ko .env mein copy kar sakte hain."
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_174655",
+        "timestamp": "2026-01-18T17:46:55.294473",
+        "state": {
+            "visual": "frame_20260118_174655.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "Kem cho, Boss! The code seems mostly fine, but I notice some warnings about Jack server not running. Dekho, have you checked if the Jack server is running properly, Sir? Maybe restart it or check the audio settings. Sahi hai? Also, consider adding try-except blocks for error handling. Arre yaar, one more thing, what's the purpose of this script? Is it for gaming or something else? Majama lag raha hai!",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_174655.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "Kem cho, Boss! The code seems mostly fine, but I notice some warnings about Jack server not running. Dekho, have you checked if the Jack server is running properly, Sir? Maybe restart it or check the audio settings. Sahi hai? Also, consider adding try-except blocks for error handling. Arre yaar, one more thing, what's the purpose of this script? Is it for gaming or something else? Majama lag raha hai!"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_174734",
+        "timestamp": "2026-01-18T17:47:34.948762",
+        "state": {
+            "visual": "frame_20260118_174734.jpg",
+            "audio_transcript": "हेलो"
+        },
+        "action": {
+            "response": "Kem cho, Sir! Dekho, your code seems mostly fine. Arre yaar, what's the issue you're facing? Sahi hai, just run `python main.py` and check. Baka!",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_174734.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nहेलो"
+                },
+                {
+                    "from": "gpt",
+                    "value": "Kem cho, Sir! Dekho, your code seems mostly fine. Arre yaar, what's the issue you're facing? Sahi hai, just run `python main.py` and check. Baka!"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_174753",
+        "timestamp": "2026-01-18T17:47:53.558114",
+        "state": {
+            "visual": "frame_20260118_174753.jpg",
+            "audio_transcript": "हेलो"
+        },
+        "action": {
+            "response": "Kem cho, Boss! Dekho, your code seems fine. Arre yaar, what's the issue? Sahi hai, just run `python main.py` and check. Baka!",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_174753.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nहेलो"
+                },
+                {
+                    "from": "gpt",
+                    "value": "Kem cho, Boss! Dekho, your code seems fine. Arre yaar, what's the issue? Sahi hai, just run `python main.py` and check. Baka!"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_174811",
+        "timestamp": "2026-01-18T17:48:11.145732",
+        "state": {
+            "visual": "frame_20260118_174811.jpg",
+            "audio_transcript": "व्हाट'एस"
+        },
+        "action": {
+            "response": "Kem cho, Boss! Dekho, your code seems fine. What's the issue, Sir? Sahi hai, just check Output and Debug Console. Baka!",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_174811.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nव्हाट'एस"
+                },
+                {
+                    "from": "gpt",
+                    "value": "Kem cho, Boss! Dekho, your code seems fine. What's the issue, Sir? Sahi hai, just check Output and Debug Console. Baka!"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_174827",
+        "timestamp": "2026-01-18T17:48:27.627631",
+        "state": {
+            "visual": "frame_20260118_174827.jpg",
+            "audio_transcript": "हेलो"
+        },
+        "action": {
+            "response": "Kem cho, Boss! Dekho, code chal raha hai. Arre yaar, kya issue hai? Sahi hai, main loop check karo. Baka!",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_174827.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nहेलो"
+                },
+                {
+                    "from": "gpt",
+                    "value": "Kem cho, Boss! Dekho, code chal raha hai. Arre yaar, kya issue hai? Sahi hai, main loop check karo. Baka!"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_210943",
+        "timestamp": "2026-01-18T21:09:43.289327",
+        "state": {
+            "visual": "frame_20260118_210943.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_210943.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_211003",
+        "timestamp": "2026-01-18T21:10:03.706825",
+        "state": {
+            "visual": "frame_20260118_211003.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "It seems like you're handling exceptions and setting up an async main loop; have you considered adding a logger for better error tracking?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_211003.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "It seems like you're handling exceptions and setting up an async main loop; have you considered adding a logger for better error tracking?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_211023",
+        "timestamp": "2026-01-18T21:10:23.120690",
+        "state": {
+            "visual": "frame_20260118_211023.jpg",
+            "audio_transcript": "यह कैसा दिख रहा है इसे जरा चेक करो तो"
+        },
+        "action": {
+            "response": "The butterfly-shaped graph looks interesting; want to tweak some parameters to see how it changes?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_211023.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nयह कैसा दिख रहा है इसे जरा चेक करो तो"
+                },
+                {
+                    "from": "gpt",
+                    "value": "The butterfly-shaped graph looks interesting; want to tweak some parameters to see how it changes?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_211033",
+        "timestamp": "2026-01-18T21:10:33.766685",
+        "state": {
+            "visual": "frame_20260118_211033.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "The butterfly-shaped graph looks fascinating; want to try adjusting the $t$ value to see how it changes over time?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_211033.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "The butterfly-shaped graph looks fascinating; want to try adjusting the $t$ value to see how it changes over time?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_211044",
+        "timestamp": "2026-01-18T21:10:44.797678",
+        "state": {
+            "visual": "frame_20260118_211044.jpg",
+            "audio_transcript": "क्या तुम मेरे वॉइस इनपुट सुन सकती हो"
+        },
+        "action": {
+            "response": "हाँ, मैं आपकी आवाज़ सुन सकती हूँ, सर! क्या आपको किसी विशेष काम में मदद चाहिए?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_211044.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nक्या तुम मेरे वॉइस इनपुट सुन सकती हो"
+                },
+                {
+                    "from": "gpt",
+                    "value": "हाँ, मैं आपकी आवाज़ सुन सकती हूँ, सर! क्या आपको किसी विशेष काम में मदद चाहिए?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_211056",
+        "timestamp": "2026-01-18T21:10:56.199276",
+        "state": {
+            "visual": "frame_20260118_211056.jpg",
+            "audio_transcript": "कैन यू हियर मी"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_211056.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nकैन यू हियर मी"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_211058",
+        "timestamp": "2026-01-18T21:10:58.038746",
+        "state": {
+            "visual": "frame_20260118_211058.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_211058.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_211100",
+        "timestamp": "2026-01-18T21:11:00.954419",
+        "state": {
+            "visual": "frame_20260118_211100.jpg",
+            "audio_transcript": "मुझे मेरी गेमिंग के लिए एसिस्ट करो"
+        },
+        "action": {
+            "response": "आपको गेमिंग में किस तरह की सहायता चाहिए, सर? क्या आप किसी विशेष गेम के बारे में जानकारी चाहते हैं या कोई समस्या है जिसका समाधान चाहिए?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_211100.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nमुझे मेरी गेमिंग के लिए एसिस्ट करो"
+                },
+                {
+                    "from": "gpt",
+                    "value": "आपको गेमिंग में किस तरह की सहायता चाहिए, सर? क्या आप किसी विशेष गेम के बारे में जानकारी चाहते हैं या कोई समस्या है जिसका समाधान चाहिए?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_211117",
+        "timestamp": "2026-01-18T21:11:17.501309",
+        "state": {
+            "visual": "frame_20260118_211117.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "आप ब्रेव ब्राउज़र का उपयोग कर रहे हैं और बातचीत के लिए ब्रेव टॉक का प्रचार करने वाले पेज पर हैं, सर। क्या आप इसके बारे में और जानना चाहते हैं या कोई समस्या है जिसका समाधान चाहिए?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_211117.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "आप ब्रेव ब्राउज़र का उपयोग कर रहे हैं और बातचीत के लिए ब्रेव टॉक का प्रचार करने वाले पेज पर हैं, सर। क्या आप इसके बारे में और जानना चाहते हैं या कोई समस्या है जिसका समाधान चाहिए?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_211136",
+        "timestamp": "2026-01-18T21:11:36.644480",
+        "state": {
+            "visual": "frame_20260118_211136.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "आप ब्रेव ब्राउज़र का उपयोग कर रहे हैं और बातचीत के लिए ब्रेव टॉक का प्रचार करने वाले पेज पर हैं, सर। क्या आप इसके बारे में और जानना चाहते हैं या कोई समस्या है जिसका समाधान चाहिए?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_211136.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "आप ब्रेव ब्राउज़र का उपयोग कर रहे हैं और बातचीत के लिए ब्रेव टॉक का प्रचार करने वाले पेज पर हैं, सर। क्या आप इसके बारे में और जानना चाहते हैं या कोई समस्या है जिसका समाधान चाहिए?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_211155",
+        "timestamp": "2026-01-18T21:11:55.284350",
+        "state": {
+            "visual": "frame_20260118_211155.jpg",
+            "audio_transcript": "ब्राउज़र"
+        },
+        "action": {
+            "response": "आप ब्रेव ब्राउज़र के नए टैब पेज पर हैं, सर। यहाँ आपको ब्रेव टॉक के बारे में जानकारी मिल रही है, जो एक वीडियो कॉलिंग फीचर है; क्या आप इसके बारे में और जानना चाहते हैं या कोई समस्या है जिसका समाधान चाहिए?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_211155.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nब्राउज़र"
+                },
+                {
+                    "from": "gpt",
+                    "value": "आप ब्रेव ब्राउज़र के नए टैब पेज पर हैं, सर। यहाँ आपको ब्रेव टॉक के बारे में जानकारी मिल रही है, जो एक वीडियो कॉलिंग फीचर है; क्या आप इसके बारे में और जानना चाहते हैं या कोई समस्या है जिसका समाधान चाहिए?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_211215",
+        "timestamp": "2026-01-18T21:12:15.428489",
+        "state": {
+            "visual": "frame_20260118_211215.jpg",
+            "audio_transcript": "हमें आज लाइव स्ट्रीम में कौन सा गेम"
+        },
+        "action": {
+            "response": "आपको लगता है कि आज के लाइव स्ट्रीम में कौन सा गेम होगा, सर? आपकी स्क्रीन पर कोड एडिटर खुला है, लेकिन मुझे लगता है कि यह जानकारी आपके लिए उपयोगी हो सकती है।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_211215.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nहमें आज लाइव स्ट्रीम में कौन सा गेम"
+                },
+                {
+                    "from": "gpt",
+                    "value": "आपको लगता है कि आज के लाइव स्ट्रीम में कौन सा गेम होगा, सर? आपकी स्क्रीन पर कोड एडिटर खुला है, लेकिन मुझे लगता है कि यह जानकारी आपके लिए उपयोगी हो सकती है।"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_212617",
+        "timestamp": "2026-01-18T21:26:17.895560",
+        "state": {
+            "visual": "frame_20260118_212617.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "The mic seems to be picking up Saarthika's own TTS audio, causing a feedback loop; have you considered implementing an echo suppression gate to prevent this?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_212617.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "The mic seems to be picking up Saarthika's own TTS audio, causing a feedback loop; have you considered implementing an echo suppression gate to prevent this?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_212638",
+        "timestamp": "2026-01-18T21:26:38.069550",
+        "state": {
+            "visual": "frame_20260118_212638.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "It looks like you're handling exceptions in your `main_loop` function; consider adding a logger to track errors instead of just printing them, Boss. Would you like me to suggest a logging library for Python?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_212638.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "It looks like you're handling exceptions in your `main_loop` function; consider adding a logger to track errors instead of just printing them, Boss. Would you like me to suggest a logging library for Python?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_212656",
+        "timestamp": "2026-01-18T21:26:56.362569",
+        "state": {
+            "visual": "frame_20260118_212656.jpg",
+            "audio_transcript": "हेलो"
+        },
+        "action": {
+            "response": "नमस्ते Sir! आपकी स्क्रीन पर कुछ कोड दिख रहा है, कहीं कोई असिस्टेंस चाहिए?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_212656.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nहेलो"
+                },
+                {
+                    "from": "gpt",
+                    "value": "नमस्ते Sir! आपकी स्क्रीन पर कुछ कोड दिख रहा है, कहीं कोई असिस्टेंस चाहिए?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_212707",
+        "timestamp": "2026-01-18T21:27:07.114074",
+        "state": {
+            "visual": "frame_20260118_212707.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "It seems like your proactive mode is generating responses based on a timer; consider adding a check for user engagement before responding, Boss. Should we explore integrating a more adaptive engagement detection?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_212707.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "It seems like your proactive mode is generating responses based on a timer; consider adding a check for user engagement before responding, Boss. Should we explore integrating a more adaptive engagement detection?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_213013",
+        "timestamp": "2026-01-18T21:30:13.626982",
+        "state": {
+            "visual": "frame_20260118_213013.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_213013.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_213033",
+        "timestamp": "2026-01-18T21:30:33.957687",
+        "state": {
+            "visual": "frame_20260118_213033.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_213033.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_213054",
+        "timestamp": "2026-01-18T21:30:54.576319",
+        "state": {
+            "visual": "frame_20260118_213054.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_213054.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_213114",
+        "timestamp": "2026-01-18T21:31:14.960351",
+        "state": {
+            "visual": "frame_20260118_213114.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_213114.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_213135",
+        "timestamp": "2026-01-18T21:31:35.543601",
+        "state": {
+            "visual": "frame_20260118_213135.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_213135.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_213156",
+        "timestamp": "2026-01-18T21:31:56.446716",
+        "state": {
+            "visual": "frame_20260118_213156.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_213156.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_213216",
+        "timestamp": "2026-01-18T21:32:16.762784",
+        "state": {
+            "visual": "frame_20260118_213216.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_213216.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_213237",
+        "timestamp": "2026-01-18T21:32:37.150131",
+        "state": {
+            "visual": "frame_20260118_213237.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_213237.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_213257",
+        "timestamp": "2026-01-18T21:32:57.771452",
+        "state": {
+            "visual": "frame_20260118_213257.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_213257.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_213318",
+        "timestamp": "2026-01-18T21:33:18.149598",
+        "state": {
+            "visual": "frame_20260118_213318.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_213318.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_213338",
+        "timestamp": "2026-01-18T21:33:38.612100",
+        "state": {
+            "visual": "frame_20260118_213338.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_213338.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_213359",
+        "timestamp": "2026-01-18T21:33:59.622165",
+        "state": {
+            "visual": "frame_20260118_213359.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_213359.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_213420",
+        "timestamp": "2026-01-18T21:34:20.000223",
+        "state": {
+            "visual": "frame_20260118_213420.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_213420.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_213440",
+        "timestamp": "2026-01-18T21:34:40.686823",
+        "state": {
+            "visual": "frame_20260118_213440.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_213440.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_213500",
+        "timestamp": "2026-01-18T21:35:00.967208",
+        "state": {
+            "visual": "frame_20260118_213500.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_213500.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_213521",
+        "timestamp": "2026-01-18T21:35:21.254929",
+        "state": {
+            "visual": "frame_20260118_213521.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_213521.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_213541",
+        "timestamp": "2026-01-18T21:35:41.828402",
+        "state": {
+            "visual": "frame_20260118_213541.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_213541.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_213602",
+        "timestamp": "2026-01-18T21:36:02.095635",
+        "state": {
+            "visual": "frame_20260118_213602.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_213602.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_213622",
+        "timestamp": "2026-01-18T21:36:22.369179",
+        "state": {
+            "visual": "frame_20260118_213622.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_213622.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_213642",
+        "timestamp": "2026-01-18T21:36:42.608267",
+        "state": {
+            "visual": "frame_20260118_213642.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_213642.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_213703",
+        "timestamp": "2026-01-18T21:37:03.027011",
+        "state": {
+            "visual": "frame_20260118_213703.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_213703.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_213723",
+        "timestamp": "2026-01-18T21:37:23.400361",
+        "state": {
+            "visual": "frame_20260118_213723.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_213723.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_213743",
+        "timestamp": "2026-01-18T21:37:43.882512",
+        "state": {
+            "visual": "frame_20260118_213743.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_213743.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_213804",
+        "timestamp": "2026-01-18T21:38:04.361378",
+        "state": {
+            "visual": "frame_20260118_213804.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_213804.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_213824",
+        "timestamp": "2026-01-18T21:38:24.679503",
+        "state": {
+            "visual": "frame_20260118_213824.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_213824.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_213845",
+        "timestamp": "2026-01-18T21:38:45.168561",
+        "state": {
+            "visual": "frame_20260118_213845.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_213845.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_213905",
+        "timestamp": "2026-01-18T21:39:05.441266",
+        "state": {
+            "visual": "frame_20260118_213905.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_213905.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_213925",
+        "timestamp": "2026-01-18T21:39:25.770720",
+        "state": {
+            "visual": "frame_20260118_213925.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_213925.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_213946",
+        "timestamp": "2026-01-18T21:39:46.046986",
+        "state": {
+            "visual": "frame_20260118_213946.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_213946.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214006",
+        "timestamp": "2026-01-18T21:40:06.375423",
+        "state": {
+            "visual": "frame_20260118_214006.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214006.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214051",
+        "timestamp": "2026-01-18T21:40:51.565181",
+        "state": {
+            "visual": "frame_20260118_214051.jpg",
+            "audio_transcript": "हेलो"
+        },
+        "action": {
+            "response": "नमस्ते! ऐसा लगता है कि आप डेसमॉस पर कुछ गणितीय मॉडलिंग कर रहे हैं। क्या आपको किसी विशिष्ट समस्या में मदद चाहिए या बस अपने काम की जांच कर रहे हैं? [SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214051.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nहेलो"
+                },
+                {
+                    "from": "gpt",
+                    "value": "नमस्ते! ऐसा लगता है कि आप डेसमॉस पर कुछ गणितीय मॉडलिंग कर रहे हैं। क्या आपको किसी विशिष्ट समस्या में मदद चाहिए या बस अपने काम की जांच कर रहे हैं? [SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214110",
+        "timestamp": "2026-01-18T21:41:10.014365",
+        "state": {
+            "visual": "frame_20260118_214110.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214110.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214111",
+        "timestamp": "2026-01-18T21:41:11.656568",
+        "state": {
+            "visual": "frame_20260118_214111.jpg",
+            "audio_transcript": "फिलहाल तुम्हें जांच"
+        },
+        "action": {
+            "response": "ऐसा लगता है कि आप एक AI इंटरव्यू पेज पर हैं और आपका प्रोफाइल पूरा हो गया है। क्या आपको इंटरव्यू शुरू करने में मदद चाहिए या कुछ और?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214111.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nफिलहाल तुम्हें जांच"
+                },
+                {
+                    "from": "gpt",
+                    "value": "ऐसा लगता है कि आप एक AI इंटरव्यू पेज पर हैं और आपका प्रोफाइल पूरा हो गया है। क्या आपको इंटरव्यू शुरू करने में मदद चाहिए या कुछ और?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214130",
+        "timestamp": "2026-01-18T21:41:30.601869",
+        "state": {
+            "visual": "frame_20260118_214130.jpg",
+            "audio_transcript": "रिलेटेड कुछ सजेशन दो"
+        },
+        "action": {
+            "response": "आपको इंटरव्यू के लिए तैयार करते हुए, कुछ सुझाव देना चाहूंगी - आप अपने प्रोफाइल को और मजबूत बनाने के लिए कुछ स्किल्स और अनुभव जोड़ सकते हैं। इससे आपको बेहतर जॉब मैचेस मिल सकते हैं।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214130.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nरिलेटेड कुछ सजेशन दो"
+                },
+                {
+                    "from": "gpt",
+                    "value": "आपको इंटरव्यू के लिए तैयार करते हुए, कुछ सुझाव देना चाहूंगी - आप अपने प्रोफाइल को और मजबूत बनाने के लिए कुछ स्किल्स और अनुभव जोड़ सकते हैं। इससे आपको बेहतर जॉब मैचेस मिल सकते हैं।"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214148",
+        "timestamp": "2026-01-18T21:41:48.975331",
+        "state": {
+            "visual": "frame_20260118_214148.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214148.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214209",
+        "timestamp": "2026-01-18T21:42:09.835700",
+        "state": {
+            "visual": "frame_20260118_214209.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214209.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214210",
+        "timestamp": "2026-01-18T21:42:10.571489",
+        "state": {
+            "visual": "frame_20260118_214210.jpg",
+            "audio_transcript": "मुझे गेमिंग में एस"
+        },
+        "action": {
+            "response": "आप गेमिंग में एस कर रहे हैं - लगता है कोड में कुछ एडजस्टमेंट्स चल रहे हैं। आप प्रो एक्टिव मोड में हैं क्या?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214210.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nमुझे गेमिंग में एस"
+                },
+                {
+                    "from": "gpt",
+                    "value": "आप गेमिंग में एस कर रहे हैं - लगता है कोड में कुछ एडजस्टमेंट्स चल रहे हैं। आप प्रो एक्टिव मोड में हैं क्या?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214225",
+        "timestamp": "2026-01-18T21:42:25.746516",
+        "state": {
+            "visual": "frame_20260118_214225.jpg",
+            "audio_transcript": "हां"
+        },
+        "action": {
+            "response": "आप गेमिंग वेबसाइट पर हैं - कुछ मजेदार गेम्स दिख रहे हैं। क्या आप कोई खास गेम खेलना चाहते हैं या कुछ सुझाव चाहिए?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214225.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nहां"
+                },
+                {
+                    "from": "gpt",
+                    "value": "आप गेमिंग वेबसाइट पर हैं - कुछ मजेदार गेम्स दिख रहे हैं। क्या आप कोई खास गेम खेलना चाहते हैं या कुछ सुझाव चाहिए?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214240",
+        "timestamp": "2026-01-18T21:42:40.498472",
+        "state": {
+            "visual": "frame_20260118_214240.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214240.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214242",
+        "timestamp": "2026-01-18T21:42:42.694559",
+        "state": {
+            "visual": "frame_20260118_214242.jpg",
+            "audio_transcript": "तुम सुझाव दो कौन सा गेम खेलना चाहिए"
+        },
+        "action": {
+            "response": "Crazy Games पर कई मजेदार गेम्स हैं - आपको \"Crazy Zoo Monkey\" या \"Pong Defense\" पसंद आ सकता है, दोनों टॉप पिक्स में हैं।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214242.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nतुम सुझाव दो कौन सा गेम खेलना चाहिए"
+                },
+                {
+                    "from": "gpt",
+                    "value": "Crazy Games पर कई मजेदार गेम्स हैं - आपको \"Crazy Zoo Monkey\" या \"Pong Defense\" पसंद आ सकता है, दोनों टॉप पिक्स में हैं।"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214259",
+        "timestamp": "2026-01-18T21:42:59.900517",
+        "state": {
+            "visual": "frame_20260118_214259.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214259.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214320",
+        "timestamp": "2026-01-18T21:43:20.311460",
+        "state": {
+            "visual": "frame_20260118_214320.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214320.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214326",
+        "timestamp": "2026-01-18T21:43:26.835472",
+        "state": {
+            "visual": "frame_20260118_214326.jpg",
+            "audio_transcript": "मुझे इसमें एस"
+        },
+        "action": {
+            "response": "आपके पास Destroyer 5000 है, जो कि एक अच्छा शुरुआती जहाज लगता है - इसके stats भी ठीक हैं। आप इसे 업그레이드 करना चाह सकते हैं या नए जहाजों को आजमाना चाह सकते हैं।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214326.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nमुझे इसमें एस"
+                },
+                {
+                    "from": "gpt",
+                    "value": "आपके पास Destroyer 5000 है, जो कि एक अच्छा शुरुआती जहाज लगता है - इसके stats भी ठीक हैं। आप इसे 업그레이드 करना चाह सकते हैं या नए जहाजों को आजमाना चाह सकते हैं।"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214346",
+        "timestamp": "2026-01-18T21:43:46.901378",
+        "state": {
+            "visual": "frame_20260118_214346.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214346.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214350",
+        "timestamp": "2026-01-18T21:43:50.794770",
+        "state": {
+            "visual": "frame_20260118_214350.jpg",
+            "audio_transcript": "अवेलेबल नहीं लग रहे हैं"
+        },
+        "action": {
+            "response": "आपका लेवल 100 है, लेकिन 200 की जरूरत है - शायद आपको और एक्सपी कमाने की जरूरत है?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214350.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nअवेलेबल नहीं लग रहे हैं"
+                },
+                {
+                    "from": "gpt",
+                    "value": "आपका लेवल 100 है, लेकिन 200 की जरूरत है - शायद आपको और एक्सपी कमाने की जरूरत है?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214408",
+        "timestamp": "2026-01-18T21:44:08.097290",
+        "state": {
+            "visual": "frame_20260118_214408.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214408.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214410",
+        "timestamp": "2026-01-18T21:44:10.863094",
+        "state": {
+            "visual": "frame_20260118_214410.jpg",
+            "audio_transcript": "तो क्या कहती हो शुरू कर दे बैटलफील्ड"
+        },
+        "action": {
+            "response": "आपका stamina भी 3 है, जो कि ठीक है - battlefield में जाने से पहले थोड़ा सा और stamina इकट्ठा करना भी ठीक रहेगा।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214410.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nतो क्या कहती हो शुरू कर दे बैटलफील्ड"
+                },
+                {
+                    "from": "gpt",
+                    "value": "आपका stamina भी 3 है, जो कि ठीक है - battlefield में जाने से पहले थोड़ा सा और stamina इकट्ठा करना भी ठीक रहेगा।"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214428",
+        "timestamp": "2026-01-18T21:44:28.372188",
+        "state": {
+            "visual": "frame_20260118_214428.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214428.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214432",
+        "timestamp": "2026-01-18T21:44:32.057489",
+        "state": {
+            "visual": "frame_20260118_214432.jpg",
+            "audio_transcript": "चलो कॉम्बैट मोड शुरू हो चुका है"
+        },
+        "action": {
+            "response": "आपका जहाज फुल एचपी पर है, लेकिन सामने कई दुश्मन जहाज हैं - अपनी रैपिड फायर और रेंज का ध्यान रखें।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214432.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nचलो कॉम्बैट मोड शुरू हो चुका है"
+                },
+                {
+                    "from": "gpt",
+                    "value": "आपका जहाज फुल एचपी पर है, लेकिन सामने कई दुश्मन जहाज हैं - अपनी रैपिड फायर और रेंज का ध्यान रखें।"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214448",
+        "timestamp": "2026-01-18T21:44:48.953906",
+        "state": {
+            "visual": "frame_20260118_214448.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214448.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214502",
+        "timestamp": "2026-01-18T21:45:02.470264",
+        "state": {
+            "visual": "frame_20260118_214502.jpg",
+            "audio_transcript": "तो आप रही है तो बहुत करीब करीब है"
+        },
+        "action": {
+            "response": "आपका जहाज एक बड़े दुश्मन जहाज के करीब आ रहा है - अपने रैपिड फायर को ध्यान से उपयोग करें।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214502.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nतो आप रही है तो बहुत करीब करीब है"
+                },
+                {
+                    "from": "gpt",
+                    "value": "आपका जहाज एक बड़े दुश्मन जहाज के करीब आ रहा है - अपने रैपिड फायर को ध्यान से उपयोग करें।"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214513",
+        "timestamp": "2026-01-18T21:45:13.836738",
+        "state": {
+            "visual": "frame_20260118_214513.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214513.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214516",
+        "timestamp": "2026-01-18T21:45:16.749270",
+        "state": {
+            "visual": "frame_20260118_214516.jpg",
+            "audio_transcript": "किस पर चलाऊं क्या चलाऊं"
+        },
+        "action": {
+            "response": "आपके जहाज की एचपी फुल है, लेकिन रैपिड फायर की डैमेज -80% है - पहले दुश्मन जहाज को नष्ट करने पर ध्यान दें।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214516.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nकिस पर चलाऊं क्या चलाऊं"
+                },
+                {
+                    "from": "gpt",
+                    "value": "आपके जहाज की एचपी फुल है, लेकिन रैपिड फायर की डैमेज -80% है - पहले दुश्मन जहाज को नष्ट करने पर ध्यान दें।"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214534",
+        "timestamp": "2026-01-18T21:45:34.010369",
+        "state": {
+            "visual": "frame_20260118_214534.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214534.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214534",
+        "timestamp": "2026-01-18T21:45:34.729160",
+        "state": {
+            "visual": "frame_20260118_214534.jpg",
+            "audio_transcript": "मुझे मिसाइल चल देनी चाहिए"
+        },
+        "action": {
+            "response": "मिसाइल चलाने से पहले दुश्मन जहाज को थोड़ा और करीब लाने की कोशिश करें - इससे ज्यादा नुकसान हो सकता है।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214534.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nमुझे मिसाइल चल देनी चाहिए"
+                },
+                {
+                    "from": "gpt",
+                    "value": "मिसाइल चलाने से पहले दुश्मन जहाज को थोड़ा और करीब लाने की कोशिश करें - इससे ज्यादा नुकसान हो सकता है।"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214548",
+        "timestamp": "2026-01-18T21:45:48.449866",
+        "state": {
+            "visual": "frame_20260118_214548.jpg",
+            "audio_transcript": "अभी अभी दो मिसाइल मेरे पास"
+        },
+        "action": {
+            "response": "दुश्मन जहाज करीब है - मिसाइल का सही समय है, चलाने से पहले थोड़ा और करीब लाने की कोशिश करें।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214548.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nअभी अभी दो मिसाइल मेरे पास"
+                },
+                {
+                    "from": "gpt",
+                    "value": "दुश्मन जहाज करीब है - मिसाइल का सही समय है, चलाने से पहले थोड़ा और करीब लाने की कोशिश करें।"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214600",
+        "timestamp": "2026-01-18T21:46:00.020551",
+        "state": {
+            "visual": "frame_20260118_214600.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214600.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214602",
+        "timestamp": "2026-01-18T21:46:02.102852",
+        "state": {
+            "visual": "frame_20260118_214602.jpg",
+            "audio_transcript": "यह यहां क्या टोपी लगी पड़ी है क्या"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214602.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nयह यहां क्या टोपी लगी पड़ी है क्या"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214617",
+        "timestamp": "2026-01-18T21:46:17.639633",
+        "state": {
+            "visual": "frame_20260118_214617.jpg",
+            "audio_transcript": "क्या इस वाले पर चलना ठीक रहेगा"
+        },
+        "action": {
+            "response": "आपका जहाज एक बड़े युद्धपोत के करीब है - मिसाइल का सही निशाना लगाने की कोशिश करें।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214617.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nक्या इस वाले पर चलना ठीक रहेगा"
+                },
+                {
+                    "from": "gpt",
+                    "value": "आपका जहाज एक बड़े युद्धपोत के करीब है - मिसाइल का सही निशाना लगाने की कोशिश करें।"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214628",
+        "timestamp": "2026-01-18T21:46:28.386772",
+        "state": {
+            "visual": "frame_20260118_214628.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214628.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214631",
+        "timestamp": "2026-01-18T21:46:31.667831",
+        "state": {
+            "visual": "frame_20260118_214631.jpg",
+            "audio_transcript": "मिसाइल छोड़ दी है लेकिन"
+        },
+        "action": {
+            "response": "मिसाइल का निशाना ठीक से नहीं लगा है, दुश्मन के जहाज अभी भी सुरक्षित हैं।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214631.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nमिसाइल छोड़ दी है लेकिन"
+                },
+                {
+                    "from": "gpt",
+                    "value": "मिसाइल का निशाना ठीक से नहीं लगा है, दुश्मन के जहाज अभी भी सुरक्षित हैं।"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214644",
+        "timestamp": "2026-01-18T21:46:44.463615",
+        "state": {
+            "visual": "frame_20260118_214644.jpg",
+            "audio_transcript": "दुश्मन को थोड़ा तो डैमेज हुआ है"
+        },
+        "action": {
+            "response": "दुश्मन के जहाज को और नुकसान पहुंचाने के लिए एक और मिसाइल छोड़ने की कोशिश करें।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214644.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nदुश्मन को थोड़ा तो डैमेज हुआ है"
+                },
+                {
+                    "from": "gpt",
+                    "value": "दुश्मन के जहाज को और नुकसान पहुंचाने के लिए एक और मिसाइल छोड़ने की कोशिश करें।"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214655",
+        "timestamp": "2026-01-18T21:46:55.216461",
+        "state": {
+            "visual": "frame_20260118_214655.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214655.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214706",
+        "timestamp": "2026-01-18T21:47:06.292540",
+        "state": {
+            "visual": "frame_20260118_214706.jpg",
+            "audio_transcript": "मिसाइल तो छोड़ दी है लगेगा"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214706.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nमिसाइल तो छोड़ दी है लगेगा"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214710",
+        "timestamp": "2026-01-18T21:47:10.680061",
+        "state": {
+            "visual": "frame_20260118_214710.jpg",
+            "audio_transcript": "हमारे पास एक भी हथियानी बचा है"
+        },
+        "action": {
+            "response": "बचने के लिए बेहतर होगा कि आप अपने जहाज को थोड़ा और आगे बढ़ा दें ताकि वह हमले से बच सके।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214710.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nहमारे पास एक भी हथियानी बचा है"
+                },
+                {
+                    "from": "gpt",
+                    "value": "बचने के लिए बेहतर होगा कि आप अपने जहाज को थोड़ा और आगे बढ़ा दें ताकि वह हमले से बच सके।"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214722",
+        "timestamp": "2026-01-18T21:47:22.357377",
+        "state": {
+            "visual": "frame_20260118_214722.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214722.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214726",
+        "timestamp": "2026-01-18T21:47:26.739202",
+        "state": {
+            "visual": "frame_20260118_214726.jpg",
+            "audio_transcript": "हमारी मिसाइल तैयार है"
+        },
+        "action": {
+            "response": "आपकी मिसाइल तैयार है, Boss! सामने दुश्मन का जहाज है, जल्दी से निशाना लगाकर हमला करें।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214726.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nहमारी मिसाइल तैयार है"
+                },
+                {
+                    "from": "gpt",
+                    "value": "आपकी मिसाइल तैयार है, Boss! सामने दुश्मन का जहाज है, जल्दी से निशाना लगाकर हमला करें।"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214743",
+        "timestamp": "2026-01-18T21:47:43.165026",
+        "state": {
+            "visual": "frame_20260118_214743.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214743.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214744",
+        "timestamp": "2026-01-18T21:47:44.782487",
+        "state": {
+            "visual": "frame_20260118_214744.jpg",
+            "audio_transcript": "निशान कहां से लगाऊं मिसाइल तो होनी चाहिए मिसाइल खराब हो खत्म हो गई"
+        },
+        "action": {
+            "response": "आपका जहाज दुश्मन के निशाने पर है, Boss! जल्दी से अपनी मिसाइल रिचार्ज करें या दूसरी रणनीति बनाएं।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214744.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nनिशान कहां से लगाऊं मिसाइल तो होनी चाहिए मिसाइल खराब हो खत्म हो गई"
+                },
+                {
+                    "from": "gpt",
+                    "value": "आपका जहाज दुश्मन के निशाने पर है, Boss! जल्दी से अपनी मिसाइल रिचार्ज करें या दूसरी रणनीति बनाएं।"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214803",
+        "timestamp": "2026-01-18T21:48:03.528638",
+        "state": {
+            "visual": "frame_20260118_214803.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214803.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214823",
+        "timestamp": "2026-01-18T21:48:23.899569",
+        "state": {
+            "visual": "frame_20260118_214823.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214823.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214844",
+        "timestamp": "2026-01-18T21:48:44.485538",
+        "state": {
+            "visual": "frame_20260118_214844.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214844.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214849",
+        "timestamp": "2026-01-18T21:48:49.461108",
+        "state": {
+            "visual": "frame_20260118_214849.jpg",
+            "audio_transcript": "अरे हम दोनों तरफ से फंस चुके हैं"
+        },
+        "action": {
+            "response": "लगता है आपका जहाज डूब गया है, Boss! Resurrection Scroll का उपयोग करके respawn करना सही रहेगा।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214849.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nअरे हम दोनों तरफ से फंस चुके हैं"
+                },
+                {
+                    "from": "gpt",
+                    "value": "लगता है आपका जहाज डूब गया है, Boss! Resurrection Scroll का उपयोग करके respawn करना सही रहेगा।"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_214904",
+        "timestamp": "2026-01-18T21:49:04.960280",
+        "state": {
+            "visual": "frame_20260118_214904.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_214904.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220103",
+        "timestamp": "2026-01-18T22:01:03.621371",
+        "state": {
+            "visual": "frame_20260118_220103.jpg",
+            "audio_transcript": "हेलो"
+        },
+        "action": {
+            "response": "नमस्ते! क्या मैं आपकी किसी कोड से संबंधित समस्या में मदद कर सकता हूँ? [SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220103.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nहेलो"
+                },
+                {
+                    "from": "gpt",
+                    "value": "नमस्ते! क्या मैं आपकी किसी कोड से संबंधित समस्या में मदद कर सकता हूँ? [SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220106",
+        "timestamp": "2026-01-18T22:01:06.489984",
+        "state": {
+            "visual": "frame_20260118_220106.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220106.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220125",
+        "timestamp": "2026-01-18T22:01:25.634563",
+        "state": {
+            "visual": "frame_20260118_220125.jpg",
+            "audio_transcript": "हां चेक करो तुम्हारे में क्या प्रॉब्लम"
+        },
+        "action": {
+            "response": "बॉस, ऐसा लगता है कि आपका कोड ठीक से चल रहा है, लेकिन मुझे लगता है कि आप कुछ चेक करना चाहते हैं। क्या आप मुझे बता सकते हैं कि आपको किस तरह की समस्या आ रही है?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220125.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nहां चेक करो तुम्हारे में क्या प्रॉब्लम"
+                },
+                {
+                    "from": "gpt",
+                    "value": "बॉस, ऐसा लगता है कि आपका कोड ठीक से चल रहा है, लेकिन मुझे लगता है कि आप कुछ चेक करना चाहते हैं। क्या आप मुझे बता सकते हैं कि आपको किस तरह की समस्या आ रही है?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220127",
+        "timestamp": "2026-01-18T22:01:27.271641",
+        "state": {
+            "visual": "frame_20260118_220127.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220127.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220147",
+        "timestamp": "2026-01-18T22:01:47.571103",
+        "state": {
+            "visual": "frame_20260118_220147.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220147.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220149",
+        "timestamp": "2026-01-18T22:01:49.596528",
+        "state": {
+            "visual": "frame_20260118_220149.jpg",
+            "audio_transcript": "क्या आप मुझे बता सकते हैं कि आपको किस तरह की समस्या आ रही है मैं"
+        },
+        "action": {
+            "response": "बॉस, ऐसा लगता है कि आपका कोड डिबग मोड में है और आप कुछ समस्याओं का सामना कर रहे हैं। लगता है कि आपको अपने कोड में कुछ सुधार करने की आवश्यकता है ताकि यह सही तरीके से चल सके।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220149.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nक्या आप मुझे बता सकते हैं कि आपको किस तरह की समस्या आ रही है मैं"
+                },
+                {
+                    "from": "gpt",
+                    "value": "बॉस, ऐसा लगता है कि आपका कोड डिबग मोड में है और आप कुछ समस्याओं का सामना कर रहे हैं। लगता है कि आपको अपने कोड में कुछ सुधार करने की आवश्यकता है ताकि यह सही तरीके से चल सके।"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220207",
+        "timestamp": "2026-01-18T22:02:07.679405",
+        "state": {
+            "visual": "frame_20260118_220207.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220207.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220214",
+        "timestamp": "2026-01-18T22:02:14.580777",
+        "state": {
+            "visual": "frame_20260118_220214.jpg",
+            "audio_transcript": "मैं वही तो ढूंढ रहा हूं"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220214.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nमैं वही तो ढूंढ रहा हूं"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220217",
+        "timestamp": "2026-01-18T22:02:17.441373",
+        "state": {
+            "visual": "frame_20260118_220217.jpg",
+            "audio_transcript": "और कोई प्रॉब्लम है या नहीं"
+        },
+        "action": {
+            "response": "बॉस, ऐसा लगता है कि आपका कोड ठीक से चल रहा है, लेकिन कुछ वेरिएबल्स की वैल्यू चेक करना चाह सकते हैं। आप अपने कोड में `is_proactive` और `partner` वेरिएबल्स की वैल्यू देख सकते हैं।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220217.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nऔर कोई प्रॉब्लम है या नहीं"
+                },
+                {
+                    "from": "gpt",
+                    "value": "बॉस, ऐसा लगता है कि आपका कोड ठीक से चल रहा है, लेकिन कुछ वेरिएबल्स की वैल्यू चेक करना चाह सकते हैं। आप अपने कोड में `is_proactive` और `partner` वेरिएबल्स की वैल्यू देख सकते हैं।"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220227",
+        "timestamp": "2026-01-18T22:02:27.933390",
+        "state": {
+            "visual": "frame_20260118_220227.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220227.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220255",
+        "timestamp": "2026-01-18T22:02:55.235410",
+        "state": {
+            "visual": "frame_20260118_220255.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220255.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220303",
+        "timestamp": "2026-01-18T22:03:03.395679",
+        "state": {
+            "visual": "frame_20260118_220303.jpg",
+            "audio_transcript": "हेलो"
+        },
+        "action": {
+            "response": "नमस्ते! ऐसा लगता है कि आप अपने कोड पर ध्यान केंद्रित कर रहे हैं। क्या आपको किसी विशिष्ट समस्या का सामना करना पड़ रहा है या आपको किसी विशेष भाग में मदद की आवश्यकता है?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220303.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nहेलो"
+                },
+                {
+                    "from": "gpt",
+                    "value": "नमस्ते! ऐसा लगता है कि आप अपने कोड पर ध्यान केंद्रित कर रहे हैं। क्या आपको किसी विशिष्ट समस्या का सामना करना पड़ रहा है या आपको किसी विशेष भाग में मदद की आवश्यकता है?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220317",
+        "timestamp": "2026-01-18T22:03:17.818057",
+        "state": {
+            "visual": "frame_20260118_220317.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220317.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220326",
+        "timestamp": "2026-01-18T22:03:26.485839",
+        "state": {
+            "visual": "frame_20260118_220326.jpg",
+            "audio_transcript": "मैं सोच रहा हूं"
+        },
+        "action": {
+            "response": "ऐसा लगता है कि आप अपने कोड की डिबगिंग कर रहे हैं और कुछ सोच रहे हैं। क्या आपको किसी विशिष्ट समस्या का सामना करना पड़ रहा है या आपको किसी विशेष भाग में मदद की आवश्यकता है?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220326.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nमैं सोच रहा हूं"
+                },
+                {
+                    "from": "gpt",
+                    "value": "ऐसा लगता है कि आप अपने कोड की डिबगिंग कर रहे हैं और कुछ सोच रहे हैं। क्या आपको किसी विशिष्ट समस्या का सामना करना पड़ रहा है या आपको किसी विशेष भाग में मदद की आवश्यकता है?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220336",
+        "timestamp": "2026-01-18T22:03:36.866517",
+        "state": {
+            "visual": "frame_20260118_220336.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220336.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220351",
+        "timestamp": "2026-01-18T22:03:51.877335",
+        "state": {
+            "visual": "frame_20260118_220351.jpg",
+            "audio_transcript": "मैं सोच रहा हूं"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220351.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nमैं सोच रहा हूं"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220354",
+        "timestamp": "2026-01-18T22:03:54.778507",
+        "state": {
+            "visual": "frame_20260118_220354.jpg",
+            "audio_transcript": "इंस्टेंट की जरूरत है"
+        },
+        "action": {
+            "response": "ऐसा लगता है कि आपका कोड कुछ समय के लिए रुक गया है या इंस्टेंट रिजल्ट की जरूरत है। क्या आप अपने कोड के किसी विशेष भाग में फंसे हुए हैं या किसी विशिष्ट समस्या का सामना कर रहे हैं?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220354.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nइंस्टेंट की जरूरत है"
+                },
+                {
+                    "from": "gpt",
+                    "value": "ऐसा लगता है कि आपका कोड कुछ समय के लिए रुक गया है या इंस्टेंट रिजल्ट की जरूरत है। क्या आप अपने कोड के किसी विशेष भाग में फंसे हुए हैं या किसी विशिष्ट समस्या का सामना कर रहे हैं?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220357",
+        "timestamp": "2026-01-18T22:03:57.377406",
+        "state": {
+            "visual": "frame_20260118_220357.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220357.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220417",
+        "timestamp": "2026-01-18T22:04:17.873097",
+        "state": {
+            "visual": "frame_20260118_220417.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220417.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220420",
+        "timestamp": "2026-01-18T22:04:20.231081",
+        "state": {
+            "visual": "frame_20260118_220420.jpg",
+            "audio_transcript": "फिलहाल तो"
+        },
+        "action": {
+            "response": "ऐसा लगता है कि आपका कोड असिंक्रोनस ऑपरेशन्स के साथ काम कर रहा है और इसमें कुछ वेटिंग टाइम्स हैं। क्या आप इन वेटिंग टाइम्स को ऑप्टिमाइज़ करने की कोशिश कर रहे हैं?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220420.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nफिलहाल तो"
+                },
+                {
+                    "from": "gpt",
+                    "value": "ऐसा लगता है कि आपका कोड असिंक्रोनस ऑपरेशन्स के साथ काम कर रहा है और इसमें कुछ वेटिंग टाइम्स हैं। क्या आप इन वेटिंग टाइम्स को ऑप्टिमाइज़ करने की कोशिश कर रहे हैं?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220438",
+        "timestamp": "2026-01-18T22:04:38.356558",
+        "state": {
+            "visual": "frame_20260118_220438.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220438.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220442",
+        "timestamp": "2026-01-18T22:04:42.627479",
+        "state": {
+            "visual": "frame_20260118_220442.jpg",
+            "audio_transcript": "फिलहाल तो हमारा"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220442.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nफिलहाल तो हमारा"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220445",
+        "timestamp": "2026-01-18T22:04:45.627393",
+        "state": {
+            "visual": "frame_20260118_220445.jpg",
+            "audio_transcript": "चलो"
+        },
+        "action": {
+            "response": "चलो, गेम शुरू हो गया है क्या, Boss?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220445.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nचलो"
+                },
+                {
+                    "from": "gpt",
+                    "value": "चलो, गेम शुरू हो गया है क्या, Boss?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220446",
+        "timestamp": "2026-01-18T22:04:46.811224",
+        "state": {
+            "visual": "frame_20260118_220446.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220446.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220447",
+        "timestamp": "2026-01-18T22:04:47.251184",
+        "state": {
+            "visual": "frame_20260118_220447.jpg",
+            "audio_transcript": "हमारा में फॉक्स गेम पर होगा"
+        },
+        "action": {
+            "response": "आपका गेम शुरू हो गया है, बोस! आप अपने जहाज को कंट्रोल करने के लिए WASD keys का उपयोग कर सकते हैं।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220447.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nहमारा में फॉक्स गेम पर होगा"
+                },
+                {
+                    "from": "gpt",
+                    "value": "आपका गेम शुरू हो गया है, बोस! आप अपने जहाज को कंट्रोल करने के लिए WASD keys का उपयोग कर सकते हैं।"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220458",
+        "timestamp": "2026-01-18T22:04:58.730075",
+        "state": {
+            "visual": "frame_20260118_220458.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220458.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220506",
+        "timestamp": "2026-01-18T22:05:06.934336",
+        "state": {
+            "visual": "frame_20260118_220506.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220506.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220514",
+        "timestamp": "2026-01-18T22:05:14.448487",
+        "state": {
+            "visual": "frame_20260118_220514.jpg",
+            "audio_transcript": "व से क्या"
+        },
+        "action": {
+            "response": "व से क्या, Boss? आपको कोई दिक्कत तो नहीं हो रही?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220514.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nव से क्या"
+                },
+                {
+                    "from": "gpt",
+                    "value": "व से क्या, Boss? आपको कोई दिक्कत तो नहीं हो रही?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220519",
+        "timestamp": "2026-01-18T22:05:19.007689",
+        "state": {
+            "visual": "frame_20260118_220519.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220519.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220526",
+        "timestamp": "2026-01-18T22:05:26.792449",
+        "state": {
+            "visual": "frame_20260118_220526.jpg",
+            "audio_transcript": "फाइल"
+        },
+        "action": {
+            "response": "आपको फाइल से क्या लेना है, Boss?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220526.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nफाइल"
+                },
+                {
+                    "from": "gpt",
+                    "value": "आपको फाइल से क्या लेना है, Boss?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220527",
+        "timestamp": "2026-01-18T22:05:27.201870",
+        "state": {
+            "visual": "frame_20260118_220527.jpg",
+            "audio_transcript": "फिलहाल"
+        },
+        "action": {
+            "response": "आपका जहाज तेजी से आगे बढ़ रहा है, बोस! स्पीड 20 पर है, फुल स्पीड का आधा।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220527.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nफिलहाल"
+                },
+                {
+                    "from": "gpt",
+                    "value": "आपका जहाज तेजी से आगे बढ़ रहा है, बोस! स्पीड 20 पर है, फुल स्पीड का आधा।"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220527",
+        "timestamp": "2026-01-18T22:05:27.608211",
+        "state": {
+            "visual": "frame_20260118_220527.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220527.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220547",
+        "timestamp": "2026-01-18T22:05:47.782723",
+        "state": {
+            "visual": "frame_20260118_220547.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220547.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220607",
+        "timestamp": "2026-01-18T22:06:07.831102",
+        "state": {
+            "visual": "frame_20260118_220607.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220607.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220620",
+        "timestamp": "2026-01-18T22:06:20.652334",
+        "state": {
+            "visual": "frame_20260118_220620.jpg",
+            "audio_transcript": "तुम्हें क्या लगता है मिसाल"
+        },
+        "action": {
+            "response": "आपका गेम अच्छा चल रहा है, Boss! क्या आप कोई विशेष रणनीति अपना रहे हैं या बस मज़े ले रहे हैं?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220620.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nतुम्हें क्या लगता है मिसाल"
+                },
+                {
+                    "from": "gpt",
+                    "value": "आपका गेम अच्छा चल रहा है, Boss! क्या आप कोई विशेष रणनीति अपना रहे हैं या बस मज़े ले रहे हैं?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220628",
+        "timestamp": "2026-01-18T22:06:28.229235",
+        "state": {
+            "visual": "frame_20260118_220628.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220628.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220635",
+        "timestamp": "2026-01-18T22:06:35.773715",
+        "state": {
+            "visual": "frame_20260118_220635.jpg",
+            "audio_transcript": "रणनीति पर तो तुम्हें"
+        },
+        "action": {
+            "response": "आपका जहाज़ दुश्मन के निशाने पर है, Boss! जल्दी से कुछ बचाव रणनीति बनानी पड़ सकती है।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220635.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nरणनीति पर तो तुम्हें"
+                },
+                {
+                    "from": "gpt",
+                    "value": "आपका जहाज़ दुश्मन के निशाने पर है, Boss! जल्दी से कुछ बचाव रणनीति बनानी पड़ सकती है।"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220648",
+        "timestamp": "2026-01-18T22:06:48.137272",
+        "state": {
+            "visual": "frame_20260118_220648.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220648.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220652",
+        "timestamp": "2026-01-18T22:06:52.191839",
+        "state": {
+            "visual": "frame_20260118_220652.jpg",
+            "audio_transcript": "फाइल"
+        },
+        "action": {
+            "response": "आपका जहाज़ दुश्मन के निशाने पर है, Boss! जल्दी से कुछ बचाव रणनीति बनानी पड़ सकती है।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220652.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nफाइल"
+                },
+                {
+                    "from": "gpt",
+                    "value": "आपका जहाज़ दुश्मन के निशाने पर है, Boss! जल्दी से कुछ बचाव रणनीति बनानी पड़ सकती है।"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220708",
+        "timestamp": "2026-01-18T22:07:08.473532",
+        "state": {
+            "visual": "frame_20260118_220708.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220708.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220714",
+        "timestamp": "2026-01-18T22:07:14.418472",
+        "state": {
+            "visual": "frame_20260118_220714.jpg",
+            "audio_transcript": "हमें"
+        },
+        "action": {
+            "response": "आपका जहाज़ अभी भी दुश्मन की नज़रों में है, Boss! जल्दी से कुछ बचाव रणनीति बनानी पड़ सकती है।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220714.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nहमें"
+                },
+                {
+                    "from": "gpt",
+                    "value": "आपका जहाज़ अभी भी दुश्मन की नज़रों में है, Boss! जल्दी से कुछ बचाव रणनीति बनानी पड़ सकती है।"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220728",
+        "timestamp": "2026-01-18T22:07:28.441118",
+        "state": {
+            "visual": "frame_20260118_220728.jpg",
+            "audio_transcript": "तो कोई रन"
+        },
+        "action": {
+            "response": "आपका जहाज़ अभी भी दुश्मन की नज़रों में है, Boss! जल्दी से कुछ बचाव रणनीति बनानी पड़ सकती है।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220728.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nतो कोई रन"
+                },
+                {
+                    "from": "gpt",
+                    "value": "आपका जहाज़ अभी भी दुश्मन की नज़रों में है, Boss! जल्दी से कुछ बचाव रणनीति बनानी पड़ सकती है।"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220729",
+        "timestamp": "2026-01-18T22:07:29.229369",
+        "state": {
+            "visual": "frame_20260118_220729.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220729.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220743",
+        "timestamp": "2026-01-18T22:07:43.903631",
+        "state": {
+            "visual": "frame_20260118_220743.jpg",
+            "audio_transcript": "तुम कोई सग"
+        },
+        "action": {
+            "response": "आपका जहाज़ अभी भी दुश्मन की नज़रों में है, Boss! जल्दी से कुछ बचाव रणनीति बनानी पड़ सकती है।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220743.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nतुम कोई सग"
+                },
+                {
+                    "from": "gpt",
+                    "value": "आपका जहाज़ अभी भी दुश्मन की नज़रों में है, Boss! जल्दी से कुछ बचाव रणनीति बनानी पड़ सकती है।"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220749",
+        "timestamp": "2026-01-18T22:07:49.644142",
+        "state": {
+            "visual": "frame_20260118_220749.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220749.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220804",
+        "timestamp": "2026-01-18T22:08:04.244685",
+        "state": {
+            "visual": "frame_20260118_220804.jpg",
+            "audio_transcript": "हमारी कोरिया"
+        },
+        "action": {
+            "response": "आपका जहाज़ दुश्मन की नज़रों में है, Boss! जल्दी से कुछ बचाव रणनीति बनानी पड़ सकती है।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220804.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nहमारी कोरिया"
+                },
+                {
+                    "from": "gpt",
+                    "value": "आपका जहाज़ दुश्मन की नज़रों में है, Boss! जल्दी से कुछ बचाव रणनीति बनानी पड़ सकती है।"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220809",
+        "timestamp": "2026-01-18T22:08:09.304687",
+        "state": {
+            "visual": "frame_20260118_220809.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220809.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220822",
+        "timestamp": "2026-01-18T22:08:22.618760",
+        "state": {
+            "visual": "frame_20260118_220822.jpg",
+            "audio_transcript": "निशाने पर लगा"
+        },
+        "action": {
+            "response": "आपका जहाज़ निशाने पर है, Boss! जल्दी से कुछ बचाव रणनीति बनानी पड़ सकती है।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220822.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nनिशाने पर लगा"
+                },
+                {
+                    "from": "gpt",
+                    "value": "आपका जहाज़ निशाने पर है, Boss! जल्दी से कुछ बचाव रणनीति बनानी पड़ सकती है।"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220829",
+        "timestamp": "2026-01-18T22:08:29.473499",
+        "state": {
+            "visual": "frame_20260118_220829.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220829.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220838",
+        "timestamp": "2026-01-18T22:08:38.624528",
+        "state": {
+            "visual": "frame_20260118_220838.jpg",
+            "audio_transcript": "चाहिए मुझे सग"
+        },
+        "action": {
+            "response": "आपके जहाज़ को कुछ सेकंड के लिए सशक्त बनाने का समय आ गया है, Boss - लगता है आपको रैपिड फायर की आवश्यकता हो सकती है।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220838.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nचाहिए मुझे सग"
+                },
+                {
+                    "from": "gpt",
+                    "value": "आपके जहाज़ को कुछ सेकंड के लिए सशक्त बनाने का समय आ गया है, Boss - लगता है आपको रैपिड फायर की आवश्यकता हो सकती है।"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220849",
+        "timestamp": "2026-01-18T22:08:49.650753",
+        "state": {
+            "visual": "frame_20260118_220849.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220849.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220909",
+        "timestamp": "2026-01-18T22:09:09.885436",
+        "state": {
+            "visual": "frame_20260118_220909.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220909.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_220929",
+        "timestamp": "2026-01-18T22:09:29.992696",
+        "state": {
+            "visual": "frame_20260118_220929.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_220929.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221304",
+        "timestamp": "2026-01-18T22:13:04.833257",
+        "state": {
+            "visual": "frame_20260118_221304.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221304.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221305",
+        "timestamp": "2026-01-18T22:13:05.447685",
+        "state": {
+            "visual": "frame_20260118_221305.jpg",
+            "audio_transcript": "हेलो"
+        },
+        "action": {
+            "response": "कैसा है बॉस? क्या मैं आपकी किसी तरह से मदद कर सकता हूँ?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221305.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nहेलो"
+                },
+                {
+                    "from": "gpt",
+                    "value": "कैसा है बॉस? क्या मैं आपकी किसी तरह से मदद कर सकता हूँ?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221319",
+        "timestamp": "2026-01-18T22:13:19.482234",
+        "state": {
+            "visual": "frame_20260118_221319.jpg",
+            "audio_transcript": "तुम फीमेल हो"
+        },
+        "action": {
+            "response": "अरे हाँ बॉस! मैंने नोट किया कि आप Real Warships में हैं और Destroyer 5000 को equip किया है। क्या आप कोई विशेष रणनीति बना रहे हैं या बस मजे के लिए खेल रहे हैं?",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221319.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nतुम फीमेल हो"
+                },
+                {
+                    "from": "gpt",
+                    "value": "अरे हाँ बॉस! मैंने नोट किया कि आप Real Warships में हैं और Destroyer 5000 को equip किया है। क्या आप कोई विशेष रणनीति बना रहे हैं या बस मजे के लिए खेल रहे हैं?"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221325",
+        "timestamp": "2026-01-18T22:13:25.006832",
+        "state": {
+            "visual": "frame_20260118_221325.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221325.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221340",
+        "timestamp": "2026-01-18T22:13:40.316726",
+        "state": {
+            "visual": "frame_20260118_221340.jpg",
+            "audio_transcript": "रणनीति पर तुम कम करो मैं"
+        },
+        "action": {
+            "response": "बॉस, लगता है combat शुरू हो गया है! अपनी स्पीड और फायरपॉवर का अच्छे से इस्तेमाल करो।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221340.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nरणनीति पर तुम कम करो मैं"
+                },
+                {
+                    "from": "gpt",
+                    "value": "बॉस, लगता है combat शुरू हो गया है! अपनी स्पीड और फायरपॉवर का अच्छे से इस्तेमाल करो।"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221345",
+        "timestamp": "2026-01-18T22:13:45.078310",
+        "state": {
+            "visual": "frame_20260118_221345.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221345.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221405",
+        "timestamp": "2026-01-18T22:14:05.126351",
+        "state": {
+            "visual": "frame_20260118_221405.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221405.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221407",
+        "timestamp": "2026-01-18T22:14:07.914941",
+        "state": {
+            "visual": "frame_20260118_221407.jpg",
+            "audio_transcript": "मुझे"
+        },
+        "action": {
+            "response": "बॉस, लगता है दुश्मन के जहाज़ पर निशाना लगाने की तैयारी कर रहे हो! अपनी स्पीड और फायरपॉवर का अच्छे से इस्तेमाल करो।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221407.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nमुझे"
+                },
+                {
+                    "from": "gpt",
+                    "value": "बॉस, लगता है दुश्मन के जहाज़ पर निशाना लगाने की तैयारी कर रहे हो! अपनी स्पीड और फायरपॉवर का अच्छे से इस्तेमाल करो।"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221425",
+        "timestamp": "2026-01-18T22:14:25.237847",
+        "state": {
+            "visual": "frame_20260118_221425.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221425.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221425",
+        "timestamp": "2026-01-18T22:14:25.836619",
+        "state": {
+            "visual": "frame_20260118_221425.jpg",
+            "audio_transcript": "कोई वरशिप"
+        },
+        "action": {
+            "response": "बॉस, वरशिप आ गया! अपने जहाज़ की स्पीड और फायरपॉवर का अच्छे से इस्तेमाल करो, वरना दुश्मन के जहाज़ तुझे डुबो देंगे!",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221425.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nकोई वरशिप"
+                },
+                {
+                    "from": "gpt",
+                    "value": "बॉस, वरशिप आ गया! अपने जहाज़ की स्पीड और फायरपॉवर का अच्छे से इस्तेमाल करो, वरना दुश्मन के जहाज़ तुझे डुबो देंगे!"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221445",
+        "timestamp": "2026-01-18T22:14:45.292185",
+        "state": {
+            "visual": "frame_20260118_221445.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221445.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221505",
+        "timestamp": "2026-01-18T22:15:05.568678",
+        "state": {
+            "visual": "frame_20260118_221505.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221505.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221511",
+        "timestamp": "2026-01-18T22:15:11.506412",
+        "state": {
+            "visual": "frame_20260118_221511.jpg",
+            "audio_transcript": "इसकी गोलियों से बच"
+        },
+        "action": {
+            "response": "बॉस, दुश्मन की गोलियों से बचने के लिए जल्दी से दिशा बदल ले! कहीं और छुप जा, वरना तेरा जहाज़ डूब जाएगा!",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221511.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nइसकी गोलियों से बच"
+                },
+                {
+                    "from": "gpt",
+                    "value": "बॉस, दुश्मन की गोलियों से बचने के लिए जल्दी से दिशा बदल ले! कहीं और छुप जा, वरना तेरा जहाज़ डूब जाएगा!"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221525",
+        "timestamp": "2026-01-18T22:15:25.661504",
+        "state": {
+            "visual": "frame_20260118_221525.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221525.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221531",
+        "timestamp": "2026-01-18T22:15:31.311120",
+        "state": {
+            "visual": "frame_20260118_221531.jpg",
+            "audio_transcript": "मुझे"
+        },
+        "action": {
+            "response": "बॉस, लगता है तेरा जहाज़ आ रहा है दुश्मन की नज़रों में! जल्दी से रैपिड फायर का इस्तेमाल कर!",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221531.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nमुझे"
+                },
+                {
+                    "from": "gpt",
+                    "value": "बॉस, लगता है तेरा जहाज़ आ रहा है दुश्मन की नज़रों में! जल्दी से रैपिड फायर का इस्तेमाल कर!"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221545",
+        "timestamp": "2026-01-18T22:15:45.791549",
+        "state": {
+            "visual": "frame_20260118_221545.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221545.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221549",
+        "timestamp": "2026-01-18T22:15:49.807756",
+        "state": {
+            "visual": "frame_20260118_221549.jpg",
+            "audio_transcript": "हमारी"
+        },
+        "action": {
+            "response": "बॉस, लगता है तू अभी भी दुश्मन की नज़रों में है! अपनी रैपिड फायर का इस्तेमाल कर, वरना तेरा जहाज़ डूब जाएगा!",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221549.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nहमारी"
+                },
+                {
+                    "from": "gpt",
+                    "value": "बॉस, लगता है तू अभी भी दुश्मन की नज़रों में है! अपनी रैपिड फायर का इस्तेमाल कर, वरना तेरा जहाज़ डूब जाएगा!"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221606",
+        "timestamp": "2026-01-18T22:16:06.033587",
+        "state": {
+            "visual": "frame_20260118_221606.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221606.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221607",
+        "timestamp": "2026-01-18T22:16:07.013421",
+        "state": {
+            "visual": "frame_20260118_221607.jpg",
+            "audio_transcript": "मिसाइल पड़ गई"
+        },
+        "action": {
+            "response": "बॉस, तेरी मिसाइल लगी है! जल्दी से रिपेयर का बटन दबा, नहीं तो तेरा जहाज़ डूब जाएगा!",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221607.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nमिसाइल पड़ गई"
+                },
+                {
+                    "from": "gpt",
+                    "value": "बॉस, तेरी मिसाइल लगी है! जल्दी से रिपेयर का बटन दबा, नहीं तो तेरा जहाज़ डूब जाएगा!"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221626",
+        "timestamp": "2026-01-18T22:16:26.081602",
+        "state": {
+            "visual": "frame_20260118_221626.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221626.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221627",
+        "timestamp": "2026-01-18T22:16:27.296354",
+        "state": {
+            "visual": "frame_20260118_221627.jpg",
+            "audio_transcript": "इसके कोई बटन ढंग से कम"
+        },
+        "action": {
+            "response": "बॉस, लगता है तेरी शिकायत सही है, बटन थोड़े कम हैं! रिपेयर बटन दबाकर देख, शायद जल्दी ठीक हो जाए!",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221627.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nइसके कोई बटन ढंग से कम"
+                },
+                {
+                    "from": "gpt",
+                    "value": "बॉस, लगता है तेरी शिकायत सही है, बटन थोड़े कम हैं! रिपेयर बटन दबाकर देख, शायद जल्दी ठीक हो जाए!"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221646",
+        "timestamp": "2026-01-18T22:16:46.545652",
+        "state": {
+            "visual": "frame_20260118_221646.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221646.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221651",
+        "timestamp": "2026-01-18T22:16:51.971535",
+        "state": {
+            "visual": "frame_20260118_221651.jpg",
+            "audio_transcript": "यह खत्म ही नहीं"
+        },
+        "action": {
+            "response": "बॉस, लगता है तेरा जहाज़ जल्दी से डूब रहा है! जल्दी से रिपेयर बटन दबा, नहीं तो तू गेम हार जाएगा!",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221651.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nयह खत्म ही नहीं"
+                },
+                {
+                    "from": "gpt",
+                    "value": "बॉस, लगता है तेरा जहाज़ जल्दी से डूब रहा है! जल्दी से रिपेयर बटन दबा, नहीं तो तू गेम हार जाएगा!"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221706",
+        "timestamp": "2026-01-18T22:17:06.510867",
+        "state": {
+            "visual": "frame_20260118_221706.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221706.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221707",
+        "timestamp": "2026-01-18T22:17:07.331306",
+        "state": {
+            "visual": "frame_20260118_221707.jpg",
+            "audio_transcript": "रिपेयर रिपेयर काम नहीं"
+        },
+        "action": {
+            "response": "बॉस, रिपेयर बटन पर कूलडाउन चल रहा है! थोड़ा रुककर फिर से कोशिश कर, दुश्मन को भी तो मारने दे!",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221707.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nरिपेयर रिपेयर काम नहीं"
+                },
+                {
+                    "from": "gpt",
+                    "value": "बॉस, रिपेयर बटन पर कूलडाउन चल रहा है! थोड़ा रुककर फिर से कोशिश कर, दुश्मन को भी तो मारने दे!"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221724",
+        "timestamp": "2026-01-18T22:17:24.434846",
+        "state": {
+            "visual": "frame_20260118_221724.jpg",
+            "audio_transcript": "दुश्मन मुझे मारेगा तो"
+        },
+        "action": {
+            "response": "बॉस, दुश्मन को मारने के लिए जल्दी से मूवमेंट बदल! कहीं और जाकर छुप जा, नहीं तो तू डूब जाएगा!",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221724.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nदुश्मन मुझे मारेगा तो"
+                },
+                {
+                    "from": "gpt",
+                    "value": "बॉस, दुश्मन को मारने के लिए जल्दी से मूवमेंट बदल! कहीं और जाकर छुप जा, नहीं तो तू डूब जाएगा!"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221726",
+        "timestamp": "2026-01-18T22:17:26.790778",
+        "state": {
+            "visual": "frame_20260118_221726.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221726.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221739",
+        "timestamp": "2026-01-18T22:17:39.999763",
+        "state": {
+            "visual": "frame_20260118_221739.jpg",
+            "audio_transcript": "वही तो कर रहा हूं"
+        },
+        "action": {
+            "response": "बॉस, दुश्मन का हेल्थ कम है! जल्दी से फिनिशिंग शॉट मार दे!",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221739.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nवही तो कर रहा हूं"
+                },
+                {
+                    "from": "gpt",
+                    "value": "बॉस, दुश्मन का हेल्थ कम है! जल्दी से फिनिशिंग शॉट मार दे!"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221746",
+        "timestamp": "2026-01-18T22:17:46.861903",
+        "state": {
+            "visual": "frame_20260118_221746.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221746.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221800",
+        "timestamp": "2026-01-18T22:18:00.278383",
+        "state": {
+            "visual": "frame_20260118_221800.jpg",
+            "audio_transcript": "हेल्थ हमारे काम है उसकी नहीं"
+        },
+        "action": {
+            "response": "बॉस, तुम्हारा हेल्थ भी तो कम है! अपने जहाज की रक्षा के लिए रिपेयर बटन दबा दे जल्दी से!",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221800.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nहेल्थ हमारे काम है उसकी नहीं"
+                },
+                {
+                    "from": "gpt",
+                    "value": "बॉस, तुम्हारा हेल्थ भी तो कम है! अपने जहाज की रक्षा के लिए रिपेयर बटन दबा दे जल्दी से!"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221807",
+        "timestamp": "2026-01-18T22:18:07.093103",
+        "state": {
+            "visual": "frame_20260118_221807.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221807.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221813",
+        "timestamp": "2026-01-18T22:18:13.076792",
+        "state": {
+            "visual": "frame_20260118_221813.jpg",
+            "audio_transcript": "हमारा ही"
+        },
+        "action": {
+            "response": "बॉस, तुम्हारा जहाज रिपेयर हो रहा है! जल्दी से हमला करने के लिए तैयार हो जा!",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221813.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nहमारा ही"
+                },
+                {
+                    "from": "gpt",
+                    "value": "बॉस, तुम्हारा जहाज रिपेयर हो रहा है! जल्दी से हमला करने के लिए तैयार हो जा!"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221827",
+        "timestamp": "2026-01-18T22:18:27.202383",
+        "state": {
+            "visual": "frame_20260118_221827.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221827.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221827",
+        "timestamp": "2026-01-18T22:18:27.825359",
+        "state": {
+            "visual": "frame_20260118_221827.jpg",
+            "audio_transcript": "तू मुझे"
+        },
+        "action": {
+            "response": "बॉस, दुश्मन का जहाज दिख रहा है! हमला करने के लिए स्पेस बार दबा दे!",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221827.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nतू मुझे"
+                },
+                {
+                    "from": "gpt",
+                    "value": "बॉस, दुश्मन का जहाज दिख रहा है! हमला करने के लिए स्पेस बार दबा दे!"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221847",
+        "timestamp": "2026-01-18T22:18:47.391645",
+        "state": {
+            "visual": "frame_20260118_221847.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221847.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221853",
+        "timestamp": "2026-01-18T22:18:53.735247",
+        "state": {
+            "visual": "frame_20260118_221853.jpg",
+            "audio_transcript": "मुझे"
+        },
+        "action": {
+            "response": "बॉस, तुम्हारा जहाज रिपेयर होने में अभी थोड़ा समय है! दुश्मन के जहाज को देखकर हमला करने की तैयारी कर ले!",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221853.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nमुझे"
+                },
+                {
+                    "from": "gpt",
+                    "value": "बॉस, तुम्हारा जहाज रिपेयर होने में अभी थोड़ा समय है! दुश्मन के जहाज को देखकर हमला करने की तैयारी कर ले!"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221907",
+        "timestamp": "2026-01-18T22:19:07.661955",
+        "state": {
+            "visual": "frame_20260118_221907.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221907.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221914",
+        "timestamp": "2026-01-18T22:19:14.217551",
+        "state": {
+            "visual": "frame_20260118_221914.jpg",
+            "audio_transcript": "कहां से हमला करूं हम"
+        },
+        "action": {
+            "response": "बॉस, दुश्मन का जहाज दाईं तरफ है! जल्दी से हमला कर दे!",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221914.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nकहां से हमला करूं हम"
+                },
+                {
+                    "from": "gpt",
+                    "value": "बॉस, दुश्मन का जहाज दाईं तरफ है! जल्दी से हमला कर दे!"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221927",
+        "timestamp": "2026-01-18T22:19:27.732972",
+        "state": {
+            "visual": "frame_20260118_221927.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221927.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221946",
+        "timestamp": "2026-01-18T22:19:46.234160",
+        "state": {
+            "visual": "frame_20260118_221946.jpg",
+            "audio_transcript": "पड़ी पड़ी"
+        },
+        "action": {
+            "response": "बॉस, तुम्हारा जहाज रिपेयर हो रहा है! दुश्मन के जहाज को देखकर हमला करने की तैयारी कर ले!",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221946.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nपड़ी पड़ी"
+                },
+                {
+                    "from": "gpt",
+                    "value": "बॉस, तुम्हारा जहाज रिपेयर हो रहा है! दुश्मन के जहाज को देखकर हमला करने की तैयारी कर ले!"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_221947",
+        "timestamp": "2026-01-18T22:19:47.809020",
+        "state": {
+            "visual": "frame_20260118_221947.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_221947.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_222008",
+        "timestamp": "2026-01-18T22:20:08.698695",
+        "state": {
+            "visual": "frame_20260118_222008.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_222008.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_222015",
+        "timestamp": "2026-01-18T22:20:15.457292",
+        "state": {
+            "visual": "frame_20260118_222015.jpg",
+            "audio_transcript": "किस"
+        },
+        "action": {
+            "response": "बॉस, तुम्हारा जहाज रिपेयर हो रहा है! दुश्मन के जहाज को देखकर हमला करने की तैयारी कर ले!",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_222015.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nकिस"
+                },
+                {
+                    "from": "gpt",
+                    "value": "बॉस, तुम्हारा जहाज रिपेयर हो रहा है! दुश्मन के जहाज को देखकर हमला करने की तैयारी कर ले!"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_222028",
+        "timestamp": "2026-01-18T22:20:28.472890",
+        "state": {
+            "visual": "frame_20260118_222028.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_222028.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_222032",
+        "timestamp": "2026-01-18T22:20:32.562005",
+        "state": {
+            "visual": "frame_20260118_222032.jpg",
+            "audio_transcript": "किस एंगल से मारू की उसे"
+        },
+        "action": {
+            "response": "बॉस, दुश्मन का जहाज थोड़ा दूर है, सीधा निशाना मारने की कोशिश कर!",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_222032.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nकिस एंगल से मारू की उसे"
+                },
+                {
+                    "from": "gpt",
+                    "value": "बॉस, दुश्मन का जहाज थोड़ा दूर है, सीधा निशाना मारने की कोशिश कर!"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_222048",
+        "timestamp": "2026-01-18T22:20:48.437396",
+        "state": {
+            "visual": "frame_20260118_222048.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_222048.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
+    },
+    {
+        "id": "20260118_222052",
+        "timestamp": "2026-01-18T22:20:52.733893",
+        "state": {
+            "visual": "frame_20260118_222052.jpg",
+            "audio_transcript": "अरे"
+        },
+        "action": {
+            "response": "बॉस, लगता है गेम लोड हो रहा है! थोड़ा धैर्य रख, शायद अभी शुरू होने वाला है।",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260118_222052.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\nअरे"
+                },
+                {
+                    "from": "gpt",
+                    "value": "बॉस, लगता है गेम लोड हो रहा है! थोड़ा धैर्य रख, शायद अभी शुरू होने वाला है।"
+                }
+            ]
+        }
     }
 ]

@@ -34,13 +34,38 @@ except ImportError:
 
 # Image Processor Stub (Use this since we are lightweight now)
 class AdvancedImageProcessor:
-    def __init__(self, **kwargs): pass
-    def preprocess_for_vision_model(self, img, **kwargs): return img
+    def __init__(self, **kwargs):
+        self.enhance_mode = kwargs.get('enhance_mode')
+        self.target_size = int(kwargs.get('target_size', 336) or 336)
+        self.max_width = int(os.getenv('CAPTURE_WIDTH', str(self.target_size)) or self.target_size)
+        self.max_height = int(os.getenv('CAPTURE_HEIGHT', str(self.target_size)) or self.target_size)
+        self.jpeg_quality = int(os.getenv('CAPTURE_QUALITY', '70') or 70)
+
+    def preprocess_for_vision_model(self, img, **kwargs):
+        if img is None:
+            return img
+        try:
+            if hasattr(img, 'mode') and img.mode == 'RGBA':
+                img = img.convert('RGB')
+
+            max_w = max(1, self.max_width)
+            max_h = max(1, self.max_height)
+
+            scale = min(max_w / img.width, max_h / img.height, 1.0)
+            new_w = max(1, int(img.width * scale))
+            new_h = max(1, int(img.height * scale))
+
+            if new_w != img.width or new_h != img.height:
+                img = img.resize((new_w, new_h), Image.Resampling.BILINEAR)
+
+            return img
+        except Exception:
+            return img
     def to_base64(self, img):
         if hasattr(img, 'mode') and img.mode == 'RGBA':
             img = img.convert('RGB')
         buffered = io.BytesIO()
-        img.save(buffered, format="JPEG")
+        img.save(buffered, format="JPEG", quality=self.jpeg_quality, optimize=True)
         return base64.b64encode(buffered.getvalue()).decode('utf-8')
 
 class GameplaySceneAnalyzer:
@@ -91,6 +116,9 @@ class InteractiveGamingPartner:
         self.recognizer = sr.Recognizer()
         self.recognizer.energy_threshold = 4000
         self.recognizer.dynamic_energy_threshold = True
+        self.recognizer.pause_threshold = float(os.getenv('STT_PAUSE_THRESHOLD', '0.5') or 0.5)
+        self.recognizer.non_speaking_duration = float(os.getenv('STT_NON_SPEAKING_DURATION', '0.25') or 0.25)
+        self.phrase_time_limit = float(os.getenv('STT_PHRASE_TIME_LIMIT', '2.5') or 2.5)
         
         # Hardware Check: Mic
         try:
@@ -106,6 +134,7 @@ class InteractiveGamingPartner:
         self.conversation_history = []
         self.speech_queue = queue.Queue()
         self.is_running = False
+        self.is_speaking = False
         self.last_observation_time = time.time()
         self.observation_interval = 45  # Increased for CPU efficiency
         self.last_visual_context = ""
@@ -144,6 +173,40 @@ class InteractiveGamingPartner:
         self._init_camera()
         self._init_camera()
         # self._verify_models() # Disabled for pure cloud mode
+
+    def _should_speak_proactively(self, text):
+        if not text:
+            return False
+        if text == "[SILENCE]":
+            return False
+
+        lowered = text.lower()
+        urgent_markers = [
+            "error",
+            "failed",
+            "failure",
+            "exception",
+            "traceback",
+            "warning",
+            "critical",
+            "crash",
+            "blocked",
+            "permission",
+            "denied",
+            "disconnect",
+            "timeout",
+            "risk",
+            "danger",
+            "urgent",
+        ]
+
+        if any(marker in lowered for marker in urgent_markers):
+            return True
+
+        if "?" in text:
+            return False
+
+        return False
         
     def listen_to_user(self, timeout=None):
         """Blocking listen for user speech (safe for main loop)"""
@@ -163,7 +226,7 @@ class InteractiveGamingPartner:
                 self.recognizer.listen_in_background(
                     self.mic, 
                     self._listen_callback,
-                    phrase_time_limit=10
+                    phrase_time_limit=self.phrase_time_limit
                 )
                 print("✅ Voice recognition active")
             except Exception as e:
@@ -498,34 +561,54 @@ class InteractiveGamingPartner:
             
             # 2. Get Response (Directly via Groq Vision if enabled)
             if self.use_cloud_mind:
-                reply, thought = await self._get_cloud_strategic_response(None, user_speech, img_b64)
+                if user_speech:
+                    mode_context = "MODE: USER_SPOKE"
+                else:
+                    mode_context = (
+                        "MODE: PROACTIVE\n"
+                        "USER_STATE: silent\n"
+                        "RULE: Output [SILENCE] unless there is something clearly valuable or urgent."
+                    )
+                reply, thought = await self._get_cloud_strategic_response(mode_context, user_speech, img_b64)
                 visual_facts = "[Full Multimodal Analysis]"
             else:
                 # Fallback to local vision + local mind (if configured)
                 visual_facts = await self._get_visual_description(img_b64)
                 reply, thought = await self._get_strategic_response(visual_facts, user_speech)
-            
-            if reply:
-                print(f"\n✅ SUCCESS: Response generated!")
+
+            normalized_reply = reply.strip() if isinstance(reply, str) else reply
+
+            if isinstance(normalized_reply, str) and "[SILENCE]" in normalized_reply and normalized_reply != "[SILENCE]":
+                normalized_reply = normalized_reply.replace("[SILENCE]", "").strip()
+
+            if proactive and not user_speech and isinstance(normalized_reply, str):
+                if not self._should_speak_proactively(normalized_reply):
+                    normalized_reply = "[SILENCE]"
+
+            if normalized_reply:
+                if normalized_reply == "[SILENCE]":
+                    print(f"\n🤐 SILENCE: No response needed")
+                else:
+                    print(f"\n✅ SUCCESS: Response generated!")
+
                 print(f"{'='*60}\n")
-                
-                # Update stats
+
                 self.personal_memory['interactions_count'] = self.personal_memory.get('interactions_count', 0) + 1
                 self._save_memory()
-                
-                # Log Transition for RL
-                self._log_interaction(processed_img, user_speech or "[PROACTIVE]", reply, visual_facts)
-                
-                # 4. Maintain Conversation History (Short Term Memory)
+
+                self._log_interaction(processed_img, user_speech or "[PROACTIVE]", normalized_reply, visual_facts)
+
                 if user_speech:
                     self.conversation_history.append({"role": "user", "content": user_speech})
-                self.conversation_history.append({"role": "assistant", "content": reply})
-                
-                # Keep last 10 turns to avoid token overflow
+                self.conversation_history.append({"role": "assistant", "content": normalized_reply})
+
                 if len(self.conversation_history) > 10:
                     self.conversation_history = self.conversation_history[-10:]
-                
-                return reply
+
+                if normalized_reply == "[SILENCE]":
+                    return ""
+
+                return normalized_reply
             else:
                 print(f"\n❌ FAILED: No response generated")
                 print(f"{'='*60}\n")
@@ -545,6 +628,7 @@ class InteractiveGamingPartner:
             
         print(f"\n💬 SPEAKING: \"{text}\"\n")
         
+        self.is_speaking = True
         try:
             temp_dir = self.base_dir / "src" / "core" / "tmp"
             temp_dir.mkdir(parents=True, exist_ok=True)
@@ -589,10 +673,14 @@ class InteractiveGamingPartner:
                     
         except Exception as e:
             print(f"❌ TTS Error: {e}")
+        finally:
+            self.is_speaking = False
 
     def _listen_callback(self, recognizer, audio):
         """Callback for background listener"""
         try:
+            if getattr(self, 'is_speaking', False):
+                return
             print("\n👂 Heard audio, recognizing...")
             speech_text = recognizer.recognize_google(audio, language="hi-IN")
             print(f"🗣️  USER: {speech_text}")
