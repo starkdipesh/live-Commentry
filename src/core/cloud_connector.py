@@ -30,6 +30,7 @@ class CloudMindConnector:
         self.model = os.getenv('GROQ_MODEL', 'meta-llama/llama-4-scout-17b-16e-instruct')
         self.max_tokens = int(os.getenv('GROQ_MAX_TOKENS', '90') or 90)
         self.temperature = float(os.getenv('GROQ_TEMPERATURE', '0.5') or 0.5)
+        self.humor_level = (os.getenv('HUMOR_LEVEL', 'light') or 'light').lower()
         
     def think(self, visual_facts, user_speech, history=[], image_b64=None):
         """Send data to Cloud Mind and get response (supports Vision)"""
@@ -56,6 +57,8 @@ class CloudMindConnector:
             "Humor rules: keep it kind, never insulting; avoid dark humor; avoid overdoing jokes; one small punchline max. "
             "If the situation is urgent/serious (errors, risky actions), drop humor and be crisp + helpful. "
             "Match the user's language naturally (Hindi/English/Gujarati) based on their speech and what you infer from the screen. "
+            "Be conversational and human: use concise, natural phrasing; allow small interjections when they fit (e.g., 'arre', 'acha', 'hmm'); avoid assistant meta-talk. "
+            f"Humor intensity: {self.humor_level}. If 'off' stay neutral; if 'light', add a tiny quip; if 'high', be playful but still brief and kind. "
             "When you speak: start with a brief observation; use natural human phrasing; offer suggestions (not commands); avoid narration or assistant-y meta talk. "
             "Treat the user's spoken thoughts as conversational signals, not formal requests; allow silence naturally. "
             "Adapt by context inferred from the screen + speech: Coding => quiet pair programmer; Gaming => calm coach only when needed; Research => thoughtful synthesizer. "
@@ -72,6 +75,7 @@ class CloudMindConnector:
             context_lines.append(f"CONTEXT: {visual_facts}")
         if not context_lines:
             context_lines.append("CONTEXT: User is silent. Prefer [SILENCE] unless you have something clearly valuable.")
+        context_lines.append(f"TONE: HUMOR={self.humor_level}")
 
         user_content.append({"type": "text", "text": "\n".join(context_lines)})
 

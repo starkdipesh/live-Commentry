@@ -106,7 +106,8 @@ class InteractiveGamingPartner:
         self.image_processor = AdvancedImageProcessor(enhance_mode='speed', target_size=336)
         self.scene_analyzer = GameplaySceneAnalyzer()
         self.cap = None 
-        self.use_camera = True
+        use_camera_env = os.getenv('USE_CAMERA', '0')
+        self.use_camera = str(use_camera_env).lower() in ('1', 'true', 'yes', 'on')
         
         # Audio Configuration
         # Audio Configuration (Sweet Human Voice)
@@ -138,6 +139,15 @@ class InteractiveGamingPartner:
         self.last_observation_time = time.time()
         self.observation_interval = 45  # Increased for CPU efficiency
         self.last_visual_context = ""
+        # Capture cache for CPU optimization
+        self._last_img_b64 = None
+        self._last_img_time = 0
+        self._last_processed_image = None
+        self.capture_min_interval = float(os.getenv('CAPTURE_MIN_INTERVAL', '1.5') or 1.5)
+        # Proactive change detection (skip cloud if little has changed)
+        self._last_thumb = None
+        self.thumb_size = int(os.getenv('THUMB_SIZE', '64') or 64)
+        self.proactive_change_threshold = float(os.getenv('PROACTIVE_CHANGE_THRESHOLD', '0.12') or 0.12)
         
         # Storage Paths
         self.base_dir = Path(__file__).resolve().parent.parent.parent
@@ -170,8 +180,8 @@ class InteractiveGamingPartner:
             
         print(f"{'='*60}\n")
         
-        self._init_camera()
-        self._init_camera()
+        if self.use_camera:
+            self._init_camera()
         # self._verify_models() # Disabled for pure cloud mode
 
     def _should_speak_proactively(self, text):
@@ -285,6 +295,35 @@ class InteractiveGamingPartner:
                 json.dump(self.personal_memory, f, indent=4, ensure_ascii=False)
         except Exception as e:
             print(f"⚠️ Memory save error: {e}")
+
+    def _compute_thumb(self, pil_img):
+        try:
+            if hasattr(pil_img, 'mode') and pil_img.mode != 'L':
+                gray = pil_img.convert('L')
+            else:
+                gray = pil_img
+            ts = max(8, int(self.thumb_size))
+            thumb = gray.resize((ts, ts), Image.Resampling.BILINEAR)
+            return np.asarray(thumb, dtype=np.uint8)
+        except Exception:
+            return None
+
+    def _should_skip_proactive(self, pil_img):
+        thumb = self._compute_thumb(pil_img)
+        if thumb is None:
+            return False
+        if self._last_thumb is None:
+            self._last_thumb = thumb
+            return False
+        try:
+            diff = np.mean(np.abs(thumb.astype(np.int16) - self._last_thumb.astype(np.int16))) / 255.0
+            self._last_thumb = thumb
+            if diff < self.proactive_change_threshold:
+                print(f"      - Screen change small (diff={diff:.3f}) → skipping cloud call")
+                return True
+            return False
+        except Exception:
+            return False
 
     def _log_interaction(self, final_image, user_input, ai_response, visual_facts):
         """Log interaction into a unified JSON dataset for Reinforcement Learning"""
@@ -550,31 +589,52 @@ class InteractiveGamingPartner:
                 print(f"   Mode: Proactive observation")
             print(f"{'='*60}")
             
-            # 1. Capture Image
-            vision_data = await self.capture_vision_safe()
-            combined_img = self.prepare_multimodal_input(vision_data)
-            
-            print("      - Processing image...")
-            processed_img = self.image_processor.preprocess_for_vision_model(combined_img)
-            img_b64 = self.image_processor.to_base64(processed_img)
-            print(f"      ✓ Image ready ({len(img_b64)} bytes)")
+            # 1. Capture or reuse recent image (CPU-optimized)
+            now_ts = time.time()
+            if (self._last_img_b64 is not None 
+                and self._last_processed_image is not None 
+                and (now_ts - self._last_img_time) < self.capture_min_interval):
+                processed_img = self._last_processed_image
+                img_b64 = self._last_img_b64
+                print("      - Using cached image")
+                print(f"      ✓ Image ready ({len(img_b64)} bytes)")
+            else:
+                vision_data = await self.capture_vision_safe()
+                combined_img = self.prepare_multimodal_input(vision_data)
+                
+                print("      - Processing image...")
+                processed_img = self.image_processor.preprocess_for_vision_model(combined_img)
+                img_b64 = self.image_processor.to_base64(processed_img)
+                self._last_processed_image = processed_img
+                self._last_img_b64 = img_b64
+                self._last_img_time = now_ts
+                print(f"      ✓ Image ready ({len(img_b64)} bytes)")
             
             # 2. Get Response (Directly via Groq Vision if enabled)
-            if self.use_cloud_mind:
-                if user_speech:
-                    mode_context = "MODE: USER_SPOKE"
+            reply, thought = None, None
+            visual_facts = "[Full Multimodal Analysis]"
+
+            # Proactive skip if no meaningful screen change
+            if (self.use_cloud_mind and not user_speech):
+                if self._should_skip_proactive(processed_img):
+                    reply, thought = "[SILENCE]", "Skipped due to low change"
+
+            if reply is None:
+                if self.use_cloud_mind:
+                    if user_speech:
+                        mode_context = "MODE: USER_SPOKE"
+                    else:
+                        mode_context = (
+                            "MODE: PROACTIVE\n"
+                            "USER_STATE: silent\n"
+                            "RULE: Output [SILENCE] unless there is something clearly valuable or urgent."
+                        )
+                    reply, thought = await self._get_cloud_strategic_response(mode_context, user_speech, img_b64)
+                    visual_facts = "[Full Multimodal Analysis]"
                 else:
-                    mode_context = (
-                        "MODE: PROACTIVE\n"
-                        "USER_STATE: silent\n"
-                        "RULE: Output [SILENCE] unless there is something clearly valuable or urgent."
-                    )
-                reply, thought = await self._get_cloud_strategic_response(mode_context, user_speech, img_b64)
-                visual_facts = "[Full Multimodal Analysis]"
-            else:
-                # Fallback to local vision + local mind (if configured)
-                visual_facts = await self._get_visual_description(img_b64)
-                reply, thought = await self._get_strategic_response(visual_facts, user_speech)
+                    # Fallback to local vision + local mind (if configured)
+                    visual_facts = await self._get_visual_description(img_b64)
+                    reply, thought = await self._get_strategic_response(visual_facts, user_speech)
 
             normalized_reply = reply.strip() if isinstance(reply, str) else reply
 
