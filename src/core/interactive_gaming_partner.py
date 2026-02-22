@@ -13,6 +13,7 @@ import time
 import threading
 import random
 import queue
+import re
 from pathlib import Path
 from datetime import datetime
 
@@ -28,9 +29,36 @@ import speech_recognition as sr
 # Import local processors
 try:
     from src.core.cloud_connector import CloudMindConnector
+    from src.core.action_executor import ActionExecutor
+    from src.core.workflow_engine import WorkflowEngine, WorkflowStep
+    from src.core.proactivity_engine import ProactivityEngine, get_proactivity_engine
+    from src.core.autonomous_agent import AutonomousAgent, TaskPlanner
+    from src.core.emotional_intelligence import EmotionalIntelligence, Mood, PersonalityMode
+    from src.integrations.tool_integrations import ToolIntegrations
 except ImportError:
     class CloudMindConnector:
         def __init__(self, **kwargs): pass
+    class ActionExecutor:
+        def __init__(self): pass
+        def execute(self, intent, params): return {"status": "error", "message": "ActionExecutor not available"}
+    class WorkflowEngine:
+        def __init__(self, *args, **kwargs): pass
+        def create_from_template(self, *args, **kwargs): return None
+        def execute_workflow(self, *args, **kwargs): return None
+    class WorkflowStep:
+        pass
+    class ProactivityEngine:
+        def __init__(self): pass
+        def analyze_context(self, *args, **kwargs): return []
+    class AutonomousAgent:
+        def __init__(self, *args, **kwargs): pass
+    class TaskPlanner:
+        pass
+    class EmotionalIntelligence:
+        def __init__(self): pass
+        def analyze_interaction(self, *args, **kwargs): pass
+    class ToolIntegrations:
+        def __init__(self): pass
 
 # Image Processor Stub (Use this since we are lightweight now)
 class AdvancedImageProcessor:
@@ -94,8 +122,32 @@ class InteractiveGamingPartner:
         # Initialize Connector (reads from .env automatically)
         self.cloud_mind = CloudMindConnector()
         
+        # 🎯 SARTHAKA'S ACTION EXECUTOR
+        self.action_executor = ActionExecutor()
+        
+        # 🔄 SARTHAKA'S WORKFLOW ENGINE
+        self.workflow_engine = WorkflowEngine(self.action_executor)
+        print("✅ WorkflowEngine initialized for multi-step tasks")
+        
+        # 🎯 SARTHAKA'S PROACTIVITY ENGINE
+        self.proactivity_engine = ProactivityEngine()
+        self.proactivity_engine.register_trigger_callback(self._on_proactive_trigger)
+        print("✅ ProactivityEngine initialized with event-driven triggers")
+        
+        # 🤖 SARTHAKA'S AUTONOMOUS AGENT
+        self.autonomous_agent = AutonomousAgent(self.action_executor, self.workflow_engine)
+        print("✅ AutonomousAgent initialized for planning and execution")
+        
+        # 💝 SARTHAKA'S EMOTIONAL INTELLIGENCE
+        self.emotional_intel = EmotionalIntelligence()
+        print("✅ EmotionalIntelligence initialized for mood detection")
+        
+        # 🔧 PROFESSIONAL TOOL INTEGRATIONS
+        self.tool_integrations = ToolIntegrations()
+        print("✅ ToolIntegrations ready (Git, IDE, Notes, Calendar")
+        
         # Identity
-        self.name = "Saarthika"
+        self.name = os.getenv('AI_NAME', 'Friday')
         self.creator = "Dipesh Patel"
         
         # Hardware
@@ -109,11 +161,11 @@ class InteractiveGamingPartner:
         use_camera_env = os.getenv('USE_CAMERA', '0')
         self.use_camera = str(use_camera_env).lower() in ('1', 'true', 'yes', 'on')
         
-        # Audio Configuration
-        # Audio Configuration (Sweet Human Voice)
-        self.tts_voice = "hi-IN-SwaraNeural" # Best Female Hindi Voice
-        self.tts_rate = "+10%"               # Slightly faster but natural
-        self.tts_pitch = "+2Hz"              # Slightly higher pitch for sweetness
+        # Audio Configuration (Professional Voice - Friday's Tone)
+        # Default to a professional English voice for Friday
+        self.tts_voice = os.getenv('TTS_VOICE', 'en-IN-NeerjaNeural')  # Professional Indian English
+        self.tts_rate = os.getenv('TTS_RATE', '+8%')               # Slightly faster but clear
+        self.tts_pitch = os.getenv('TTS_PITCH', '+0Hz')              # Natural pitch
         self.recognizer = sr.Recognizer()
         self.recognizer.energy_threshold = 4000
         self.recognizer.dynamic_energy_threshold = True
@@ -159,6 +211,15 @@ class InteractiveGamingPartner:
         self.memory_file.parent.mkdir(parents=True, exist_ok=True)
         self.personal_memory = self._load_memory()
         
+        # 🧠 SARTHAKA'S SMART MEMORY (RAG-enabled)
+        try:
+            from src.memory.smart_memory import SmartMemory
+            self.smart_memory = SmartMemory()
+            print("✅ SmartMemory initialized with RAG")
+        except Exception as e:
+            print(f"⚠️ SmartMemory init failed: {e}")
+            self.smart_memory = None
+        
         # Initialize Audio Output
         if PYGAME_AVAILABLE:
             try: 
@@ -166,11 +227,19 @@ class InteractiveGamingPartner:
                 print("✅ Audio output initialized")
             except Exception as e:
                 print(f"⚠️ Audio init warning: {e}")
-
-        print(f"\n{'='*60}")
-        print(f"✨ {self.name} is waking up...")
+        print(f"✨ {self.name} is online...")
         print(f"🧠 Universal Brain: {self.thinking_model} (Groq)")
         print(f"👨‍💻 Creator: {self.creator}")
+        print(f"⚡ Action Layer: Enabled ({len(self.action_executor.get_available_intents())} capabilities)")
+        print(f"🔄 Workflow Engine: Ready for multi-step tasks")
+        print(f"🎯 Proactivity: Event-driven triggers active")
+        print(f"🤖 Autonomous Agent: Planning & execution ready")
+        print(f"💝 Emotional Intelligence: Mood detection active")
+        print(f"🔧 Tool Integrations: Git, IDE, Notes, Calendar")
+        if self.smart_memory:
+            stats = self.smart_memory.get_stats()
+            if stats:
+                print(f"🧠 SmartMemory: {stats.get('total_chunks', 0)} memories, {stats.get('total_projects', 0)} projects")
         
         # Check for Wayland (Ubuntu)
         if os.environ.get('XDG_SESSION_TYPE') == 'wayland':
@@ -216,8 +285,72 @@ class InteractiveGamingPartner:
         if "?" in text:
             return False
 
-        return False
+    def _get_active_window_title(self):
+        """Get the currently active window title for context."""
+        result = self.action_executor.execute("get_active_window", {})
+        if result.get("status") == "success":
+            return result.get("message")
+        return None
+
+    def _handle_workflow_request(self, params):
+        """Handle workflow execution request."""
+        from typing import Dict, Any, Optional
         
+        workflow_name = params.get('workflow_name')
+        template_id = params.get('template_id')
+        
+        if template_id:
+            context = params.get('context', {})
+            return self.workflow_engine.create_from_template(template_id, context)
+        elif workflow_name:
+            # Create custom workflow from provided steps
+            steps_data = params.get('steps', [])
+            steps = []
+            for i, step_data in enumerate(steps_data, 1):
+                step = WorkflowStep(
+                    id=str(i),
+                    name=step_data.get('name', f'Step {i}'),
+                    action=step_data.get('action'),
+                    params=step_data.get('params', {}),
+                    requires_confirmation=step_data.get('requires_confirmation', False)
+                )
+                steps.append(step)
+            
+            return self.workflow_engine.create_workflow(workflow_name, "Custom workflow", steps)
+        
+        return None
+
+    def _on_proactive_trigger(self, trigger_id: str, message: str, priority: int):
+        """Handle proactive trigger events."""
+        # Only speak for medium and high priority triggers
+        if priority >= 2:
+            print(f"\n🎯 PROACTIVE TRIGGER: {trigger_id} (priority {priority})")
+            # In full implementation, this would queue the message for speaking
+            # For now, we just log it
+            pass
+
+    def _analyze_for_triggers(self, screen_text: str, active_window: str):
+        """Analyze context and trigger proactive events."""
+        if not hasattr(self, 'proactivity_engine') or not self.proactivity_engine:
+            return
+        
+        # Determine if user is active
+        user_active = (time.time() - self.last_observation_time) < 60
+        
+        # Analyze context
+        triggered = self.proactivity_engine.analyze_context(
+            screen_text=screen_text,
+            active_window=active_window,
+            user_active=user_active
+        )
+        
+        # Handle high-priority triggers
+        for event in triggered:
+            if event["priority"] >= 3:
+                # High priority - speak immediately
+                print(f"\n🔔 High priority alert: {event['message']}")
+                # In full implementation: asyncio.create_task(self.speak(event['message']))
+
     def listen_to_user(self, timeout=None):
         """Blocking listen for user speech (safe for main loop)"""
         try:
@@ -561,22 +694,81 @@ class InteractiveGamingPartner:
             return None, None
 
     async def _get_cloud_strategic_response(self, visual_facts, user_speech, image_b64=None):
-        """Step 2: Cloud Mind Response (Zero CPU Load + 17B Scout Intelligence)"""
-        print(f"   [4] Calling CLOUD MIND ({self.thinking_model})...")
+        """Step 2: Cloud Mind Response with Action Support"""
+        print(f"   [4] Sarthika analyzing via CLOUD MIND ({self.thinking_model})...")
         
-        # Use our new dedicated connector with image support
-        reply, status = self.cloud_mind.think(
+        # Get active window for context
+        active_window = self._get_active_window_title()
+        if active_window:
+            print(f"      - Active window: {active_window[:50]}...")
+        
+        # Get available actions
+        available_actions = self.action_executor.get_available_intents()
+        
+        # Get SmartMemory context
+        memory_context = ""
+        if self.smart_memory:
+            context_parts = []
+            
+            # Get current project
+            current_project = self.smart_memory.get_current_project()
+            if current_project:
+                context_parts.append(f"PROJECT: {current_project}")
+            
+            # Get relevant context from user speech
+            if user_speech:
+                memory_context = self.smart_memory.format_context_for_prompt(
+                    user_speech, recent_n=3, relevant_k=2
+                )
+                if memory_context:
+                    context_parts.append(f"MEMORY_CONTEXT:\n{memory_context}")
+            
+        # Update memory with workflow capability info
+        workflow_templates = self.workflow_engine.get_workflow_templates()
+        context_parts.append(f"WORKFLOW_TEMPLATES: {', '.join(workflow_templates.keys())}")
+        context_parts.append("For multi-step tasks, include [WORKFLOW:template_id|context_var=value]")
+        
+        # Use our new dedicated connector with image support and action extraction
+        reply, status, action_request = self.cloud_mind.think(
             visual_facts=visual_facts, 
             user_speech=user_speech,
             history=self.conversation_history,
-            image_b64=image_b64
+            image_b64=image_b64,
+            active_window=active_window,
+            available_actions=available_actions,
+            memory_context=memory_context
         )
         
+        # Execute action if requested
+        if action_request and action_request.get("intent"):
+            intent = action_request.get("intent")
+            params = action_request.get("params", {})
+            
+            # Check if it's a workflow request
+            if intent == "execute_workflow":
+                print(f"      ⚡ Starting workflow: {params.get('workflow_name', 'custom')}")
+                workflow = self._handle_workflow_request(params)
+                if workflow:
+                    await self.workflow_engine.execute_workflow(workflow)
+                    reply = f"{reply}\n[Workflow completed: {workflow.name}]"
+                else:
+                    reply = f"{reply}\n[Workflow creation failed]"
+            else:
+                print(f"      ⚡ Executing action: {intent}")
+                action_result = self.action_executor.execute(intent, params)
+                print(f"      ✓ Action result: {action_result.get('message', 'Done')}")
+                
+                # Append action result to reply
+                if action_result.get("status") == "success":
+                    reply = f"{reply}\n[Action completed: {action_result.get('message')}]"
+                else:
+                    reply = f"{reply}\n[Action failed: {action_result.get('message')}]"
+        
         if status == "success":
-            return reply, "Cloud thought processed."
+            return reply, "Friday's analysis complete."
         else:
             print(f"      ✗ Cloud Mind Error: {reply}")
-            return "Arre bhai, connection check karo.", "Error"
+            return "Sir, I'm experiencing a connection issue. Please check the network.", "Error"
 
     async def generate_response(self, user_speech=None, proactive=False):
         """Execute the Dual-Brain Pipeline with extensive logging"""
@@ -646,7 +838,11 @@ class InteractiveGamingPartner:
                     normalized_reply = "[SILENCE]"
 
             if normalized_reply:
-                if normalized_reply == "[SILENCE]":
+                # Clean up action markers from speech output
+                cleaned_reply = re.sub(r'\[ACTION:[^\]]+\]', '', normalized_reply).strip()
+                cleaned_reply = re.sub(r'\[Action [^\]]+\]', '', cleaned_reply).strip()
+                
+                if cleaned_reply == "[SILENCE]":
                     print(f"\n🤐 SILENCE: No response needed")
                 else:
                     print(f"\n✅ SUCCESS: Response generated!")
@@ -665,10 +861,19 @@ class InteractiveGamingPartner:
                 if len(self.conversation_history) > 10:
                     self.conversation_history = self.conversation_history[-10:]
 
-                if normalized_reply == "[SILENCE]":
+                if cleaned_reply == "[SILENCE]" or cleaned_reply == "":
                     return ""
 
-                return normalized_reply
+                # Store in SmartMemory before returning
+                if self.smart_memory and user_speech and cleaned_reply:
+                    self.smart_memory.store_interaction(
+                        user_input=user_speech,
+                        ai_response=cleaned_reply,
+                        visual_context=active_window or "",
+                        session_id="default"
+                    )
+                
+                return cleaned_reply
             else:
                 print(f"\n❌ FAILED: No response generated")
                 print(f"{'='*60}\n")

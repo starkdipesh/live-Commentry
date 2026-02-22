@@ -15728,5 +15728,31 @@
                 }
             ]
         }
+    },
+    {
+        "id": "20260222_233116",
+        "timestamp": "2026-02-22T23:31:16.554053",
+        "state": {
+            "visual": "frame_20260222_233116.jpg",
+            "audio_transcript": "[PROACTIVE]"
+        },
+        "action": {
+            "response": "[SILENCE]",
+            "reasoning": "[Full Multimodal Analysis]"
+        },
+        "reward": 0.0,
+        "training_format": {
+            "image": "frame_20260222_233116.jpg",
+            "conversations": [
+                {
+                    "from": "human",
+                    "value": "<image>\n[PROACTIVE]"
+                },
+                {
+                    "from": "gpt",
+                    "value": "[SILENCE]"
+                }
+            ]
+        }
     }
 ]
