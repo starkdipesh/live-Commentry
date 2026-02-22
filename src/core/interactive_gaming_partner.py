@@ -756,16 +756,20 @@ class InteractiveGamingPartner:
             else:
                 print(f"      ⚡ Executing action: {intent}")
                 action_result = self.action_executor.execute(intent, params)
+                
+                # Guard against None result
+                if action_result is None:
+                    action_result = {"status": "error", "message": "Action returned no result"}
+                
                 print(f"      ✓ Action result: {action_result.get('message', 'Done')}")
                 
-                # Append action result to reply
-                if action_result.get("status") == "success":
-                    reply = f"{reply}\n[Action completed: {action_result.get('message')}]"
-                else:
-                    reply = f"{reply}\n[Action failed: {action_result.get('message')}]"
+                # Don't append action results to the spoken reply - only log them
+                # The AI's response should stand on its own without technical error messages
+                if action_result.get("status") != "success":
+                    print(f"      ⚠️ Action failed (logged but not spoken): {action_result.get('message')}")
         
         if status == "success":
-            return reply, "Friday's analysis complete."
+            return reply, "Sarthika's analysis complete."
         else:
             print(f"      ✗ Cloud Mind Error: {reply}")
             return "Sir, I'm experiencing a connection issue. Please check the network.", "Error"
@@ -866,6 +870,8 @@ class InteractiveGamingPartner:
 
                 # Store in SmartMemory before returning
                 if self.smart_memory and user_speech and cleaned_reply:
+                    # Get active window for memory context
+                    active_window = self._get_active_window_title()
                     self.smart_memory.store_interaction(
                         user_input=user_speech,
                         ai_response=cleaned_reply,

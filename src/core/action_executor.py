@@ -115,25 +115,69 @@ class ActionExecutor:
         
         args = args or []
         
-        # Application mapping for common apps
+        # Normalize app name - handle Hindi/Unicode
+        normalized_name = app_name.lower().strip()
+        
+        # Application mapping for common apps (OS-specific)
         app_map = self._get_app_map()
         
-        # Try exact match first, then fuzzy match
-        command = app_map.get(app_name.lower())
+        # Add aliases for common terms in different languages
+        aliases = {
+            # Hindi aliases
+            "कैलकुलेटर": "calculator",
+            "कैल्कुलेटर": "calculator",
+            "ब्राउज़र": "browser",
+            "फाइल": "files",
+            "फाइल मैनेजर": "file manager",
+            "टर्मिनल": "terminal",
+            "संगीत": "spotify",
+            "वीडियो": "vlc",
+            # English variations
+            "calc": "calculator",
+            "math": "calculator",
+            "internet": "browser",
+            "web": "browser",
+            "editor": "code",
+            "ide": "code",
+            "command prompt": "terminal",
+            "cmd": "terminal" if self.system == "Linux" else "cmd",
+            "bash": "terminal",
+            "shell": "terminal",
+        }
+        
+        # Check aliases first
+        if normalized_name in aliases:
+            normalized_name = aliases[normalized_name]
+        
+        # Try exact match first
+        command = app_map.get(normalized_name)
+        
         if not command:
             # Try partial match
             for key, cmd in app_map.items():
-                if app_name.lower() in key or key in app_name.lower():
+                if normalized_name in key or key in normalized_name:
                     command = cmd
                     break
         
         if not command:
-            command = app_name  # Assume it's a valid command
+            # For Linux, try common command names
+            if self.system == "Linux":
+                linux_commands = ["gnome-calculator", "gnome-terminal", "firefox", "google-chrome", 
+                                  "nautilus", "gedit", "vlc", "rhythmbox", "gnome-system-monitor",
+                                  "gnome-screenshot", "gnome-control-center", "xcalc", "galculator"]
+                if normalized_name in linux_commands or any(cmd in normalized_name for cmd in linux_commands):
+                    command = normalized_name
+            else:
+                command = app_name  # Assume it's a valid command
+        
+        if not command:
+            return {"status": "error", "message": f"Don't know how to open '{app_name}' on {self.system}"}
         
         try:
             if self.system == "Windows":
                 subprocess.Popen([command] + args, shell=True)
             else:
+                # Linux/macOS - use subprocess without shell for security
                 subprocess.Popen([command] + args, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             
             return {"status": "success", "message": f"Opened {app_name}"}
@@ -197,13 +241,57 @@ class ActionExecutor:
         return self._open_url(url)
     
     def _media_control(self, command: str, value: Optional[str] = None) -> Dict:
-        """Control media playback."""
+        """Control media playback with fallbacks for different systems."""
         try:
             if self.system == "Linux":
-                # Use playerctl for Linux
-                if command in ["play", "pause", "play-pause", "stop", "next", "previous"]:
-                    subprocess.run(["playerctl", command], capture_output=True)
-                    return {"status": "success", "message": f"Media {command}"}
+                # Try playerctl first (most common)
+                try:
+                    if command in ["play", "pause", "play-pause", "stop", "next", "previous"]:
+                        result = subprocess.run(["playerctl", command], capture_output=True, text=True)
+                        if result.returncode == 0:
+                            return {"status": "success", "message": f"Media {command}"}
+                except FileNotFoundError:
+                    pass  # playerctl not installed, try alternatives
+                
+                # Fallback 1: Try dbus-send for MPRIS media control
+                try:
+                    mpris_commands = {
+                        "play": "Play",
+                        "pause": "Pause", 
+                        "play-pause": "PlayPause",
+                        "stop": "Stop",
+                        "next": "Next",
+                        "previous": "Previous"
+                    }
+                    if command in mpris_commands:
+                        dbus_cmd = [
+                            "dbus-send", "--print-reply", "--dest=org.mpris.MediaPlayer2.spotify",
+                            "/org/mpris/MediaPlayer2", f"org.mpris.MediaPlayer2.Player.{mpris_commands[command]}"
+                        ]
+                        result = subprocess.run(dbus_cmd, capture_output=True, text=True)
+                        if result.returncode == 0:
+                            return {"status": "success", "message": f"Media {command} via D-Bus"}
+                except Exception:
+                    pass
+                
+                # Fallback 2: Try xdotool to send media keys
+                try:
+                    media_keys = {
+                        "play": "XF86AudioPlay",
+                        "pause": "XF86AudioPause",
+                        "play-pause": "XF86AudioPlay",
+                        "stop": "XF86AudioStop", 
+                        "next": "XF86AudioNext",
+                        "previous": "XF86AudioPrev"
+                    }
+                    if command in media_keys:
+                        subprocess.run(["xdotool", "key", media_keys[command]], capture_output=True)
+                        return {"status": "success", "message": f"Media {command} via key simulation"}
+                except Exception:
+                    pass
+                
+                return {"status": "error", "message": "Media control not available. Install playerctl: sudo apt install playerctl"}
+                
             elif self.system == "Windows":
                 # Windows media keys using keyboard simulation would go here
                 return {"status": "success", "message": f"Media command '{command}' sent"}
@@ -517,15 +605,18 @@ class ActionExecutor:
             return {"status": "error", "message": f"Typing failed: {str(e)}"}
     
     def _get_app_map(self) -> Dict[str, str]:
-        """Get application name to command mapping."""
+        """Get application name to command mapping with OS detection."""
+        system = self.system
+        
+        # Base mappings
         base_map = {
             # Browsers
-            "chrome": "google-chrome" if self.system == "Linux" else "chrome" if self.system == "Windows" else "Google Chrome",
+            "chrome": "google-chrome" if system == "Linux" else "chrome" if system == "Windows" else "Google Chrome",
             "firefox": "firefox",
             "browser": "firefox",
-            "edge": "microsoft-edge" if self.system == "Linux" else "msedge",
+            "edge": "microsoft-edge" if system == "Linux" else "msedge",
             "safari": "safari",
-            "brave": "brave-browser" if self.system == "Linux" else "brave",
+            "brave": "brave-browser" if system == "Linux" else "brave",
             
             # Code Editors
             "code": "code",
@@ -540,7 +631,7 @@ class ActionExecutor:
             "intellij": "idea",
             
             # Terminals
-            "terminal": "gnome-terminal" if self.system == "Linux" else "Terminal" if self.system == "Darwin" else "cmd",
+            "terminal": "gnome-terminal" if system == "Linux" else "Terminal" if system == "Darwin" else "cmd",
             "konsole": "konsole",
             "alacritty": "alacritty",
             "kitty": "kitty",
@@ -554,20 +645,35 @@ class ActionExecutor:
             # Communication
             "discord": "discord",
             "slack": "slack",
-            "telegram": "telegram-desktop" if self.system == "Linux" else "telegram",
+            "telegram": "telegram-desktop" if system == "Linux" else "telegram",
             "whatsapp": "whatsapp",
             
-            # Tools
-            "file manager": "nautilus" if self.system == "Linux" else "Finder" if self.system == "Darwin" else "explorer",
-            "files": "nautilus" if self.system == "Linux" else "Finder" if self.system == "Darwin" else "explorer",
-            "settings": "gnome-control-center" if self.system == "Linux" else "System Preferences" if self.system == "Darwin" else "control",
-            "calculator": "gnome-calculator" if self.system == "Linux" else "Calculator" if self.system == "Darwin" else "calc",
-            "calendar": "gnome-calendar" if self.system == "Linux" else "Calendar" if self.system == "Darwin" else "outlookcal:",
+            # Tools - Ubuntu/Linux specific
+            "file manager": "nautilus" if system == "Linux" else "Finder" if system == "Darwin" else "explorer",
+            "files": "nautilus" if system == "Linux" else "Finder" if system == "Darwin" else "explorer",
+            "nautilus": "nautilus",
+            "settings": "gnome-control-center" if system == "Linux" else "System Preferences" if system == "Darwin" else "control",
+            "system settings": "gnome-control-center" if system == "Linux" else "System Preferences" if system == "Darwin" else "control",
+            
+            # Calculator - multiple fallbacks for Linux
+            "calculator": "gnome-calculator" if system == "Linux" else "Calculator" if system == "Darwin" else "calc",
+            "gnome-calculator": "gnome-calculator",
+            "xcalc": "xcalc",
+            "galculator": "galculator",
+            
+            # Calendar
+            "calendar": "gnome-calendar" if system == "Linux" else "Calendar" if system == "Darwin" else "outlookcal:",
             
             # Productivity
             "notion": "notion",
             "todoist": "todoist",
-            "todo": "gnome-todo" if self.system == "Linux" else "Reminders" if self.system == "Darwin" else "",
+            "todo": "gnome-todo" if system == "Linux" else "Reminders" if system == "Darwin" else "",
+            
+            # System tools
+            "monitor": "gnome-system-monitor" if system == "Linux" else "Activity Monitor" if system == "Darwin" else "taskmgr",
+            "system monitor": "gnome-system-monitor" if system == "Linux" else "Activity Monitor" if system == "Darwin" else "taskmgr",
+            "text editor": "gedit" if system == "Linux" else "TextEdit" if system == "Darwin" else "notepad",
+            "gedit": "gedit",
         }
         
         return base_map

@@ -137,11 +137,13 @@ class CloudMindConnector:
         action_instructions = ""
         if available_actions:
             action_instructions = (
-                "\nACTION CAPABILITIES: You can execute system actions when the user requests them. "
+                "\nACTION CAPABILITIES: You can execute system actions when the user explicitly requests them. "
                 "Available actions: " + ", ".join(available_actions[:12]) + ". "
                 "When the user wants you to perform an action, include [ACTION:intent|param=value] in your response. "
                 "Examples: [ACTION:open_application|app_name=firefox], [ACTION:search_web|query=python tutorial], "
-                "[ACTION:screenshot], [ACTION:lock_screen], [ACTION:media_control|command=pause]. "
+                "[ACTION:lock_screen], [ACTION:media_control|command=pause]. "
+                "IMPORTANT: Only use [ACTION:screenshot] when user explicitly says 'take screenshot', 'screenshot', or 'capture screen'. "
+                "Do NOT take screenshots just because user mentions 'screen' in conversation. "
                 "Only suggest actions that match the available list. Confirm destructive actions verbally first."
             )
         
