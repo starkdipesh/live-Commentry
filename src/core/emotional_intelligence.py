@@ -58,9 +58,10 @@ class EmotionalIntelligence:
         
         # Mood detection patterns
         self.frustration_indicators = [
-            "not working", "broken", "stupid", "annoying", "frustrated",
-            "can't figure out", "waste of time", "why won't", "ugh", "argh",
-            "error again", "still failing", "doesn't work"
+            "not working", "nothing is working", "broken", "stupid", "annoying", 
+            "frustrated", "frustrating", "frustration", "can't figure out", 
+            "waste of time", "why won't", "ugh", "argh", "error again", 
+            "still failing", "doesn't work"
         ]
         
         self.excitement_indicators = [

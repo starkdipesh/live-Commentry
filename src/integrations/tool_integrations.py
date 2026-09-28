@@ -299,11 +299,21 @@ class NotesManager:
     def __init__(self, notes_dir: Optional[str] = None):
         """Initialize NotesManager."""
         if notes_dir is None:
-            self.notes_dir = Path.home() / "FridayNotes"
+            env_notes = os.getenv("NOTES_DIR")
+            if env_notes:
+                self.notes_dir = Path(env_notes)
+            else:
+                base_dir = Path(__file__).resolve().parent.parent.parent
+                self.notes_dir = base_dir / "notes"
         else:
             self.notes_dir = Path(notes_dir)
         
-        self.notes_dir.mkdir(parents=True, exist_ok=True)
+        try:
+            self.notes_dir.mkdir(parents=True, exist_ok=True)
+        except Exception:
+            import tempfile
+            self.notes_dir = Path(tempfile.gettempdir()) / "friday_notes"
+            self.notes_dir.mkdir(parents=True, exist_ok=True)
     
     def create_note(self, title: str, content: str, category: str = "general") -> Dict:
         """Create a new note."""

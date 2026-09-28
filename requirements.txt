@@ -13,3 +13,4 @@ paho-mqtt
 colorama
 python-dotenv
 PyAudio
+PySide6
