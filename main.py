@@ -43,6 +43,19 @@ async def main_loop():
         print(f"❌ Failed to initialize: {e}")
         return
 
+    # Check for HUD Overlay
+    use_hud = "--hud" in sys.argv or os.getenv('USE_HUD', '0').lower() in ('1', 'true', 'yes')
+    hud_controller = None
+    if use_hud:
+        try:
+            from src.ui.hud_overlay import HUDController
+            hud_controller = HUDController()
+            if hud_controller.start():
+                partner.on_state_change = hud_controller.set_state
+                print("🌟 Ambient Desktop HUD Overlay Active")
+        except Exception as e:
+            print(f"⚠️  HUD overlay not launched: {e}")
+
     # Check for Xorg/Wayland issue on Linux
     if platform.system() == "Linux":
         session = os.environ.get('XDG_SESSION_TYPE', 'unknown')

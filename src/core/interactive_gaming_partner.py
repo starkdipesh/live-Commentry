@@ -117,7 +117,7 @@ class InteractiveGamingPartner:
         # Cloud Mind Config (The Genius Brain - Zero CPU Load)
         # API key loaded from .env file automatically
         self.cloud_base_url = "https://api.groq.com/openai/v1" 
-        self.thinking_model = "meta-llama/llama-4-scout-17b-16e-instruct"
+        self.thinking_model = os.getenv('GROQ_MODEL', 'qwen/qwen3.8-27b')
         
         # Initialize Connector (reads from .env automatically)
         self.cloud_mind = CloudMindConnector()
@@ -201,6 +201,10 @@ class InteractiveGamingPartner:
         self.thumb_size = int(os.getenv('THUMB_SIZE', '64') or 64)
         self.proactive_change_threshold = float(os.getenv('PROACTIVE_CHANGE_THRESHOLD', '0.12') or 0.12)
         
+        # State tracking for HUD and events
+        self.current_state = "idle"
+        self.on_state_change = None
+
         # Storage Paths
         self.base_dir = Path(__file__).resolve().parent.parent.parent
         self.logger_dir = self.base_dir / "training_data" / "gold_dataset"
@@ -252,6 +256,35 @@ class InteractiveGamingPartner:
         if self.use_camera:
             self._init_camera()
         # self._verify_models() # Disabled for pure cloud mode
+
+    def _set_state(self, state: str):
+        """Update assistant state and notify registered listeners (e.g. HUD)."""
+        self.current_state = state
+        if callable(getattr(self, 'on_state_change', None)):
+            try:
+                self.on_state_change(state)
+            except Exception as e:
+                pass
+
+    def process_and_filter_thought(self, response_text: str) -> tuple[str, str]:
+        """
+        Separates hidden Chain-of-Thought (<thinking>...</thinking>) from spoken conversational response.
+        Returns: (clean_spoken_reply, hidden_thought)
+        """
+        if not response_text or not isinstance(response_text, str):
+            return "", ""
+
+        # Match <thinking>...</thinking>
+        thinking_pattern = re.compile(r'<thinking>(.*?)</thinking>', re.DOTALL | re.IGNORECASE)
+        match = thinking_pattern.search(response_text)
+        hidden_monologue = match.group(1).strip() if match else ""
+
+        # Clean response text of thinking tags
+        clean_reply = thinking_pattern.sub("", response_text).strip()
+        # Handle unclosed tag if model token limit reached
+        clean_reply = re.sub(r'<thinking>.*$', '', clean_reply, flags=re.DOTALL).strip()
+
+        return clean_reply, hidden_monologue
 
     def _should_speak_proactively(self, text):
         if not text:
@@ -524,24 +557,74 @@ class InteractiveGamingPartner:
         # 1. Capture Screen
         try:
             print("      - Grabbing screen...")
+            captured = False
             # CHECK FOR WAYLAND
             if os.environ.get('XDG_SESSION_TYPE') == 'wayland':
-                # Wayland Fallback: gnome-screenshot
+                temp_shot = "/tmp/saarthika_vision.png"
+                
+                # Method A: Native GNOME D-Bus (Pre-installed on Ubuntu Wayland, zero packages needed)
                 try:
                     import subprocess
-                    temp_shot = "/tmp/saarthika_vision.png"
-                    # Quietly take screenshot
-                    subprocess.run(["gnome-screenshot", "-f", temp_shot], check=True, timeout=2, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-                    vision_data['screen'] = Image.open(temp_shot)
-                    print("      ✓ Screen captured (Wayland/Gnome)")
-                except Exception as w_err:
-                    print(f"      ✗ Wayland Capture Failed: {w_err}")
-                    print("        (Try: sudo apt install gnome-screenshot)")
+                    cmd = [
+                        "gdbus", "call", "--session",
+                        "--dest", "org.gnome.Shell.Screenshot",
+                        "--object-path", "/org/gnome/Shell/Screenshot",
+                        "--method", "org.gnome.Shell.Screenshot.Screenshot",
+                        "false", "false", temp_shot
+                    ]
+                    subprocess.run(cmd, check=True, timeout=3, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                    if os.path.exists(temp_shot):
+                        vision_data['screen'] = Image.open(temp_shot).copy()
+                        captured = True
+                        print("      ✓ Screen captured (GNOME D-Bus)")
+                except Exception:
+                    pass
+
+                # Method B: gnome-screenshot utility
+                if not captured:
+                    try:
+                        import subprocess
+                        subprocess.run(["gnome-screenshot", "-f", temp_shot], check=True, timeout=3, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                        if os.path.exists(temp_shot):
+                            vision_data['screen'] = Image.open(temp_shot).copy()
+                            captured = True
+                            print("      ✓ Screen captured (gnome-screenshot)")
+                    except Exception:
+                        pass
+
+                # Method C: grim (wlroots Wayland)
+                if not captured:
+                    try:
+                        import subprocess
+                        subprocess.run(["grim", temp_shot], check=True, timeout=3, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                        if os.path.exists(temp_shot):
+                            vision_data['screen'] = Image.open(temp_shot).copy()
+                            captured = True
+                            print("      ✓ Screen captured (grim)")
+                    except Exception:
+                        pass
+
+                # Method D: mss fallback (works via XWayland bridge)
+                if not captured:
+                    try:
+                        with mss.mss() as sct:
+                            monitor = sct.monitors[1] if len(sct.monitors) > 1 else sct.monitors[0]
+                            sct_img = sct.grab(monitor)
+                            screen_img = Image.frombytes('RGB', sct_img.size, sct_img.bgra, 'raw', 'BGRX')
+                            vision_data['screen'] = screen_img
+                            captured = True
+                            print("      ✓ Screen captured (XWayland/mss)")
+                    except Exception:
+                        pass
+
+                if not captured:
+                    print("      ✗ Wayland Capture: No supported screen grabber found.")
+                    print("        (Recommended: run 'sudo apt install -y gnome-screenshot')")
                     vision_data['screen_blocked'] = True
             else:
                 # Xorg (Standard)
                 with mss.mss() as sct:
-                    monitor = sct.monitors[1]
+                    monitor = sct.monitors[1] if len(sct.monitors) > 1 else sct.monitors[0]
                     sct_img = sct.grab(monitor)
                     screen_img = Image.frombytes('RGB', sct_img.size, sct_img.bgra, 'raw', 'BGRX')
                     vision_data['screen'] = screen_img
@@ -702,14 +785,13 @@ class InteractiveGamingPartner:
         if active_window:
             print(f"      - Active window: {active_window[:50]}...")
         
-        # Get available actions
+        # Get available actions and tools schema for native function calling
         available_actions = self.action_executor.get_available_intents()
+        tools_schema = self.action_executor.get_tools_schema() if hasattr(self.action_executor, 'get_tools_schema') else None
         
         # Get SmartMemory context
-        memory_context = ""
+        context_parts = []
         if self.smart_memory:
-            context_parts = []
-            
             # Get current project
             current_project = self.smart_memory.get_current_project()
             if current_project:
@@ -717,18 +799,21 @@ class InteractiveGamingPartner:
             
             # Get relevant context from user speech
             if user_speech:
-                memory_context = self.smart_memory.format_context_for_prompt(
+                mem_ctx = self.smart_memory.format_context_for_prompt(
                     user_speech, recent_n=3, relevant_k=2
                 )
-                if memory_context:
-                    context_parts.append(f"MEMORY_CONTEXT:\n{memory_context}")
+                if mem_ctx:
+                    context_parts.append(f"MEMORY_CONTEXT:\n{mem_ctx}")
             
         # Update memory with workflow capability info
-        workflow_templates = self.workflow_engine.get_workflow_templates()
-        context_parts.append(f"WORKFLOW_TEMPLATES: {', '.join(workflow_templates.keys())}")
-        context_parts.append("For multi-step tasks, include [WORKFLOW:template_id|context_var=value]")
+        workflow_templates = self.workflow_engine.get_workflow_templates() if hasattr(self.workflow_engine, 'get_workflow_templates') else {}
+        if workflow_templates:
+            context_parts.append(f"WORKFLOW_TEMPLATES: {', '.join(workflow_templates.keys())}")
+            context_parts.append("For multi-step tasks, include [WORKFLOW:template_id|context_var=value]")
         
-        # Use our new dedicated connector with image support and action extraction
+        memory_context = "\n".join(context_parts)
+
+        # Use cloud mind with tools and vision support
         reply, status, action_request = self.cloud_mind.think(
             visual_facts=visual_facts, 
             user_speech=user_speech,
@@ -736,7 +821,8 @@ class InteractiveGamingPartner:
             image_b64=image_b64,
             active_window=active_window,
             available_actions=available_actions,
-            memory_context=memory_context
+            memory_context=memory_context,
+            tools_schema=tools_schema
         )
         
         # Execute action if requested
@@ -832,7 +918,12 @@ class InteractiveGamingPartner:
                     visual_facts = await self._get_visual_description(img_b64)
                     reply, thought = await self._get_strategic_response(visual_facts, user_speech)
 
-            normalized_reply = reply.strip() if isinstance(reply, str) else reply
+            # Separate inner monologue from spoken text
+            clean_text, inner_thought = self.process_and_filter_thought(reply)
+            if inner_thought:
+                print(f"\n🧠 [INNER MONOLOGUE]:\n   {inner_thought}\n")
+
+            normalized_reply = clean_text.strip() if isinstance(clean_text, str) else clean_text
 
             if isinstance(normalized_reply, str) and "[SILENCE]" in normalized_reply and normalized_reply != "[SILENCE]":
                 normalized_reply = normalized_reply.replace("[SILENCE]", "").strip()
@@ -845,6 +936,7 @@ class InteractiveGamingPartner:
                 # Clean up action markers from speech output
                 cleaned_reply = re.sub(r'\[ACTION:[^\]]+\]', '', normalized_reply).strip()
                 cleaned_reply = re.sub(r'\[Action [^\]]+\]', '', cleaned_reply).strip()
+                cleaned_reply = re.sub(r'\[TOOL:[^\]]+\]', '', cleaned_reply).strip()
                 
                 if cleaned_reply == "[SILENCE]":
                     print(f"\n🤐 SILENCE: No response needed")
@@ -856,7 +948,9 @@ class InteractiveGamingPartner:
                 self.personal_memory['interactions_count'] = self.personal_memory.get('interactions_count', 0) + 1
                 self._save_memory()
 
-                self._log_interaction(processed_img, user_speech or "[PROACTIVE]", normalized_reply, visual_facts)
+                # Log full interaction including thought reasoning for RL dataset
+                log_reasoning = f"Thought: {inner_thought} | Visual: {visual_facts}" if inner_thought else visual_facts
+                self._log_interaction(processed_img, user_speech or "[PROACTIVE]", normalized_reply, log_reasoning)
 
                 if user_speech:
                     self.conversation_history.append({"role": "user", "content": user_speech})
@@ -900,12 +994,12 @@ class InteractiveGamingPartner:
         print(f"\n💬 SPEAKING: \"{text}\"\n")
         
         self.is_speaking = True
+        self._set_state("speaking")
         try:
             temp_dir = self.base_dir / "src" / "core" / "tmp"
             temp_dir.mkdir(parents=True, exist_ok=True)
             temp_file = temp_dir / f"partha_{int(time.time() * 1000)}.mp3"
             
-            print("   - Generating speech...")
             print("   - Generating speech...")
             # Sweet Tone Tuning
             communicate = edge_tts.Communicate(
@@ -946,18 +1040,20 @@ class InteractiveGamingPartner:
             print(f"❌ TTS Error: {e}")
         finally:
             self.is_speaking = False
+            self._set_state("idle")
 
     def _listen_callback(self, recognizer, audio):
         """Callback for background listener"""
         try:
             if getattr(self, 'is_speaking', False):
                 return
+            self._set_state("listening")
             print("\n👂 Heard audio, recognizing...")
             speech_text = recognizer.recognize_google(audio, language="hi-IN")
             print(f"🗣️  USER: {speech_text}")
             self.speech_queue.put(speech_text)
         except sr.UnknownValueError:
-            pass
+            self._set_state("idle")
         except sr.RequestError as e:
             print(f"⚠️  Speech service error: {e}")
         except Exception as e:

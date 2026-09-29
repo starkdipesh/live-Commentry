@@ -500,14 +500,49 @@ class ActionExecutor:
         """Take a screenshot."""
         try:
             if not save_path:
-                save_dir = os.path.expanduser("~/Pictures/Friday")
-                os.makedirs(save_dir, exist_ok=True)
+                save_dir = None
+                # 1. Try home Pictures
+                try:
+                    p = os.path.expanduser("~/Pictures/Friday")
+                    os.makedirs(p, exist_ok=True)
+                    save_dir = p
+                except Exception:
+                    pass
+                
+                # 2. Fallback to project screenshots directory
+                if not save_dir:
+                    try:
+                        base_dir = Path(__file__).resolve().parent.parent.parent / "screenshots"
+                        base_dir.mkdir(parents=True, exist_ok=True)
+                        save_dir = str(base_dir)
+                    except Exception:
+                        import tempfile
+                        save_dir = tempfile.gettempdir()
+                
                 save_path = os.path.join(save_dir, f"screenshot_{int(time.time())}.png")
             
             if self.system == "Linux":
-                subprocess.run(["gnome-screenshot", "-f", save_path], capture_output=True)
+                captured = False
+                try:
+                    res = subprocess.run(["gnome-screenshot", "-f", save_path], capture_output=True)
+                    if res.returncode == 0 and os.path.exists(save_path):
+                        captured = True
+                except Exception:
+                    pass
+                
+                # Resilient fallback to mss
+                if not captured:
+                    try:
+                        import mss
+                        with mss.mss() as sct:
+                            sct.shot(output=save_path)
+                            captured = True
+                    except Exception as m_err:
+                        pass
+                
+                if not captured:
+                    return {"status": "error", "message": "Screenshot capture failed on Linux (gnome-screenshot/mss)"}
             elif self.system == "Windows":
-                # Use PIL for Windows screenshot
                 try:
                     from PIL import ImageGrab
                     ImageGrab.grab().save(save_path)
@@ -530,7 +565,7 @@ class ActionExecutor:
             elif self.system == "Windows":
                 subprocess.run(["rundll32.exe", "user32.dll,LockWorkStation"], capture_output=True)
             else:  # macOS
-                subprocess.run(["/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession", "-suspend"], capture_output=True)
+                subprocess.run(["/System/Library/CoreServices/Menu Extras/User.menu/Contents/Resources/CGSession", "-suspend"], capture_output=True)
             
             return {"status": "success", "message": "Screen locked"}
         except Exception as e:
@@ -688,6 +723,191 @@ class ActionExecutor:
             "get_active_window"
         ]
     
+    def get_tools_schema(self) -> List[Dict]:
+        """Return OpenAI/Groq compatible tools schema for all supported actions."""
+        return [
+            {
+                "type": "function",
+                "function": {
+                    "name": "open_application",
+                    "description": "Launch or open a desktop application (e.g. chrome, code, terminal, obs, spotify, calculator).",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "app_name": {"type": "string", "description": "The application name or alias to open."}
+                        },
+                        "required": ["app_name"]
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "close_application",
+                    "description": "Terminate or close a running desktop application.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "app_name": {"type": "string", "description": "The application name or process to close."}
+                        },
+                        "required": ["app_name"]
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "open_url",
+                    "description": "Open a website URL in the default or specified web browser.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "url": {"type": "string", "description": "The web URL to open (e.g. https://github.com)."}
+                        },
+                        "required": ["url"]
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "search_web",
+                    "description": "Search the web using a search engine like Google or DuckDuckGo.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "query": {"type": "string", "description": "Search query terms."},
+                            "engine": {"type": "string", "enum": ["google", "duckduckgo", "bing", "youtube"], "description": "Search engine to use."}
+                        },
+                        "required": ["query"]
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "media_control",
+                    "description": "Control system media playback (play, pause, next, previous, stop).",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "command": {"type": "string", "enum": ["play_pause", "play", "pause", "next", "prev", "previous", "stop"], "description": "Media playback command."}
+                        },
+                        "required": ["command"]
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "volume_control",
+                    "description": "Adjust or mute system master volume.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "action": {"type": "string", "enum": ["up", "down", "mute", "unmute", "set"], "description": "Volume action to perform."},
+                            "level": {"type": "integer", "description": "Volume level percentage (0-100) if setting volume."}
+                        },
+                        "required": ["action"]
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "screenshot",
+                    "description": "Take a screenshot of the entire desktop display.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "save_path": {"type": "string", "description": "Optional destination file path for screenshot."}
+                        }
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "lock_screen",
+                    "description": "Lock the user screen immediately for security.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {}
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "mute_system",
+                    "description": "Quickly toggle system audio mute.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "mute": {"type": "boolean", "description": "True to mute, False to unmute."}
+                        }
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "get_active_window",
+                    "description": "Detect the currently focused window title on the desktop.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {}
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "file_operation",
+                    "description": "Perform basic file operations like read, write, create, or delete.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "operation": {"type": "string", "enum": ["read", "write", "append", "delete", "copy", "move"], "description": "File operation to perform."},
+                            "source": {"type": "string", "description": "File path to operate on."},
+                            "destination": {"type": "string", "description": "Destination file path for copy/move operations."},
+                            "content": {"type": "string", "description": "Content string for write/append operations."}
+                        },
+                        "required": ["operation", "source"]
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "shell_command",
+                    "description": "Execute a safe terminal shell command in the user workspace.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "command": {"type": "string", "description": "The command line string to run."}
+                        },
+                        "required": ["command"]
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "execute_workflow",
+                    "description": "Trigger a pre-configured multi-step workflow template.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "template_id": {"type": "string", "enum": ["setup_streaming", "start_coding", "research_topic", "debug_error"], "description": "The workflow template ID to execute."},
+                            "topic": {"type": "string", "description": "Topic or context parameter for research/coding workflows."}
+                        },
+                        "required": ["template_id"]
+                    }
+                }
+            }
+        ]
+
     def get_command_history(self) -> List[Dict]:
         """Return command execution history."""
         return self.command_history

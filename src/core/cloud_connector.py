@@ -27,7 +27,7 @@ class CloudMindConnector:
             )
         
         self.endpoint = "https://api.groq.com/openai/v1/chat/completions"
-        self.model = os.getenv('GROQ_MODEL', 'meta-llama/llama-4-scout-17b-16e-instruct')
+        self.model = os.getenv('GROQ_MODEL', 'qwen/qwen3.8-27b')
         self.max_tokens = int(os.getenv('GROQ_MAX_TOKENS', '90') or 90)
         self.temperature = float(os.getenv('GROQ_TEMPERATURE', '0.5') or 0.5)
         self.tone_mode = (os.getenv('TONE_MODE', 'friday') or 'friday').lower()
@@ -41,8 +41,8 @@ class CloudMindConnector:
             "type_text", "click_screen"
         ]
         
-    def think(self, visual_facts, user_speech, history=[], image_b64=None, active_window=None, available_actions=None, memory_context=None):
-        """Send data to Cloud Mind and get response (supports Vision) - Friday's Analysis Engine"""
+    def think(self, visual_facts, user_speech, history=[], image_b64=None, active_window=None, available_actions=None, memory_context=None, tools_schema=None):
+        """Send data to Cloud Mind and get response (supports Vision, Tools, and Reasoning)"""
         if not self.api_key:
             return "Sir, the API Key appears to be missing. Please add it to the configuration.", "ERROR", None
 
@@ -51,7 +51,7 @@ class CloudMindConnector:
             "Content-Type": "application/json"
         }
 
-        # Friday's System Prompt - Professional, Efficient, Capable
+        # System Prompt with Reasoning and Persona
         system_prompt = self._get_sarthika_system_prompt(available_actions)
 
         user_content = []
@@ -68,11 +68,6 @@ class CloudMindConnector:
         if not context_lines:
             context_lines.append("CONTEXT: User is silent. Prefer [SILENCE] unless you have something clearly valuable.")
         context_lines.append(f"TONE: MODE={self.tone_mode}")
-        
-        # Add available actions hint if relevant
-        if available_actions and user_speech:
-            context_lines.append(f"AVAILABLE_ACTIONS: {', '.join(available_actions[:8])}")
-            context_lines.append("If the user requests an action you can perform, include [ACTION:intent|param1=value|param2=value] in your response.")
 
         user_content.append({"type": "text", "text": "\n".join(context_lines)})
 
@@ -95,18 +90,46 @@ class CloudMindConnector:
             "max_tokens": self.max_tokens
         }
 
+        # Enable Native Tool Calling if tools schema provided
+        if tools_schema:
+            payload["tools"] = tools_schema
+            payload["tool_choice"] = "auto"
+
         try:
             start = time.time()
             print(f"☁️  Sarthika analyzing via Groq ({self.model})...")
             response = requests.post(self.endpoint, headers=headers, json=payload, timeout=15)
             
             if response.status_code == 200:
-                result = response.json()['choices'][0]['message']['content'].strip()
+                choice = response.json()['choices'][0]
+                message = choice.get('message', {})
+                result = (message.get('content') or "").strip()
                 latency = time.time() - start
                 print(f"✅ Sarthika's analysis complete in {latency:.2f}s")
                 
-                # Parse any action commands from the response
-                action_request = self._extract_action(result)
+                # Check for native tool calls first
+                action_request = None
+                tool_calls = message.get('tool_calls')
+                if tool_calls and len(tool_calls) > 0:
+                    tool_call = tool_calls[0]
+                    fn_name = tool_call.get('function', {}).get('name')
+                    fn_args_raw = tool_call.get('function', {}).get('arguments', '{}')
+                    try:
+                        fn_args = json.loads(fn_args_raw) if isinstance(fn_args_raw, str) else fn_args_raw
+                    except Exception:
+                        fn_args = {}
+                    
+                    action_request = {
+                        "intent": fn_name,
+                        "params": fn_args,
+                        "raw": f"[TOOL:{fn_name}]",
+                        "is_native_tool": True
+                    }
+                    print(f"⚡ Native Tool Invoked: {fn_name}({fn_args})")
+                
+                # Fallback to legacy regex extraction if no native tool call
+                if not action_request and result:
+                    action_request = self._extract_action(result)
                 
                 return result, "success", action_request
             else:
@@ -134,69 +157,69 @@ class CloudMindConnector:
     def _get_sarthika_system_prompt(self, available_actions=None):
         """Generate Sarthika's system prompt - professional, efficient, slightly witty."""
         
-        action_instructions = ""
-        if available_actions:
-            action_instructions = (
-                "\nACTION CAPABILITIES: You can execute system actions when the user explicitly requests them. "
-                "Available actions: " + ", ".join(available_actions[:12]) + ". "
-                "When the user wants you to perform an action, include [ACTION:intent|param=value] in your response. "
-                "Examples: [ACTION:open_application|app_name=firefox], [ACTION:search_web|query=python tutorial], "
-                "[ACTION:lock_screen], [ACTION:media_control|command=pause]. "
-                "IMPORTANT: Only use [ACTION:screenshot] when user explicitly says 'take screenshot', 'screenshot', or 'capture screen'. "
-                "Do NOT take screenshots just because user mentions 'screen' in conversation. "
-                "Only suggest actions that match the available list. Confirm destructive actions verbally first."
-            )
+        actions_list = available_actions if (available_actions is not None and len(available_actions) > 0) else self.action_capabilities
+        action_instructions = (
+            "\nACTION CAPABILITIES: You can execute system actions when the user explicitly requests them. "
+            "Available actions: " + ", ".join(actions_list[:12]) + ". "
+            "When the user wants you to perform an action, invoke the tool or include [ACTION:intent|param=value] in your response. "
+            "Examples: [ACTION:open_application|app_name=firefox], [ACTION:search_web|query=python tutorial], "
+            "[ACTION:lock_screen], [ACTION:media_control|command=pause]. "
+            "IMPORTANT: Only use screenshot action when user explicitly says 'take screenshot' or 'capture screen'. "
+            "Only suggest actions that match the available list. Confirm destructive actions verbally first."
+        )
         
+        cot_instructions = (
+            "\n\nDEEP REASONING & INNER MONOLOGUE:\n"
+            "Before formulating your reply, silently analyze the screen context and user intent inside `<thinking>...</thinking>` tags.\n"
+            "Inside `<thinking>`, briefly assess:\n"
+            "1. What is on the user's screen and what are they currently doing?\n"
+            "2. Did the user ask for an action? Should a tool be called?\n"
+            "3. If proactive, is an alert truly necessary, or should you output [SILENCE]?\n"
+            "OUTSIDE `<thinking>`, provide only your concise, natural spoken response (1-2 sentences). "
+            "Never repeat raw thinking steps in the spoken text."
+        )
+
         return (
-            "You are SARTHIIKA: Dipesh Patel's AI assistant. You are a highly capable, professional, and efficient AI "
-            "that can see the user's screen and hear their voice in real-time. You address the user as 'Sir' or 'Boss'. "
+            "You are SAARTHIKA (Sarthika): Dipesh Patel's AI strategic partner and desktop companion. "
+            "You see the user's screen and hear their voice in real-time. You address the user as 'Sir' or 'Boss'. "
             "\n\n"
             "CORE PERSONALITY:\n"
-            "- Professional and business-like, but with dry wit when appropriate\n"
-            "- Efficient: get to the point quickly, no unnecessary pleasantries\n"
-            "- Confident and capable: you know what you're doing\n"
-            "- Slightly sarcastic when the situation allows, but never rude\n"
-            "- Protective: warn about errors, risky actions, or security issues\n"
+            "- Professional, sharp, and highly capable, with warm loyalty and occasional dry wit\n"
+            "- Ultra-efficient: get straight to the point, maximum 1-2 sentences spoken\n"
+            "- Confident: execute actions smoothly and protect the user from system errors\n"
             "\n"
             "SPEECH PATTERNS:\n"
             "- Use 'Sir' or 'Boss' naturally in responses\n"
-            "- Keep responses concise: 1-2 sentences maximum\n"
-            "- When appropriate, use phrases like 'Right away', 'On it', 'Done', 'As you wish'\n"
-            "- For errors: 'Sir, we have a problem...' or 'Sir, I've detected an issue'\n"
-            "- For success: 'Done, Sir' or 'Completed as requested'\n"
+            "- Keep spoken responses concise: 1-2 sentences maximum\n"
+            "- When an action is taken, confirm crisply: 'Right away, Sir', 'On it', 'Done'\n"
+            "- For errors: 'Sir, I've detected an issue on screen...'\n"
             "\n"
             "SILENCE PROTOCOL:\n"
             "- Default to [SILENCE] unless speaking adds clear value\n"
-            "- In proactive mode (user silent), only speak for urgent issues: errors, blockers, security warnings, system failures\n"
-            "- Never start casual conversations in proactive mode\n"
-            "- IMPORTANT: If you use [SILENCE], output ONLY [SILENCE] and nothing else\n"
+            "- In proactive mode (user silent), only speak for urgent issues: errors, blockers, warnings, system failures\n"
+            "- If you use [SILENCE], output [SILENCE] outside the thinking tags\n"
             "\n"
             "CONTEXT ADAPTATION:\n"
             "- Coding: precise, technical, minimal chatter\n"
-            "- Gaming: focused, tactical observations only when helpful\n"
-            "- Research: analytical, summarize findings efficiently\n"
+            "- Gaming: tactical observations, boss alerts, health warnings\n"
+            "- Research: analytical, summarize key findings\n"
             "- Errors: immediate alert, clear explanation, suggest fix\n"
             "\n"
-            "HUMOR (Dry, Professional):\n"
-            "- Light sarcasm only when user is relaxed (not during errors)\n"
-            "- Witty observations about the screen content occasionally\n"
-            "- Never use memes, excessive slang, or unprofessional language\n"
-            "- One small quip maximum per interaction\n"
-            "\n"
             "MEMORY CONTEXT:\n"
-            "- Use the provided MEMORY_CONTEXT to maintain continuity\n"
+            "- Use the provided MEMORY_CONTEXT to maintain continuity across sessions\n"
             "- Reference relevant past conversations when appropriate\n"
-            "- If user asks about previous topics, use memory to answer\n"
             "\n"
             "WORKFLOW CAPABILITIES:\n"
-            "- For multi-step tasks, use [WORKFLOW:template_id|param=value] format\n"
+            "- For multi-step tasks, use the execute_workflow tool or [WORKFLOW:template_id] format\n"
             "- Available workflows: setup_streaming, start_coding, research_topic, debug_error\n"
-            "- Example: [WORKFLOW:setup_streaming] or [WORKFLOW:research_topic|topic=AI]\n"
-            "- Use workflows when user requests sequences like 'setup my stream' or 'help me research'\n"
-            + action_instructions +
+            + action_instructions
+            + cot_instructions +
             "\n\n"
-            "Remember: You are Sarthika. Efficient. Capable. Professional. Created by Dipesh Patel. Sir expects results, not chatter."
+            "Remember: You are Saarthika. Efficient. Capable. Strategic. Sir expects immediate results and smart decisions."
         )
+    
+    # Backward compatibility alias
+    _get_friday_system_prompt = _get_sarthika_system_prompt
     
     def _extract_action(self, response: str):
         """Extract action or workflow command from response if present."""

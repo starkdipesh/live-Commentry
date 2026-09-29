@@ -65,7 +65,7 @@ def check_api_key():
                 "Content-Type": "application/json"
             },
             json={
-                "model": "meta-llama/llama-4-scout-17b-16e-instruct",
+                "model": os.getenv("GROQ_MODEL", "qwen/qwen3.8-27b"),
                 "messages": [{"role": "user", "content": "Hi"}],
                 "max_tokens": 10
             },
