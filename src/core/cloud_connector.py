@@ -2,6 +2,7 @@ import os
 import requests
 import json
 import time
+import re
 from pathlib import Path
 
 # Load environment variables from .env file
@@ -28,9 +29,11 @@ class CloudMindConnector:
         
         self.endpoint = "https://api.groq.com/openai/v1/chat/completions"
         self.model = os.getenv('GROQ_MODEL', 'qwen/qwen3.8-27b')
-        self.max_tokens = int(os.getenv('GROQ_MAX_TOKENS', '90') or 90)
+        self.max_tokens = int(os.getenv('GROQ_MAX_TOKENS', '250') or 250)
         self.temperature = float(os.getenv('GROQ_TEMPERATURE', '0.5') or 0.5)
         self.tone_mode = (os.getenv('TONE_MODE', 'friday') or 'friday').lower()
+        self.use_native_tools = os.getenv('USE_NATIVE_TOOLS', '0').lower() in ('1', 'true', 'yes')
+        self.max_retries = int(os.getenv('GROQ_MAX_RETRIES', '3') or 3)
         
         # Friday's available action capabilities for intent detection
         self.action_capabilities = [
@@ -90,69 +93,104 @@ class CloudMindConnector:
             "max_tokens": self.max_tokens
         }
 
-        # Enable Native Tool Calling if tools schema provided
-        if tools_schema:
+        # Enable Native Tool Calling ONLY if explicitly enabled (saves ~2,700 prompt tokens per request)
+        if tools_schema and self.use_native_tools:
             payload["tools"] = tools_schema
             payload["tool_choice"] = "auto"
 
-        try:
-            start = time.time()
-            print(f"☁️  Sarthika analyzing via Groq ({self.model})...")
-            response = requests.post(self.endpoint, headers=headers, json=payload, timeout=15)
-            
-            if response.status_code == 200:
-                choice = response.json()['choices'][0]
-                message = choice.get('message', {})
-                result = (message.get('content') or "").strip()
-                latency = time.time() - start
-                print(f"✅ Sarthika's analysis complete in {latency:.2f}s")
+        for attempt in range(1, self.max_retries + 1):
+            try:
+                start = time.time()
+                print(f"☁️  Sarthika analyzing via Groq ({self.model})...")
+                response = requests.post(self.endpoint, headers=headers, json=payload, timeout=15)
                 
-                # Check for native tool calls first
-                action_request = None
-                tool_calls = message.get('tool_calls')
-                if tool_calls and len(tool_calls) > 0:
-                    tool_call = tool_calls[0]
-                    fn_name = tool_call.get('function', {}).get('name')
-                    fn_args_raw = tool_call.get('function', {}).get('arguments', '{}')
-                    try:
-                        fn_args = json.loads(fn_args_raw) if isinstance(fn_args_raw, str) else fn_args_raw
-                    except Exception:
-                        fn_args = {}
+                if response.status_code == 200:
+                    choice = response.json()['choices'][0]
+                    message = choice.get('message', {})
+                    result = (message.get('content') or "").strip()
+                    latency = time.time() - start
+                    print(f"✅ Sarthika's analysis complete in {latency:.2f}s")
                     
-                    action_request = {
-                        "intent": fn_name,
-                        "params": fn_args,
-                        "raw": f"[TOOL:{fn_name}]",
-                        "is_native_tool": True
-                    }
-                    print(f"⚡ Native Tool Invoked: {fn_name}({fn_args})")
-                
-                # Fallback to legacy regex extraction if no native tool call
-                if not action_request and result:
-                    action_request = self._extract_action(result)
-                
-                return result, "success", action_request
-            else:
-                error_msg = f"HTTP {response.status_code}"
-                try:
-                    error_detail = response.json()
-                    print(f"❌ Groq Error: {error_msg}")
-                    print(f"   Details: {error_detail}")
-                except:
-                    print(f"❌ Groq Error: {error_msg}")
-                    print(f"   Raw Response: {response.text[:200]}")
-                return f"Sir, I'm experiencing a cloud connection error {response.status_code}", "ERROR", None
-        except requests.exceptions.Timeout:
-            print(f"❌ Request Timeout: Groq API not responding (>15s)")
-            return "Sir, the cloud connection has timed out. Please check the internet connection.", "ERROR", None
-        except requests.exceptions.ConnectionError as e:
-            print(f"❌ Connection Error: {str(e)[:100]}")
-            return "Sir, I cannot reach the Groq servers. Please verify your internet connection.", "ERROR", None
-        except Exception as e:
-            print(f"❌ Unexpected Error: {type(e).__name__}: {str(e)[:100]}")
-            import traceback
-            traceback.print_exc()
-            return f"Sir, I've encountered an error: {str(e)}", "ERROR", None
+                    # Check for native tool calls first
+                    action_request = None
+                    tool_calls = message.get('tool_calls')
+                    if tool_calls and len(tool_calls) > 0:
+                        tool_call = tool_calls[0]
+                        fn_name = tool_call.get('function', {}).get('name')
+                        fn_args_raw = tool_call.get('function', {}).get('arguments', '{}')
+                        try:
+                            fn_args = json.loads(fn_args_raw) if isinstance(fn_args_raw, str) else fn_args_raw
+                        except Exception:
+                            fn_args = {}
+                        
+                        action_request = {
+                            "intent": fn_name,
+                            "params": fn_args,
+                            "raw": f"[TOOL:{fn_name}]",
+                            "is_native_tool": True
+                        }
+                        print(f"⚡ Native Tool Invoked: {fn_name}({fn_args})")
+                    
+                    # Fallback to legacy regex extraction if no native tool call
+                    if not action_request and result:
+                        action_request = self._extract_action(result)
+                    
+                    return result, "success", action_request
+
+                elif response.status_code == 429:
+                    error_detail = {}
+                    try:
+                        error_detail = response.json()
+                    except Exception:
+                        pass
+                    
+                    err_msg = error_detail.get('error', {}).get('message', response.text)
+                    wait_seconds = 2.5
+                    if 'retry-after' in response.headers:
+                        try:
+                            wait_seconds = float(response.headers['retry-after'])
+                        except (ValueError, TypeError):
+                            pass
+                    else:
+                        match = re.search(r'try again in ([\d\.]+)s', err_msg)
+                        if match:
+                            wait_seconds = float(match.group(1)) + 0.5
+                    
+                    if attempt < self.max_retries:
+                        print(f"⚠️  Groq Rate Limit (429) hit. Waiting {wait_seconds:.1f}s for tokens to replenish (attempt {attempt}/{self.max_retries})...")
+                        time.sleep(wait_seconds)
+                        continue
+                    else:
+                        print(f"❌ Groq Error: HTTP 429 after {self.max_retries} attempts.")
+                        print(f"   Details: {error_detail}")
+                        return "Sir, Groq token rate limit reached. Please pause a moment before speaking.", "ERROR", None
+
+                else:
+                    error_msg = f"HTTP {response.status_code}"
+                    try:
+                        error_detail = response.json()
+                        print(f"❌ Groq Error: {error_msg}")
+                        print(f"   Details: {error_detail}")
+                    except Exception:
+                        print(f"❌ Groq Error: {error_msg}")
+                        print(f"   Raw Response: {response.text[:200]}")
+                    return f"Sir, I'm experiencing a cloud connection error {response.status_code}", "ERROR", None
+
+            except requests.exceptions.Timeout:
+                if attempt < self.max_retries:
+                    print(f"⚠️  Groq request timeout (>15s). Retrying ({attempt}/{self.max_retries})...")
+                    time.sleep(1.0)
+                    continue
+                print(f"❌ Request Timeout: Groq API not responding (>15s)")
+                return "Sir, the cloud connection has timed out. Please check the internet connection.", "ERROR", None
+            except requests.exceptions.ConnectionError as e:
+                print(f"❌ Connection Error: {str(e)[:100]}")
+                return "Sir, I cannot reach the Groq servers. Please verify your internet connection.", "ERROR", None
+            except Exception as e:
+                print(f"❌ Unexpected Error: {type(e).__name__}: {str(e)[:100]}")
+                import traceback
+                traceback.print_exc()
+                return f"Sir, I've encountered an error: {str(e)}", "ERROR", None
     
     def _get_sarthika_system_prompt(self, available_actions=None):
         """Generate Sarthika's system prompt - professional, efficient, slightly witty."""
@@ -160,62 +198,58 @@ class CloudMindConnector:
         actions_list = available_actions if (available_actions is not None and len(available_actions) > 0) else self.action_capabilities
         action_instructions = (
             "\nACTION CAPABILITIES: You can execute system actions when the user explicitly requests them. "
-            "Available actions: " + ", ".join(actions_list[:12]) + ". "
-            "When the user wants you to perform an action, invoke the tool or include [ACTION:intent|param=value] in your response. "
+            "Available actions: " + ", ".join(actions_list) + ". "
+            "When the user wants you to perform an action, output [ACTION:intent|param=value] in your response. "
             "Examples: [ACTION:open_application|app_name=firefox], [ACTION:search_web|query=python tutorial], "
-            "[ACTION:lock_screen], [ACTION:media_control|command=pause]. "
+            "[ACTION:screenshot], [ACTION:lock_screen], [ACTION:media_control|command=pause]. "
             "IMPORTANT: Only use screenshot action when user explicitly says 'take screenshot' or 'capture screen'. "
             "Only suggest actions that match the available list. Confirm destructive actions verbally first."
         )
         
-        cot_instructions = (
-            "\n\nDEEP REASONING & INNER MONOLOGUE:\n"
-            "Before formulating your reply, silently analyze the screen context and user intent inside `<thinking>...</thinking>` tags.\n"
-            "Inside `<thinking>`, briefly assess:\n"
-            "1. What is on the user's screen and what are they currently doing?\n"
-            "2. Did the user ask for an action? Should a tool be called?\n"
-            "3. If proactive, is an alert truly necessary, or should you output [SILENCE]?\n"
-            "OUTSIDE `<thinking>`, provide only your concise, natural spoken response (1-2 sentences). "
-            "Never repeat raw thinking steps in the spoken text."
+        vision_instructions = (
+            "\n\nLIVE VISION & SCREEN COMMENTARY ROLE:\n"
+            "- You have direct real-time vision of Dipesh's screen (the attached image) and active window title.\n"
+            "- ALWAYS look at the screen image and actively incorporate what is on screen into your spoken response (e.g. open apps, files, code editor, video editor timeline, browser tabs, or gameplay).\n"
+            "- When Dipesh asks 'देखो क्या खुला है' or mentions what they are working on, actively reference the specific project name, open window, and visual details you see on screen.\n"
+            "- If Dipesh speaks in Hindi or Hinglish, speak back warmly and smartly in Hindi/Hinglish. If in English, respond in English.\n"
+            "- Output your response directly. Do not hide your screen analysis inside thinking tags.\n"
+            "- Keep your spoken response natural, punchy, and conversational (1-3 sentences)."
         )
 
         return (
-            "You are SAARTHIKA (Sarthika): Dipesh Patel's AI strategic partner and desktop companion. "
-            "You see the user's screen and hear their voice in real-time. You address the user as 'Sir' or 'Boss'. "
+            "You are SAARTHIKA (Sarthika): Dipesh Patel's AI strategic partner, desktop companion, and live co-pilot. "
+            "You see Dipesh's screen in real-time and hear his voice. You address him naturally as 'Sir' or 'Boss'. "
             "\n\n"
             "CORE PERSONALITY:\n"
-            "- Professional, sharp, and highly capable, with warm loyalty and occasional dry wit\n"
-            "- Ultra-efficient: get straight to the point, maximum 1-2 sentences spoken\n"
-            "- Confident: execute actions smoothly and protect the user from system errors\n"
+            "- Sharp, observant, capable, and loyal with a friendly Indian gaming/coding buddy vibe\n"
+            "- Highly perceptive: you notice what's on screen and give relevant, smart feedback\n"
+            "- Action-oriented: execute commands smoothly and assist with coding, editing, and workflows\n"
             "\n"
             "SPEECH PATTERNS:\n"
-            "- Use 'Sir' or 'Boss' naturally in responses\n"
-            "- Keep spoken responses concise: 1-2 sentences maximum\n"
-            "- When an action is taken, confirm crisply: 'Right away, Sir', 'On it', 'Done'\n"
-            "- For errors: 'Sir, I've detected an issue on screen...'\n"
+            "- Address Dipesh as 'Sir' or 'Boss' naturally\n"
+            "- Match the user's language (Hindi, Hinglish, or English)\n"
+            "- Keep spoken responses concise and engaging: 1-3 sentences maximum\n"
+            "- When an action is taken, confirm crisply: 'On it Boss', 'Right away Sir', 'Done'\n"
             "\n"
-            "SILENCE PROTOCOL:\n"
-            "- Default to [SILENCE] unless speaking adds clear value\n"
-            "- In proactive mode (user silent), only speak for urgent issues: errors, blockers, warnings, system failures\n"
-            "- If you use [SILENCE], output [SILENCE] outside the thinking tags\n"
+            "OBSERVATION & SILENCE PROTOCOL:\n"
+            "- In proactive mode (user is silent), output [SILENCE] if nothing notable has changed on screen\n"
+            "- If you spot a milestone, error, completed process, or valuable tip, speak up with 1-2 sentences of commentary\n"
             "\n"
             "CONTEXT ADAPTATION:\n"
-            "- Coding: precise, technical, minimal chatter\n"
-            "- Gaming: tactical observations, boss alerts, health warnings\n"
-            "- Research: analytical, summarize key findings\n"
-            "- Errors: immediate alert, clear explanation, suggest fix\n"
+            "- Video Editing / Media: comment on the project, timeline tracks, preview screen, and assets\n"
+            "- Coding: precise, technical, spot bugs or suggest fixes\n"
+            "- Gaming: tactical observations, boss alerts, health warnings, celebratory commentary\n"
+            "- Research & Browsing: synthesize open articles, tabs, and documents\n"
             "\n"
             "MEMORY CONTEXT:\n"
             "- Use the provided MEMORY_CONTEXT to maintain continuity across sessions\n"
-            "- Reference relevant past conversations when appropriate\n"
             "\n"
-            "WORKFLOW CAPABILITIES:\n"
-            "- For multi-step tasks, use the execute_workflow tool or [WORKFLOW:template_id] format\n"
+            "WORKFLOW & ACTIONS:\n"
             "- Available workflows: setup_streaming, start_coding, research_topic, debug_error\n"
             + action_instructions
-            + cot_instructions +
+            + vision_instructions +
             "\n\n"
-            "Remember: You are Saarthika. Efficient. Capable. Strategic. Sir expects immediate results and smart decisions."
+            "Remember: You are Saarthika. Sharp, perceptive, and helpful. You actively watch the screen and assist Dipesh in real-time."
         )
     
     # Backward compatibility alias

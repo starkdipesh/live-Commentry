@@ -282,41 +282,30 @@ class InteractiveGamingPartner:
         # Clean response text of thinking tags
         clean_reply = thinking_pattern.sub("", response_text).strip()
         # Handle unclosed tag if model token limit reached
-        clean_reply = re.sub(r'<thinking>.*$', '', clean_reply, flags=re.DOTALL).strip()
+        if "<thinking>" in response_text and "</thinking>" not in response_text:
+            # Salvage drafted response from unclosed tag rather than deleting everything
+            clean_reply = re.sub(r'<\/?thinking>', '', response_text, flags=re.IGNORECASE).strip()
+        else:
+            clean_reply = re.sub(r'<thinking>.*$', '', clean_reply, flags=re.DOTALL).strip()
 
         return clean_reply, hidden_monologue
 
     def _should_speak_proactively(self, text):
-        if not text:
+        if not text or text == "[SILENCE]":
             return False
-        if text == "[SILENCE]":
-            return False
+
+        # In live companion / commentary mode, allow meaningful observations unless strict urgent-only mode is configured
+        strict_mode = os.getenv('PROACTIVE_STRICT_URGENT', '0').lower() in ('1', 'true', 'yes')
+        if not strict_mode:
+            return True
 
         lowered = text.lower()
         urgent_markers = [
-            "error",
-            "failed",
-            "failure",
-            "exception",
-            "traceback",
-            "warning",
-            "critical",
-            "crash",
-            "blocked",
-            "permission",
-            "denied",
-            "disconnect",
-            "timeout",
-            "risk",
-            "danger",
-            "urgent",
+            "error", "failed", "failure", "exception", "traceback", "warning",
+            "critical", "crash", "blocked", "permission", "denied", "disconnect",
+            "timeout", "risk", "danger", "urgent"
         ]
-
-        if any(marker in lowered for marker in urgent_markers):
-            return True
-
-        if "?" in text:
-            return False
+        return any(marker in lowered for marker in urgent_markers)
 
     def _get_active_window_title(self):
         """Get the currently active window title for context."""
@@ -904,12 +893,12 @@ class InteractiveGamingPartner:
             if reply is None:
                 if self.use_cloud_mind:
                     if user_speech:
-                        mode_context = "MODE: USER_SPOKE"
+                        mode_context = "MODE: USER_SPOKE (User is speaking. Actively look at the screen image and reference what is visible in your reply.)"
                     else:
                         mode_context = (
-                            "MODE: PROACTIVE\n"
+                            "MODE: PROACTIVE OBSERVATION\n"
                             "USER_STATE: silent\n"
-                            "RULE: Output [SILENCE] unless there is something clearly valuable or urgent."
+                            "RULE: Observe the user's screen. If there is a noteworthy update, completed task, error, or helpful suggestion, speak 1-2 sentences of natural commentary. If nothing interesting changed, output [SILENCE]."
                         )
                     reply, thought = await self._get_cloud_strategic_response(mode_context, user_speech, img_b64)
                     visual_facts = "[Full Multimodal Analysis]"
